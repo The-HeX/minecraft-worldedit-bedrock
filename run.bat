@@ -11,9 +11,9 @@ shapegenerator.exe -s line   --x1 100 --z1 100  --y1 10  --x2 150  --y2 40 --z2 
 shapegenerator.exe -s line   --x1 100 --z1 100  --y1 10  --x2 150  --y2 40 --z2  150
 shapegenerator.exe -s line   --x1 100 --z1 100  --y1 10  --x2 50   --y2 40 --z2  50
 
-shapegenerator.exe -s circle   -x 0 -z 20  -y 4  -h 30    --r 5
-shapegenerator.exe -s circle   -x 0 -z 40  -y 4  -h 30    --r 5  -f
+shapegenerator.exe -s circle   --cx 0 --cz 20  --cy 4  -h 30    --r 5
+shapegenerator.exe -s circle   --cx 0 --cz 40  --cy 4  -h 30    --r 5  -f
 
-shapegenerator.exe -s sphere --x1 0 --z1 60  --y1 10  --r 5
+shapegenerator.exe -s sphere --x1 0 --z1 60  --y1 15  --r 5
 
 
