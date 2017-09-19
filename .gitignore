@@ -286,3 +286,8 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+processed/04-51-48.csv
+*.csv
+processed/circle-wall.xlsx
+processed/circle-wall.txt
+processed/1ST-TRY-circle-wall.txt
