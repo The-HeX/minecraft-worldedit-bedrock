@@ -48,15 +48,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICircleOptions.cs" />
-    <Compile Include="ILineOptions.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Generators\Circle\CircleGenerator.cs" />
+    <Compile Include="Generators\Circle\ICircleOptions.cs" />
+    <Compile Include="Generators\GeneratorFactory.cs" />
+    <Compile Include="Generators\IGenerator.cs" />
+    <Compile Include="Generators\Line\LineGenerator.cs" />
+    <Compile Include="Generators\Line\ILineOptions.cs" />
+    <Compile Include="Generators\Sphere\SphereGenerator.cs" />
+    <Compile Include="Generators\Sphere\ISphereOptions.cs" />
+    <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\Options.cs" />
+    <Compile Include="Model\Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\Shape.cs" />
+    <Compile Include="Utilities\ExportService.cs" />
+    <Compile Include="Utilities\TransformPointsToLines.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="run.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Generators\Rectangle\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

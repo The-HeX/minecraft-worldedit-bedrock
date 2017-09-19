@@ -1,4 +1,4 @@
-﻿namespace ShapeGenerator
+namespace ShapeGenerator
 {
     public interface ILineOptions
     {
@@ -11,6 +11,5 @@
 
         Point Start { get; }
         Point End { get; }
-        
     }
 }
