@@ -13,7 +13,7 @@ namespace ShapeGenerator
         int CenterZ { get; set; }
 
         //        public int CenterY { get; set; }
-        int Y { get; set; }
+        int CenterY { get; set; }
 
         int Height { get; set; }
 

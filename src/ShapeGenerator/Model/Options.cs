@@ -7,7 +7,7 @@ namespace ShapeGenerator
         [Option('s', "shape", Required = true, HelpText = "Input files to be processed.")]
         public Shape Shape { get; set; }
 
-        [Option('y', Required = false, HelpText = "Input files to be processed.")]
+        [Option("y", Required = false, HelpText = "Input files to be processed.")]
         public int Y { get; set; }
 
         [Option('h', "height", HelpText = "Input files to be processed.")]
@@ -42,15 +42,15 @@ namespace ShapeGenerator
         [Option('r', "radius", HelpText = "Input files to be processed.")]
         public int Radius { get; set; }
 
-        [Option('x', "cx", HelpText = "Input files to be processed.")]
+        [Option( "cx", HelpText = "Input files to be processed.")]
 
         public int CenterX { get; set; }
 
-        [Option('z', "cz", HelpText = "Input files to be processed.")]
+        [Option( "cz", HelpText = "Input files to be processed.")]
 
         public int CenterZ { get; set; }
 
-        [Option('y', "CenterY", HelpText = "Input files to be processed.")]
+        [Option( "cY", HelpText = "Input files to be processed.")]
         public int CenterY { get; set; }
     }
 }

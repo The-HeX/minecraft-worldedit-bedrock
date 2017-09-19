@@ -41,13 +41,14 @@ namespace ShapeGenerator.Generators
             return SimpleLinesFromPoints(points, options);            
         }
 
-        private static List<Line> SimpleLinesFromPoints(List<Point> points, Options options)
+        private static List<Line> SimpleLinesFromPoints(List<Point> points, Options opt)
         {
+            var options = (ICircleOptions) opt;
             var lines = new List<Line>();
             points = points.OrderBy(a => a.X).ThenBy(a => a.Z).ToList();
             var item = new Line { Start = points[0], End = points[0] };
-            item.Start.Y = options.Y;
-            item.End.Y = options.Y + options.Height;
+            item.Start.Y = options.CenterY;
+            item.End.Y = options.CenterY + options.Height;
             lines.Add(item);
             foreach (var point in points.Skip(1).ToList())
             {
@@ -56,12 +57,12 @@ namespace ShapeGenerator.Generators
                     if (point.Z == lastLine.End.Z + 1)
                     {
                         lastLine.End = point;
-                        lastLine.End.Y = options.Y + options.Height;
+                        lastLine.End.Y = options.CenterY + options.Height;
                         continue;
                     }
                 var item1 = new Line { Start = point, End = point };
-                item1.Start.Y = options.Y;
-                item1.End.Y = options.Y + options.Height;
+                item1.Start.Y = options.CenterY;
+                item1.End.Y = options.CenterY + options.Height;
                 lines.Add(item1);
             }
 
