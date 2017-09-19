@@ -42,6 +42,9 @@ Loop, read,  %A_LoopFileFullPath%
 		if(a_index=6){
 			z2:=A_LoopField
 		}        
+		if(a_index=7){
+			block:=A_LoopField
+		}        
 	    }
 		h:= y2 +2
 		send {enter}
@@ -52,7 +55,7 @@ Loop, read,  %A_LoopFileFullPath%
 		sleep 200
 		send {enter}
 		sleep 200
-		send /fill %x% %y% %z% %x2% %y2% %z2% stone
+		send /fill %x% %y% %z% %x2% %y2% %z2% %block%
 		sleep 200
 		send {enter}
 		sleep 200

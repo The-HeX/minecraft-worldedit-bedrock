@@ -51,7 +51,7 @@ namespace ShapeGenerator.Generators
             var lines = new List<Line>();
             foreach (var point in points.ToList())
             {
-                var item1 = new Line { Start = point, End = point };
+                var item1 = new Line { Start = point, End = point ,Block = options.Block};
                 lines.Add(item1);
             }
 

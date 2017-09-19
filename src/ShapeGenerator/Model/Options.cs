@@ -52,5 +52,9 @@ namespace ShapeGenerator
 
         [Option( "cY", HelpText = "Input files to be processed.")]
         public int CenterY { get; set; }
+
+        [Option("block", HelpText = "Input files to be processed.")]
+        public string Block { get; set; } = "stone";
+
     }
 }

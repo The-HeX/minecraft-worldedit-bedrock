@@ -27,18 +27,18 @@ namespace ShapeGenerator.Generators
                 var distance = Distance(centerX, centerZ, x, z);
 
                 if (distance == radius)
-                    points.Add(new Point { X = x, Z = z, Y = y });
+                    points.Add(new Point {X = x, Z = z, Y = y});
 
                 if (fill)
                     if (distance < radius)
-                        points.Add(new Point { X = x, Z = z, Y = y });
+                        points.Add(new Point {X = x, Z = z, Y = y});
             }
             return points;
         }
 
-        public List<Line> TransformToLines(List<Point> points,Options options)
+        public List<Line> TransformToLines(List<Point> points, Options options)
         {
-            return SimpleLinesFromPoints(points, options);            
+            return SimpleLinesFromPoints(points, options);
         }
 
         private static List<Line> SimpleLinesFromPoints(List<Point> points, Options opt)
@@ -46,7 +46,7 @@ namespace ShapeGenerator.Generators
             var options = (ICircleOptions) opt;
             var lines = new List<Line>();
             points = points.OrderBy(a => a.X).ThenBy(a => a.Z).ToList();
-            var item = new Line { Start = points[0], End = points[0] };
+            var item = new Line {Start = points[0], End = points[0], Block = opt.Block};
             item.Start.Y = options.CenterY;
             item.End.Y = options.CenterY + options.Height;
             lines.Add(item);
@@ -60,7 +60,7 @@ namespace ShapeGenerator.Generators
                         lastLine.End.Y = options.CenterY + options.Height;
                         continue;
                     }
-                var item1 = new Line { Start = point, End = point };
+                var item1 = new Line {Start = point, End = point, Block = opt.Block};
                 item1.Start.Y = options.CenterY;
                 item1.End.Y = options.CenterY + options.Height;
                 lines.Add(item1);
@@ -74,6 +74,5 @@ namespace ShapeGenerator.Generators
         {
             return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2)), 0);
         }
-
     }
 }
