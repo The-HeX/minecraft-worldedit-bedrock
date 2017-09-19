@@ -1,5 +1,6 @@
 #ifwinactive Minecraft: Windows 10 Edition
 
+FileCreateDir, processed
 global run:=true
 
 ^s::
@@ -57,5 +58,6 @@ Loop, read,  %A_LoopFileFullPath%
 		sleep 200
 	}	
 }
+FileMove, %A_LoopFileFullPath%, processed
 }
 return
