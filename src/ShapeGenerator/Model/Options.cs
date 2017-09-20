@@ -1,8 +1,9 @@
 ﻿using CommandLine;
+using ShapeGenerator.Generators;
 
 namespace ShapeGenerator
 {
-    public class Options : ISphereOptions, ICircleOptions, ILineOptions
+    public class Options : ISphereOptions, ICircleOptions, ILineOptions,ISquareOptions
     {
         [Option('s', "shape", Required = true, HelpText = "Input files to be processed.")]
         public Shape Shape { get; set; }
@@ -56,5 +57,7 @@ namespace ShapeGenerator
         [Option("block", HelpText = "Input files to be processed.")]
         public string Block { get; set; } = "stone";
 
+        [Option("width", HelpText = "Input files to be processed.")]
+        public int Width { get; set; }
     }
 }

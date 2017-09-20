@@ -30,13 +30,13 @@ namespace ShapeGenerator.Generators
 
                 if (distance == radius)
                     points.Add(new Point { X = x, Z = z, Y = y });
-                //if (fill)
-                //{
-                //    if (distance < radius)
-                //    {
-                //        points.Add(new Point { X = x, Z = z, Y = y });
-                //    }
-                //}
+                if (options.Fill)
+                {
+                    if (distance < radius)
+                    {
+                        points.Add(new Point { X = x, Z = z, Y = y });
+                    }
+                }
             }
             return points;
         }
@@ -51,13 +51,47 @@ namespace ShapeGenerator.Generators
             var lines = new List<Line>();
             foreach (var point in points.ToList())
             {
-                var item1 = new Line { Start = point, End = point ,Block = options.Block};
+                var item1 = new Line { Start = point.Clone(), End = point.Clone() ,Block = options.Block};
                 lines.Add(item1);
             }
+            lines = lines.OrderBy(a => a.Start.X).ThenBy(a=>a.Start.Z).ThenBy(a => a.Start.Y).ToList();
+            lines= SquashLines(lines);
+            lines = lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
+            lines = SquashLines(lines);
+
+            lines = lines.OrderBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.X).ToList();
+            lines = SquashLines(lines);
+
+            lines = lines.OrderBy(a => a.Start.Z).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Y).ToList();
+            lines = SquashLines(lines);
+
+            lines = lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.X).ToList();
+            lines = SquashLines(lines);
+
+            lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ToList();
+            lines = SquashLines(lines);
+
 
             return lines;
         }
 
+        public static List<Line> SquashLines(List<Line> lines)
+        {       
+            for(var i = 0;i<lines.Count-1;i++)
+            {
+                for (var j = i + 1; j < lines.Count; j++)
+                {
+                    if (lines[i].CanCombine(lines[j]))
+                    {
+                        lines[i] = lines[i].Combine(lines[j]);
+                        lines.Remove(lines[j]);
+                        i--;
+                        break;
+                    }
+                }
+            }
+            return lines;
+        }
 
         private static double Distance(int centerX, int centerZ, int centerY, int x, int z, int y)
         {

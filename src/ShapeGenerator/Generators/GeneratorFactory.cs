@@ -14,6 +14,8 @@ namespace ShapeGenerator.Generators
                     return new LineGenerator();
                 case Shape.Sphere:
                     return new SphereGenerator();
+                case Shape.Square:
+                    return new SquareGenerator();
             }
             throw new NotImplementedException($"Cannot process a {shape.ToString()} yet" );
         }

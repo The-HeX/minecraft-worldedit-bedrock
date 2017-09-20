@@ -52,8 +52,10 @@
     <Compile Include="Generators\Circle\ICircleOptions.cs" />
     <Compile Include="Generators\GeneratorFactory.cs" />
     <Compile Include="Generators\IGenerator.cs" />
+    <Compile Include="Generators\Line\ISquareOptions.cs" />
     <Compile Include="Generators\Line\LineGenerator.cs" />
     <Compile Include="Generators\Line\ILineOptions.cs" />
+    <Compile Include="Generators\Line\SquarGenerator.cs" />
     <Compile Include="Generators\Sphere\SphereGenerator.cs" />
     <Compile Include="Generators\Sphere\ISphereOptions.cs" />
     <Compile Include="Model\Line.cs" />
