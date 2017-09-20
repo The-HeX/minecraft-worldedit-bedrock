@@ -16,8 +16,16 @@ namespace ShapeGenerator.Generators
                     return new SphereGenerator();
                 case Shape.Square:
                     return new SquareGenerator();
+                case Shape.Box:
+                    return new BoxGenerator();
+                case Shape.Cylinder:
+                case Shape.Piramid:
+                case Shape.Triangle:
+                case Shape.Rectangle:
+                default:
+                    throw new NotImplementedException($"Cannot process a {shape.ToString()} yet");
             }
-            throw new NotImplementedException($"Cannot process a {shape.ToString()} yet" );
+            
         }
     }
 }

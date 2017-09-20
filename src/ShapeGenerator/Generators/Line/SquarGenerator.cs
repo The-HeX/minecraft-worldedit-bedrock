@@ -5,7 +5,6 @@ namespace ShapeGenerator.Generators
 {
     public class SquareGenerator : IGenerator
     {
-        private const double ToleranceToFindPoint = 0.010;
 
         public List<Point> Run(Options options)
         {
@@ -26,19 +25,22 @@ namespace ShapeGenerator.Generators
                 {
                     for (var z = lowerZ; z <= upperZ; z++)
                     {
-                        if (x == lowerX || x == upperX || z == lowerZ || z == upperZ || opt.Fill)
+                        if (TestForCoordinate(x, lowerX, upperX, z, lowerZ, upperZ, opt,y,lowerY,upperY))
                         {
                             points.Add(new Point { X = x, Y = y, Z = z });
                         }
 
                     }
                 }
-            }
-                
-                    
-                        
+            }                        
             return points;
         }
+
+        protected virtual  bool TestForCoordinate(int x, int lowerX, int upperX, int z, int lowerZ, int upperZ, ISquareOptions opt, int y, int lowerY, int upperY)
+        {
+            return x == lowerX || x == upperX || z == lowerZ || z == upperZ || opt.Fill;
+        }
+
 
         public List<Line> TransformToLines(List<Point> points, Options options)
         {
@@ -47,4 +49,14 @@ namespace ShapeGenerator.Generators
 
 
     }
+
+    public class BoxGenerator : SquareGenerator
+    {
+        protected override bool TestForCoordinate(int x, int lowerX, int upperX, int z, int lowerZ, int upperZ, ISquareOptions opt, int y,int lowerY, int upperY)
+        {
+            return x == lowerX || x == upperX || z == lowerZ || z == upperZ || opt.Fill || y == lowerY || y == upperY;
+        }
+
+    }
+
 }

@@ -1,6 +1,6 @@
 ﻿namespace ShapeGenerator.Generators
 {
-    internal interface ISquareOptions
+    public interface ISquareOptions
     {
         int CenterX { get; set; }
 

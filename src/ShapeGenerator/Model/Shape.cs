@@ -4,12 +4,13 @@
     {
         Circle, //working
         Cylinder, // circle with -F (fill)
-        Sphere,
-
+        Sphere,//ball
+        Square,
+        Box,
+        Line,
         Triangle,
         Piramid,
-        Square,
         Rectangle,
-        Line
+
     }
 }
