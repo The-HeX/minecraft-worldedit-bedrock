@@ -1,4 +1,4 @@
-#ifwinactive Minecraft: Windows 10 Edition
+#ifwinactive Minecraft
 
 FileCreateDir, processed
 global run:=true

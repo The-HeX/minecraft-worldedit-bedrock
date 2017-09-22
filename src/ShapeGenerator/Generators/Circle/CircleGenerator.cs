@@ -23,7 +23,7 @@ namespace ShapeGenerator.Generators
 
             for (var x = lowerX; x < upperX; x++)
             for (var z = lowerZ; z < upperZ; z++)
-            for(var y = options.Y;y<=options.Y+options.Height;y++)
+            for(var y = options.CenterY;y<=options.CenterY+options.Height;y++)
             {
                 var distance = Distance(centerX, centerZ, x, z);
 
