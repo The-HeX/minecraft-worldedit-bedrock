@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Lifetime;
 
 namespace ShapeGenerator
 {
@@ -61,6 +63,56 @@ namespace ShapeGenerator
                 };
             }
             throw new InvalidOperationException("lines cannot be combined");
+        }
+
+        public bool IsSmallerThen(int size)
+        {
+            return End.X - Start.X <= size && End.Y - Start.Y <= size && End.Z - Start.Z <= size;
+        }
+
+        public IEnumerable<Line> SplitToAMaxSize(int size)
+        {
+            var output = new List<Line>();
+            var splitXAxis = SplitXAxis(size);
+            foreach (var line in splitXAxis)
+            {
+                output.AddRange(line.SplitZAxis(size));
+            }
+            return output;
+        }
+
+        private IEnumerable<Line> SplitXAxis(int size)
+        {
+            var output = new List<Line>();
+            var nextPoint = Start.Clone();
+            while ((End.X - nextPoint.X) > size)
+            {
+                var endPoint = new Point() {Y = End.Y, Z = End.Z, X = nextPoint.X + size};
+                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint});
+                nextPoint = endPoint.Clone();
+                nextPoint.X++;
+            }
+            output.Add(new Line() {Start = nextPoint, End = End.Clone(), Block = Block});
+            return output;
+        }
+        private IEnumerable<Line> SplitZAxis(int size)
+        {
+            var output = new List<Line>();
+            var nextPoint = Start.Clone();
+            while ((End.Z - nextPoint.Z) > size)
+            {
+                var endPoint = new Point() { Y = End.Y, X = End.X, Z = nextPoint.Z + size };
+                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint });
+                nextPoint = endPoint.Clone();
+                nextPoint.Z++;
+            }
+            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block });
+            return output;
+        }
+
+        public int MaxDistance
+        {
+            get { return Math.Max(Math.Max(End.X - Start.X, End.Z - Start.Z), End.Y - Start.Y); }
         }
     }
 }

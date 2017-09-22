@@ -71,8 +71,27 @@ namespace ShapeGenerator.Generators
             lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ToList();
             lines = SquashLines(lines);
 
-
+            lines = SplitLinesIntoMaxSizes(lines);
             return lines;
+        }
+
+        private static List<Line> SplitLinesIntoMaxSizes(List<Line> lines)
+        {
+            var output = new List<Line>();
+
+            foreach (var line in lines)
+            {
+                if (line.IsSmallerThen(100))
+                {
+                    output.Add(line);
+                }
+                else //need to split the line into  smaller segments.
+                {
+                    output.AddRange(line.SplitToAMaxSize(100));
+                }
+
+            }
+            return output;
         }
 
         public static List<Line> SquashLines(List<Line> lines)
