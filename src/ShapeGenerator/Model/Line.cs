@@ -109,10 +109,5 @@ namespace ShapeGenerator
             output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block });
             return output;
         }
-
-        public int MaxDistance
-        {
-            get { return Math.Max(Math.Max(End.X - Start.X, End.Z - Start.Z), End.Y - Start.Y); }
-        }
     }
 }
