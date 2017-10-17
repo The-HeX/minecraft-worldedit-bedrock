@@ -9,11 +9,13 @@ namespace ShapeGenerator
         public Point Start { get; set; }
         public Point End { get; set; }
 
-        public string Block { get; set; }
+        public int Block { get; set; }
+        public int Data { get; internal set; }
+        public string BlockName { get; internal set; }
 
         public bool CanCombine(Line line)
         {
-            if (line.Block.Equals(Block))
+            if (line.Block.Equals(Block)&&line.Data.Equals(Data))
             {
                 //combine the Z
                 if (line.Start.X == Start.X && line.Start.Y == Start.Y)
@@ -59,10 +61,17 @@ namespace ShapeGenerator
                 return new Line() {
                     Start= Start.Clone(),
                     End=line.End.Clone(),
-                    Block=Block
+                    Block=Block,
+                    BlockName=BlockName,
+                    Data=Data
                 };
             }
             throw new InvalidOperationException("lines cannot be combined");
+        }
+
+        public string Command(int toX, int toY, int toZ)
+        {
+            return $"fill {Start.X+toX} {Start.Y+toY} {Start.Z+toZ} {End.X+toX} {End.Y+toY} {End.Z+toZ} {BlockName} {Data}";
         }
 
         public bool IsSmallerThen(int size)
@@ -88,7 +97,7 @@ namespace ShapeGenerator
             while ((End.X - nextPoint.X) > size)
             {
                 var endPoint = new Point() {Y = End.Y, Z = End.Z, X = nextPoint.X + size};
-                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint});
+                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint, Data=Data,BlockName=BlockName});
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.Z = Start.Z;
@@ -104,13 +113,13 @@ namespace ShapeGenerator
             while ((End.Z - nextPoint.Z) > size)
             {
                 var endPoint = new Point() { Y = End.Y, X = End.X, Z = nextPoint.Z + size };
-                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint });
+                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint, Data = Data, BlockName = BlockName });
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.X = Start.X;
                 nextPoint.Z++;
             }
-            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block });
+            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block, Data = Data, BlockName = BlockName });
             return output;
         }
     }

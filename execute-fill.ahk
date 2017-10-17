@@ -45,6 +45,9 @@ Loop, read,  %A_LoopFileFullPath%
 		if(a_index=7){
 			block:=A_LoopField
 		}        
+		if(a_index=8){
+			data:=A_LoopField
+		}        
 	    }
 		h:= y2 +2
 		send {enter}
@@ -55,12 +58,32 @@ Loop, read,  %A_LoopFileFullPath%
 		sleep 200
 		send {enter}
 		sleep 200
-		send /fill %x% %y% %z% %x2% %y2% %z2% %block%
+		send /fill %x% %y% %z% %x2% %y2% %z2% %block% %data%
 		sleep 200
 		send {enter}
 		sleep 200
 	}	
 }
 FileMove, %A_LoopFileFullPath%, processed
+}
+return
+
+
+^t::
+
+Loop Files, *.fill, 
+{
+	Loop, read,  %A_LoopFileFullPath%
+	{
+			if(run=false){
+			return
+			}
+			LineNumber = %A_Index%		
+			send /
+			sleep 200
+			send %A_LoopReadLine%{enter}
+			sleep 200
+	}
+	FileMove, %A_LoopFileFullPath%, processed
 }
 return

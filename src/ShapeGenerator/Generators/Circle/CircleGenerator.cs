@@ -48,5 +48,10 @@ namespace ShapeGenerator.Generators
         {
             return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2)), 0);
         }
+
+        List<Line> IGenerator.Run(Options options)
+        {
+            return TransformToLines(Run(options),options);
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using fNbt;
+using ShapeGenerator;
+using ShapeGenerator.Generators;
 
 namespace ConsoleApplication2
 {
@@ -10,53 +12,70 @@ namespace ConsoleApplication2
     {
         private static void Main(string[] args)
         {
-            int toX = 0, toY = 5, toZ = 0;
+            int toX = 100, toY = 4, toZ = 100;
             var blocknames = BlockNames();
-            var output = new List<Position>();
-            var myFile = new NbtFile();
-            myFile.LoadFromFile(@"c:\temp\viking-longhall.schematic");
-            Console.WriteLine(myFile.RootTag.Get<NbtString>("Materials").Value);
+            string FileName = @"C:\Users\eric\Downloads\the-tavern.schematic";
+            ConvertFileToCommands(toX, toY, toZ, blocknames, FileName, @"C:\Users\eric\Documents\GitHub\mcpe-geometry-generator\test.fill");
+            Console.WriteLine("done");
+            Console.ReadLine();
+        }
 
-            var h = myFile.RootTag.Get<NbtShort>("Height").Value;
-            var w = myFile.RootTag.Get<NbtShort>("Width").Value;
-            var l = myFile.RootTag.Get<NbtShort>("Length").Value;
+        private static void ConvertFileToCommands(int toX, int toY, int toZ, string[] blocknames, string FileName,string outputFilename)
+        {
+            var schematicFile = new NbtFile();
 
-            var blocks = myFile.RootTag.Get<NbtByteArray>("Blocks").Value;
-            var data = myFile.RootTag.Get<NbtByteArray>("Data").Value;
-            Console.WriteLine($"Width:{w} Lenght{l} Height{h}");
+            schematicFile.LoadFromFile(FileName);
+            var h = schematicFile.RootTag.Get<NbtShort>("Height").Value;
+            var w = schematicFile.RootTag.Get<NbtShort>("Width").Value;
+            var l = schematicFile.RootTag.Get<NbtShort>("Length").Value;
 
-            foreach (var x1 in blocks.GroupBy(a => a & 0xFF).Select(a => new {BlockId = a.Key, Count = a.Count()})
+            var blocks = schematicFile.RootTag.Get<NbtByteArray>("Blocks").Value;
+            var data = schematicFile.RootTag.Get<NbtByteArray>("Data").Value;
+
+            List<Point> points = CreatePoints(blocknames, h, w, l, blocks, data);
+
+            var lines = SphereGenerator.LinesFromPoints(points);
+
+            WriteLinesToCommandFile(toX, toY, toZ, outputFilename, lines);
+        }
+
+        private static void WriteLinesToCommandFile(int toX, int toY, int toZ, string outputFilename, List<Line> lines)
+        {
+            var file = File.CreateText(outputFilename);
+            lines.Where(a => a.Block != 0).ToList().ForEach(a =>
+            {
+                file.WriteLine(a.Command(toX, toY, toZ));
+            });
+            file.Close();
+        }
+
+        private static List<Point> CreatePoints(string[] blocknames, short h, short w, short l, byte[] blocks, byte[] data)
+        {
+            var output = new List<Point>();
+            foreach (var x1 in blocks.GroupBy(a => a & 0xFF).Select(a => new { BlockId = a.Key, Count = a.Count() })
                 .OrderByDescending(a => a.Count))
                 Console.WriteLine($"{x1.BlockId} {x1.Count}");
 
             for (var x = 0; x < w; x++)
-            for (var y = 0; y < h; y++)
-            for (var z = 0; z < l; z++)
-            {
-                var index = x + (y * l + z) * w;
-                var blockID = blocks[index] & 0xFF;
-                var meta = data[index] & 0xFF;
-                output.Add(new Position
-                {
-                    BlockName = blocknames[blockID],
-                    BlockId = blockID,
-                    Data = meta,
-                    X = x,
-                    Y = y,
-                    Z = z
-                });
-            }
-            output.Where(a => a.BlockId != 0).ToList().ForEach(a =>
-                Console.WriteLine($"{a.Command(toX, toY, toZ)}"));
-            var file =File.CreateText(@"c:\temp\test.fill");
-            output.Where(a => a.BlockId != 0).ToList().ForEach(a =>
-            {
-                file.WriteLine(a.Command(toX, toY, toZ));
-            } );
-            file.Close();
-            Console.ReadLine();
-        }
+                for (var y = 0; y < h; y++)
+                    for (var z = 0; z < l; z++)
+                    {
+                        var index = x + (y * l + z) * w;
+                        var blockID = blocks[index] & 0xFF;
+                        var meta = data[index] & 0xFF;
+                        output.Add(new Point
+                        {
+                            BlockName = blocknames[blockID],
+                            BlockId = blockID,
+                            Data = meta,
+                            X = x,
+                            Y = y,
+                            Z = z
+                        });
+                    }
 
+            return output;
+        }
 
         public static string[] BlockNames()
         {
@@ -321,19 +340,19 @@ namespace ConsoleApplication2
         }
     }
 
-    public class Position
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
-        public int BlockId { get; set; }
-        public int Data { get; set; }
+    //public class Position
+    //{
+    //    public int X { get; set; }
+    //    public int Y { get; set; }
+    //    public int Z { get; set; }
+    //    public int BlockId { get; set; }
+    //    public int Data { get; set; }
 
-        public string BlockName { get; set; }
+    //    public string BlockName { get; set; }
 
-        public string Command(int toX, int toY, int toZ)
-        {
-            return $"fill {toX + X} {toY + Y} {toZ + Z} {toX + X} {toY + Y} {toZ + Z} {BlockName} {Data}";
-        }
-    }
+    //    public string Command(int toX, int toY, int toZ)
+    //    {
+    //        return $"fill {toX + X} {toY + Y} {toZ + Z} {toX + X} {toY + Y} {toZ + Z} {BlockName} {Data}";
+    //    }
+    //}
 }

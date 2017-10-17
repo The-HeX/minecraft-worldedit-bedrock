@@ -26,7 +26,13 @@ rem shapegenerator.exe -s box --cx 60 --cz 60 --h 10  --cy 40  --width 30 --bloc
 
 
 
-shapegenerator.exe -s square --cx 6256 --cz -1181  --cy 65  -h 40   --width 300 --block stone
-rem shapegenerator.exe -s circle   --cx 6256 --cz -1181  --cy 65  -h 20  --r 500 --block stone
+rem shapegenerator.exe -s square --cx 6256 --cz -1181  --cy 65  -h 40   --width 300 --block stone
+rem shapegenerator.exe -s square --cx 6256 --cz -1181  --cy 65  -h 20   --width 298 --block air -f
 
+rem shapegenerator.exe -s circle   --cx 6752 --cz -1240  --cy 60  -h 30    --r 5  -f
+rem shapegenerator.exe -s circle   --cx 6755 --cz -1210  --cy 60  -h 30    --r 5  -f
+
+rem shapegenerator.exe -s circle   --cx 6256 --cz -1181  --cy 65  -h 20  --r 500 --block stone
+rem shapegenerator.exe -s circle   --cx 6256 --cz -1181  --cy 85  -h 1  --r 501 --block stone
+shapegenerator.exe -s circle   --cx 6256 --cz -1181  --cy 86  -h 0  --r 502 --block stone
 

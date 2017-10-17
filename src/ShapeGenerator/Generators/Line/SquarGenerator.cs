@@ -18,7 +18,7 @@ namespace ShapeGenerator.Generators
             var upperX = opt.CenterX + opt.Width / 2;
             var upperY = lowerY+ opt.Height; ;
             var upperZ = opt.CenterZ + opt.Width / 2;
-
+           
             for (var x = lowerX; x <= upperX; x++)
             {
                 for (var y = lowerY; y <= upperY; y++)
@@ -47,6 +47,26 @@ namespace ShapeGenerator.Generators
             return SphereGenerator.LinesFromPoints(points, options);
         }
 
+        List<Line> IGenerator.Run(Options options)
+        {
+            if (!options.Fill)
+            {
+                return TransformToLines(Run(options), options);
+            }
+            return GenerateFillSquare(options);
+        }
 
+        private static List<Line> GenerateFillSquare(Options opt)
+        {
+
+            var lowerX = opt.CenterX - opt.Width / 2;
+            var lowerY = opt.CenterY; ;
+            var lowerZ = opt.CenterZ - opt.Width / 2;
+
+            var upperX = opt.CenterX + opt.Width / 2;
+            var upperY = lowerY + opt.Height; ;
+            var upperZ = opt.CenterZ + opt.Width / 2;
+            return SphereGenerator.SplitLinesIntoMaxSizes( new List<Line>() { new Line { Block = opt.Block,Start=new Point {X=lowerX,Y=lowerY,Z=lowerZ },End=new Point {X=upperX,Y=upperY,Z=upperZ } } });
+        }
     }
 }

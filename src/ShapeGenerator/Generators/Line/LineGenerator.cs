@@ -51,5 +51,9 @@ namespace ShapeGenerator.Generators
             return false;
         }
 
+        List<Line> IGenerator.Run(Options options)
+        {
+            return TransformToLines(Run(options), options);
+        }
     }
 }

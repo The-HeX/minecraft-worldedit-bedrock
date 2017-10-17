@@ -28,8 +28,8 @@ namespace ShapeGenerator
                 var lines = new List<Line>();
 
                 var generator = _factory.Create(options.Shape);
-                points = generator.Run(options);
-                lines = generator.TransformToLines(points, options);
+                lines = generator.Run(options);
+                //lines = generator.TransformToLines(points, options);
 
 
                 if (lines.Count > 0)
