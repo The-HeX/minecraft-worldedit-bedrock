@@ -29,11 +29,10 @@ namespace SchematicExporter
                 toZ = Convert.ToInt32(args[4]);
             }
 
+            Console.WriteLine($"{FileName}  ${outputFilename} {toX} {toY} {toZ}");
             var lines = ConvertFileToCommands(BlockNameLoopup.BlockNames(), FileName);            
             WriteLinesToCommandFile(toX, toY, toZ, outputFilename,
                 lines);
-            Console.WriteLine("done");
-            Console.ReadLine();
         }
 
         private static List<Line> ConvertFileToCommands(string[] blocknames, string FileName)
@@ -49,9 +48,10 @@ namespace SchematicExporter
         private static void WriteLinesToCommandFile(int toX, int toY, int toZ, string outputFilename, List<Line> lines)
         {
             var file = File.CreateText(outputFilename);
+            file.WriteLine($"tp {toX} {toY} {toZ}");
             lines
-                .OrderBy(a=>a.Size())
-                //.Where(a => a.Block != 0)
+                .OrderByDescending(a=>a.Size())
+                .Where(a => a.Block != 0)
                 .ToList().ForEach(a => { file.WriteLine(a.Command(toX, toY, toZ)); });
             file.Close();
         }

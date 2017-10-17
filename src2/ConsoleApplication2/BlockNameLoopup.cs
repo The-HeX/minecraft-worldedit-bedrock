@@ -100,7 +100,7 @@
             blockName[94] = "powered_repeater";
             blockName[95] = "invisibleBedrock";
             blockName[96] = "trapdoor";
-            blockName[97] = "";
+            blockName[97] = "monster_egg";
             blockName[98] = "stonebrick";
             blockName[99] = "brown_mushroom_block";
             blockName[100] = "red_mushroom_block";

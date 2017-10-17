@@ -30,7 +30,7 @@ namespace SchematicExporter
                 var meta = Data[index] & 0xFF;
                 output.Add(new Point
                 {
-                    BlockName = blocknames[blockID],
+                    BlockName = blocknames.Length>blockID? blocknames[blockID]:"stone",
                     BlockId = blockID,
                     Data = meta,
                     X = x,
@@ -53,7 +53,16 @@ namespace SchematicExporter
             output.Length = schematicFile.RootTag.Get<NbtShort>("Length").Value;
             output.BlockIds = schematicFile.RootTag.Get<NbtByteArray>("Blocks").Value;
             output.Data = schematicFile.RootTag.Get<NbtByteArray>("Data").Value;
-            output.AddBlock  = schematicFile.RootTag.Get<NbtByteArray>("AddBlocks").Value;
+            
+            var nbtByteArray = schematicFile.RootTag.Get<NbtByteArray>("AddBlocks");
+            if (nbtByteArray != null)
+            {
+                output.AddBlock = nbtByteArray.Value;
+            }
+            else
+            {
+                output.AddBlock = new byte [0];
+            }
             output.Blocks = new short[output.BlockIds.Length]; // Have to later combine IDs
 
             for (int index = 0; index < output.Blocks.Length; index++)
