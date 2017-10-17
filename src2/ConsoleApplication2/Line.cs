@@ -13,6 +13,10 @@ namespace ShapeGenerator
         public int Data { get; internal set; }
         public string BlockName { get; internal set; }
 
+        public int Size()
+        {
+            return Math.Abs((End.X - Start.X) * (End.Y - Start.Y) * (End.Z = Start.Z));
+        }
         public bool CanCombine(Line line)
         {
             if (line.Block.Equals(Block)&&line.Data.Equals(Data))

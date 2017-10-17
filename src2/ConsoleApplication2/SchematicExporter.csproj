@@ -48,11 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockNameLoopup.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SphereGenerator.cs" />
+    <Compile Include="LineFactory.cs" />
+    <Compile Include="Schematic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

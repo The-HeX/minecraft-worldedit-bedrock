@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace ShapeGenerator.Generators
 {
-    public class SphereGenerator 
+    public class LineFactory 
     {
 
 
-        public static List<Line> LinesFromPoints(List<Point> points)
+        public static List<Line> CreateFromPoints(List<Point> points)
         {
             var lines = new List<Line>();
             foreach (var point in points.ToList())
