@@ -30,16 +30,16 @@ namespace SchematicExporter
             }
 
             Console.WriteLine($"{FileName}  ${outputFilename} {toX} {toY} {toZ}");
-            var lines = ConvertFileToCommands(BlockNameLoopup.BlockNames(), FileName);            
+            var lines = ConvertFileToCommands( FileName);            
             WriteLinesToCommandFile(toX, toY, toZ, outputFilename,
                 lines);
         }
 
-        private static List<Line> ConvertFileToCommands(string[] blocknames, string FileName)
+        private static List<Line> ConvertFileToCommands(string FileName)
         {
             var schematic = Schematic.LoadFromFile(FileName);
 
-            var points = schematic.GetPoints(blocknames);
+            var points = schematic.GetPoints();
 
             return LineFactory.CreateFromPoints(points);
         }
@@ -50,7 +50,7 @@ namespace SchematicExporter
             var file = File.CreateText(outputFilename);
             file.WriteLine($"tp {toX} {toY} {toZ}");
             lines
-                .OrderByDescending(a=>a.Size())
+                .OrderBy(a=>a.Start.Y).ThenBy(a=>a.Start.X).ThenBy(a=>a.Start.Z)
                 .Where(a => a.Block != 0)
                 .ToList().ForEach(a => { file.WriteLine(a.Command(toX, toY, toZ)); });
             file.Close();
