@@ -18,6 +18,7 @@ namespace SchematicExporter
         {
             var jeBlocknames = BlockNameLoopup.BlockNames();
             var beBlocknames = BlockNameLoopup.BlockNamesBE();
+            var blocknames = BlockNameLoopup.Lookup();
             var output = new List<Point>();
             //foreach (var x1 in Blocks.GroupBy(a => a & 0xFF).Select(a => new {BlockId = a.Key, Count = a.Count()})
             //    .OrderByDescending(a => a.Count))
@@ -30,16 +31,13 @@ namespace SchematicExporter
                 var index = x + (y * Length + z) * Width;
                 var blockID = Blocks[index];//& 0xFF;
                 var meta = Data[index] & 0xFF;
-                var blockName = jeBlocknames.Length>blockID? jeBlocknames[blockID]:"stone";
-                if (!beBlocknames.Any(a => a == blockName))
-                {
-                    Console.WriteLine($"could not map {blockName}");
-                }
+                var blockName = blocknames.Where(a => a.Id == blockID).DefaultIfEmpty(new BlockLookup() {Name = "air"}).FirstOrDefault();
+                //var blockName = jeBlocknames.Length>blockID? jeBlocknames[blockID]:"stone";
                 output.Add(new Point
                 {
-                    BlockName = blockName,
+                    BlockName = blockName.Name,
                     BlockId = blockID,
-                    Data = meta,
+                    Data = blockName.BeData>0? blockName.BeData:  meta,
                     X = x,
                     Y = y,
                     Z = z
