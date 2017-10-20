@@ -16,10 +16,12 @@ namespace SchematicExporter
             int toY = 0;
             int toZ = 0;
             var FileName = args[0];
-            string outputFilename=Path.GetFileNameWithoutExtension(FileName)+".fill";
+            string fillCommandOutputFile=Path.GetFileNameWithoutExtension(FileName)+".fill";
+            string csvOutputFile= Path.GetFileNameWithoutExtension(FileName) + ".template";
+
             if (args.Length > 1)
             {
-                outputFilename = args[1];
+                fillCommandOutputFile = args[1];
             }
             
             if (args.Length == 5)
@@ -29,10 +31,18 @@ namespace SchematicExporter
                 toZ = Convert.ToInt32(args[4]);
             }
 
-            Console.WriteLine($"{FileName}  ${outputFilename} {toX} {toY} {toZ}");
+            Console.WriteLine($"{FileName}  ${fillCommandOutputFile} {toX} {toY} {toZ}");
             var lines = ConvertFileToCommands( FileName);            
-            WriteLinesToCommandFile(toX, toY, toZ, outputFilename,
-                lines);
+            WriteLinesToCommandFile(toX, toY, toZ, fillCommandOutputFile,lines);
+            WriteLinesToTemplateFile(0, 0, 0, csvOutputFile, lines);
+        }
+
+        private static void WriteLinesToTemplateFile(int toX, int toY, int toZ, string csvOutputFile, List<Line> lines)
+        {
+            var file = File.CreateText(csvOutputFile);
+            file.WriteLine($"tp {toX} {toY} {toZ}");
+            lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList().ForEach(a => { file.WriteLine(a.Csv(toX, toY, toZ)); });
+            file.Close();
         }
 
         private static List<Line> ConvertFileToCommands(string FileName)

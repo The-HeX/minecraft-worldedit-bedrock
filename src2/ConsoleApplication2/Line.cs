@@ -58,6 +58,11 @@ namespace ShapeGenerator
             return false;
         }
 
+        internal string Csv(int toX, int toY, int toZ)
+        {
+            return $"{Start.X + toX},{Start.Y + toY},{Start.Z + toZ},{End.X + toX},{End.Y + toY},{End.Z + toZ},{BlockName},{Data}";
+        }
+
         public  Line Combine(Line line)
         {
             if (CanCombine(line))

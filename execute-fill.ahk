@@ -75,14 +75,16 @@ Loop Files, *.fill,
 {
 	Loop, read,  %A_LoopFileFullPath%
 	{
-			if(run=false){
+		if(run=false){
 			return
-			}
-			LineNumber = %A_Index%		
-			send /
-			sleep 200
-			send %A_LoopReadLine%{enter}
-			sleep 200
+		}
+		LineNumber = %A_Index%		
+		send /
+		sleep 200
+		send %A_LoopReadLine%
+		sleep 200
+		send {enter}
+		sleep 200
 	}
 	FileMove, %A_LoopFileFullPath%, processed
 }
