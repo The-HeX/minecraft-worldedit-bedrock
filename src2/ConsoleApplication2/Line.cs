@@ -126,5 +126,10 @@ namespace ShapeGenerator
             output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block, Data = Data, BlockName = BlockName });
             return output;
         }
+
+        public string Command(Position target)
+        {
+            return Command(target.X, target.Y, target.Z);
+        }
     }
 }
