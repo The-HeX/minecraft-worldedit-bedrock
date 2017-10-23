@@ -83,6 +83,11 @@ namespace ShapeGenerator
             return $"fill {Start.X+toX} {Start.Y+toY} {Start.Z+toZ} {End.X+toX} {End.Y+toY} {End.Z+toZ} {BlockName} {Data}";
         }
 
+        public Line Shift(Position position)
+        {
+            return new Line { Block=Block,BlockName=BlockName, Data=Data,Start=Start.Clone().Shift(position) ,End=End.Clone().Shift(position) };            
+        }
+
         public bool IsSmallerThen(int size)
         {
             return End.X - Start.X <= size && End.Y - Start.Y <= size && End.Z - Start.Z <= size;

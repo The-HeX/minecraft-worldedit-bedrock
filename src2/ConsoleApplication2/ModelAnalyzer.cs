@@ -9,10 +9,17 @@ namespace SchematicExporter
         public static ModelOverview Analyze(List<Point> points)
         {
             var results = new ModelOverview();
-            results.Height = points.Max(a => a.Y) - points.Min(a => a.Y);
-            results.Width  = points.Max(a => a.X) - points.Min(a => a.X);
-            results.Length = points.Max(a => a.Z) - points.Min(a => a.Z);
-
+            var minY = points.Min(a => a.Y);
+            var maxY = points.Max(a => a.Y);
+            results.Height = maxY - minY;
+            var minX = points.Min(a => a.X);
+            var maxX = points.Max(a => a.X);
+            results.Width  = maxX - minX;
+            var minZ = points.Min(a => a.Z);
+            var maxZ = points.Max(a => a.Z);
+            results.Length = maxZ - minZ;
+            results.Minimum=new Position(minX,minY,minZ);
+            results.Maximum=new Position(maxX,maxY,maxZ);
             results.Layers= points.GroupBy(a => a.Y).Select(a => new Layer
             {
                 Y = a.Key,

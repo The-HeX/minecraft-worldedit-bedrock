@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace ShapeGenerator.Generators
@@ -10,27 +11,125 @@ namespace ShapeGenerator.Generators
 
         public static List<Line> CreateFromPoints(List<Point> points)
         {
+
+            var lines = points.Count<=50000? WorkingMethod(points): Parallel(points);
+            return lines;
+        }
+
+        private static List<Line> Parallel(List<Point> points)
+        {
             var lines = new List<Line>();
-            foreach (var point in points.ToList())
+            lines.AddRange(
+                points.AsParallel()
+                    .Select(
+                        point =>
+                            new Line
+                            {
+                                Start = point.Clone(),
+                                End = point.Clone(),
+                                Block = point.BlockId,
+                                BlockName = point.BlockName,
+                                Data = point.Data
+                            }));
+            lines=lines.AsParallel().GroupBy(a => new {a.Start.X, a.Start.Z}).Select(b =>
             {
-                var item1 = new Line { Start = point.Clone(), End = point.Clone() ,Block = point.BlockId, BlockName = point.BlockName,Data=point.Data};
-                lines.Add(item1);
-            }
-            lines = lines.OrderBy(a => a.Start.X).ThenBy(a=>a.Start.Z).ThenBy(a => a.Start.Y).ToList();
-            lines= SquashLines(lines);
-            lines = lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
+                var items = b.OrderBy(a => a.Start.Y).ToList();
+                var output = new List<Line>();
+                output.Add(items[0]);
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var last = output.Last();
+                    if (last.CanCombine(items[i]))
+                    {
+                        output.Add(last.Combine(items[i]));
+                        output.Remove(last);
+                    }
+                    else
+                    {
+                        output.Add(items[i]);
+                    }
+                }
+                return output;
+            }).SelectMany(a=>a.ToList()).ToList();
+
+
+            lines = lines.AsParallel().GroupBy(a => new { a.Start.Y, a.Start.Z }).Select(b =>
+            {
+                var items = b.OrderBy(a => a.Start.X).ToList();
+                var output = new List<Line>();
+                output.Add(items[0]);
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var last = output.Last();
+                    if (last.CanCombine(items[i]))
+                    {
+                        output.Add(last.Combine(items[i]));
+                        output.Remove(last);
+                    }
+                    else
+                    {
+                        output.Add(items[i]);
+                    }
+                }
+                return output;
+            }).SelectMany(a => a.ToList()).ToList();
+
+            lines = lines.AsParallel().GroupBy(a => new { a.Start.Y, a.Start.X }).Select(b =>
+            {
+                var items = b.OrderBy(a => a.Start.Z).ToList();
+                var output = new List<Line>();
+                output.Add(items[0]);
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var last = output.Last();
+                    if (last.CanCombine(items[i]))
+                    {
+                        output.Add(last.Combine(items[i]));
+                        output.Remove(last);
+                    }
+                    else
+                    {
+                        output.Add(items[i]);
+                    }
+                }
+                return output;
+            }).SelectMany(a => a.ToList()).ToList();
+
+
+            lines = SplitLinesIntoMaxSizes(lines);
+            return lines;
+        }
+
+        private static List<Line> WorkingMethod(List<Point> points)
+        {
+            var lines = new List<Line>();
+            lines.AddRange(
+                points.AsParallel()
+                    .Select(
+                        point =>
+                            new Line
+                            {
+                                Start = point.Clone(),
+                                End = point.Clone(),
+                                Block = point.BlockId,
+                                BlockName = point.BlockName,
+                                Data = point.Data
+                            }));
+            lines = lines.AsParallel().OrderBy(a => a.Start.X).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ToList();
+            lines = SquashLines(lines);
+            lines = lines.AsParallel().OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
             lines = SquashLines(lines);
 
-            lines = lines.OrderBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.X).ToList();
+            lines = lines.AsParallel().OrderBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.X).ToList();
             lines = SquashLines(lines);
 
-            lines = lines.OrderBy(a => a.Start.Z).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Y).ToList();
+            lines = lines.AsParallel().OrderBy(a => a.Start.Z).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Y).ToList();
             lines = SquashLines(lines);
 
-            lines = lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.X).ToList();
+            lines = lines.AsParallel().OrderBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.X).ToList();
             lines = SquashLines(lines);
 
-            lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ToList();
+            lines = lines.AsParallel().OrderBy(a => a.Start.X).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.Z).ToList();
             lines = SquashLines(lines);
 
             lines = SplitLinesIntoMaxSizes(lines);

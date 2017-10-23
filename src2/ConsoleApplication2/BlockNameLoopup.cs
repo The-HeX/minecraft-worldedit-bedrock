@@ -557,7 +557,7 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=24,Name="sandstone" ,BeData=1 ,JeData=1,FriendlyName="Chiseled Sandstone" });
             output.Add(new BlockLookup{Id=24,Name="sandstone" ,BeData=2 ,JeData=2,FriendlyName="Smooth Sandstone" });
             output.Add(new BlockLookup{Id=25,Name="noteblock" ,BeData=0 ,JeData=0,FriendlyName="Note Block" });
-            output.Add(new BlockLookup{Id=26,Name="bed" ,BeData=0 ,JeData=0,FriendlyName="Bed" });
+            output.Add(new BlockLookup{Id=26,Name="bed" ,BeData=0 ,JeData=0,FriendlyName="Bed" ,HasDirection = true});
             output.Add(new BlockLookup{Id=27,Name="golden_rail" ,BeData=0 ,JeData=0,FriendlyName="Powered Rail" });
             output.Add(new BlockLookup{Id=28,Name="detector_rail" ,BeData=0 ,JeData=0,FriendlyName="Detector Rail" });
             output.Add(new BlockLookup{Id=29,Name="sticky_piston" ,BeData=0 ,JeData=0,FriendlyName="Sticky Piston" });
@@ -619,10 +619,10 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=47,Name="bookshelf" ,BeData=0 ,JeData=0,FriendlyName="Bookshelf" });
             output.Add(new BlockLookup{Id=48,Name="mossy_cobblestone" ,BeData=0 ,JeData=0,FriendlyName="Moss Stone" });
             output.Add(new BlockLookup{Id=49,Name="obsidian" ,BeData=0 ,JeData=0,FriendlyName="Obsidian" });
-            output.Add(new BlockLookup{Id=50,Name="torch" ,BeData=0 ,JeData=0,FriendlyName="Torch" });
+            output.Add(new BlockLookup{Id=50,Name="torch" ,BeData=0 ,JeData=0,FriendlyName="Torch", HasDirection = true});
             output.Add(new BlockLookup{Id=51,Name="fire" ,BeData=0 ,JeData=0,FriendlyName="Fire" });
             output.Add(new BlockLookup{Id=52,Name="mob_spawner" ,BeData=0 ,JeData=0,FriendlyName="Monster Spawner" });
-            output.Add(new BlockLookup{Id=53,Name="oak_stairs" ,BeData=0 ,JeData=0,FriendlyName="Oak Wood Stairs" });
+            output.Add(new BlockLookup{Id=53,Name="oak_stairs" ,BeData=0 ,JeData=0,FriendlyName="Oak Wood Stairs",HasDirection = true});
             output.Add(new BlockLookup{Id=54,Name="chest" ,BeData=0 ,JeData=0,FriendlyName="Chest" });
             output.Add(new BlockLookup{Id=55,Name="redstone_wire" ,BeData=0 ,JeData=0,FriendlyName="Redstone Wire" });
             output.Add(new BlockLookup{Id=56,Name="diamond_ore" ,BeData=0 ,JeData=0,FriendlyName="Diamond Ore" });
@@ -632,11 +632,11 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=60,Name="farmland" ,BeData=0 ,JeData=0,FriendlyName="Farmland" });
             output.Add(new BlockLookup{Id=61,Name="furnace" ,BeData=0 ,JeData=0,FriendlyName="Furnace" });
             output.Add(new BlockLookup{Id=62,Name="lit_furnace" ,BeData=0 ,JeData=0,FriendlyName="Burning Furnace" });
-            output.Add(new BlockLookup{Id=63,Name="standing_sign" ,BeData=0 ,JeData=0,FriendlyName="Standing Sign Block" });
+            output.Add(new BlockLookup{Id=63,Name="standing_sign" ,BeData=0 ,JeData=0,FriendlyName="Standing Sign Block", HasDirection = true });
             output.Add(new BlockLookup{Id=64,Name="wooden_door" ,BeData=0 ,JeData=0,FriendlyName="Oak Door Block" });
             output.Add(new BlockLookup{Id=65,Name="ladder" ,BeData=0 ,JeData=0,FriendlyName="Ladder" });
             output.Add(new BlockLookup{Id=66,Name="rail" ,BeData=0 ,JeData=0,FriendlyName="Rail" });
-            output.Add(new BlockLookup{Id=67,Name="stone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Cobblestone Stairs" });
+            output.Add(new BlockLookup{Id=67,Name="stone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Cobblestone Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=68,Name="wall_sign" ,BeData=0 ,JeData=0,FriendlyName="Wall-mounted Sign Block" });
             output.Add(new BlockLookup{Id=69,Name="lever" ,BeData=0 ,JeData=0,FriendlyName="Lever" });
             output.Add(new BlockLookup{Id=70,Name="stone_pressure_plate" ,BeData=0 ,JeData=0,FriendlyName="Stone Pressure Plate" });
@@ -644,8 +644,8 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=72,Name="wooden_pressure_plate" ,BeData=0 ,JeData=0,FriendlyName="Wooden Pressure Plate" });
             output.Add(new BlockLookup{Id=73,Name="redstone_ore" ,BeData=0 ,JeData=0,FriendlyName="Redstone Ore" });
             output.Add(new BlockLookup{Id=74,Name="lit_redstone_ore" ,BeData=0 ,JeData=0,FriendlyName="Glowing Redstone Ore" });
-            output.Add(new BlockLookup{Id=75,Name="unlit_redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (off)" });
-            output.Add(new BlockLookup{Id=76,Name="redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (on)" });
+            output.Add(new BlockLookup{Id=75,Name="unlit_redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (off)" ,HasDirection = true});
+            output.Add(new BlockLookup{Id=76,Name="redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (on)",HasDirection = true});
             output.Add(new BlockLookup{Id=77,Name="stone_button" ,BeData=0 ,JeData=0,FriendlyName="Stone Button" });
             output.Add(new BlockLookup{Id=78,Name="snow_layer" ,BeData=0 ,JeData=0,FriendlyName="Snow" });
             output.Add(new BlockLookup{Id=79,Name="ice" ,BeData=0 ,JeData=0,FriendlyName="Ice" });
@@ -700,13 +700,13 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=105,Name="melon_stem" ,BeData=0 ,JeData=0,FriendlyName="Melon Stem" });
             output.Add(new BlockLookup{Id=106,Name="vine" ,BeData=0 ,JeData=0,FriendlyName="Vines" });
             output.Add(new BlockLookup{Id=107,Name="fence_gate" ,BeData=0 ,JeData=0,FriendlyName="Oak Fence Gate" });
-            output.Add(new BlockLookup{Id=108,Name="brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Brick Stairs" });
-            output.Add(new BlockLookup{Id=109,Name="stone_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Stone Brick Stairs" });
+            output.Add(new BlockLookup{Id=108,Name="brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Brick Stairs", HasDirection = true });
+            output.Add(new BlockLookup{Id=109,Name="stone_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Stone Brick Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=110,Name="mycelium" ,BeData=0 ,JeData=0,FriendlyName="Mycelium" });
             output.Add(new BlockLookup{Id=111,Name="waterlily" ,BeData=0 ,JeData=0,FriendlyName="Lily Pad" });
             output.Add(new BlockLookup{Id=112,Name="double_stone_slab" ,BeData=7 ,JeData=0,FriendlyName="Nether Brick" });
             output.Add(new BlockLookup{Id=113,Name="nether_brick_fence" ,BeData=0 ,JeData=0,FriendlyName="Nether Brick Fence" });
-            output.Add(new BlockLookup{Id=114,Name="nether_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Nether Brick Stairs" });
+            output.Add(new BlockLookup{Id=114,Name="nether_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Nether Brick Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=115,Name="nether_wart" ,BeData=0 ,JeData=0,FriendlyName="Nether Wart" });
             output.Add(new BlockLookup{Id=116,Name="enchanting_table" ,BeData=0 ,JeData=0,FriendlyName="Enchantment Table" });
             output.Add(new BlockLookup{Id=117,Name="brewing_stand" ,BeData=0 ,JeData=0,FriendlyName="Brewing Stand" });
@@ -730,15 +730,15 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=126,Name="wooden_slab" ,BeData=4 ,JeData=4,FriendlyName="Acacia Wood Slab" });
             output.Add(new BlockLookup{Id=126,Name="wooden_slab" ,BeData=5 ,JeData=5,FriendlyName="Dark Oak Wood Slab" });
             output.Add(new BlockLookup{Id=127,Name="cocoa" ,BeData=0 ,JeData=0,FriendlyName="Cocoa" });
-            output.Add(new BlockLookup{Id=128,Name="sandstone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Sandstone Stairs" });
+            output.Add(new BlockLookup{Id=128,Name="sandstone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Sandstone Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=129,Name="emerald_ore" ,BeData=0 ,JeData=0,FriendlyName="Emerald Ore" });
             output.Add(new BlockLookup{Id=130,Name="ender_chest" ,BeData=0 ,JeData=0,FriendlyName="Ender Chest" });
             output.Add(new BlockLookup{Id=131,Name="tripwire_hook" ,BeData=0 ,JeData=0,FriendlyName="Tripwire Hook" });
             output.Add(new BlockLookup{Id=132,Name="tripwire_hook" ,BeData=0 ,JeData=0,FriendlyName="Tripwire" });
             output.Add(new BlockLookup{Id=133,Name="emerald_block" ,BeData=0 ,JeData=0,FriendlyName="Emerald Block" });
-            output.Add(new BlockLookup{Id=134,Name="spruce_stairs" ,BeData=0 ,JeData=0,FriendlyName="Spruce Wood Stairs" });
-            output.Add(new BlockLookup{Id=135,Name="birch_stairs" ,BeData=0 ,JeData=0,FriendlyName="Birch Wood Stairs" });
-            output.Add(new BlockLookup{Id=136,Name="jungle_stairs" ,BeData=0 ,JeData=0,FriendlyName="Jungle Wood Stairs" });
+            output.Add(new BlockLookup{Id=134,Name="spruce_stairs" ,BeData=0 ,JeData=0,FriendlyName="Spruce Wood Stairs", HasDirection = true });
+            output.Add(new BlockLookup{Id=135,Name="birch_stairs" ,BeData=0 ,JeData=0,FriendlyName="Birch Wood Stairs", HasDirection = true });
+            output.Add(new BlockLookup{Id=136,Name="jungle_stairs" ,BeData=0 ,JeData=0,FriendlyName="Jungle Wood Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=137,Name="command_block" ,BeData=0 ,JeData=0,FriendlyName="Command Block" });
             output.Add(new BlockLookup{Id=138,Name="beacon" ,BeData=0 ,JeData=0,FriendlyName="Beacon" });
             output.Add(new BlockLookup{Id=139,Name="cobblestone_wall" ,BeData=0 ,JeData=0,FriendlyName="Cobblestone Wall" });
@@ -761,7 +761,7 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=155,Name="quartz_block" ,BeData=0 ,JeData=0,FriendlyName="Quartz Block" });
             output.Add(new BlockLookup{Id=155,Name="quartz_block" ,BeData=1 ,JeData=1,FriendlyName="Chiseled Quartz Block" });
             output.Add(new BlockLookup{Id=155,Name="quartz_block" ,BeData=2 ,JeData=2,FriendlyName="Pillar Quartz Block" });
-            output.Add(new BlockLookup{Id=156,Name="quartz_stairs" ,BeData=0 ,JeData=0,FriendlyName="Quartz Stairs" });
+            output.Add(new BlockLookup{Id=156,Name="quartz_stairs" ,BeData=0 ,JeData=0,FriendlyName="Quartz Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=157,Name="activator_rail" ,BeData=0 ,JeData=0,FriendlyName="Activator Rail" });
             output.Add(new BlockLookup{Id=158,Name="dropper" ,BeData=0 ,JeData=0,FriendlyName="Dropper" });
             output.Add(new BlockLookup{Id=159,Name="stained_hardened_clay" ,BeData=0 ,JeData=0,FriendlyName="White Hardened Clay" });
@@ -800,8 +800,8 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=161,Name="leaves2" ,BeData=1 ,JeData=1,FriendlyName="Dark Oak Leaves" });
             output.Add(new BlockLookup{Id=162,Name="log2" ,BeData=0 ,JeData=0,FriendlyName="Acacia Wood" });
             output.Add(new BlockLookup{Id=162,Name="log2" ,BeData=1 ,JeData=1,FriendlyName="Dark Oak Wood" });
-            output.Add(new BlockLookup{Id=163,Name="acacia_stairs" ,BeData=0 ,JeData=0,FriendlyName="Acacia Wood Stairs" });
-            output.Add(new BlockLookup{Id=164,Name="dark_oak_stairs" ,BeData=0 ,JeData=0,FriendlyName="Dark Oak Wood Stairs" });
+            output.Add(new BlockLookup{Id=163,Name="acacia_stairs" ,BeData=0 ,JeData=0,FriendlyName="Acacia Wood Stairs", HasDirection = true });
+            output.Add(new BlockLookup{Id=164,Name="dark_oak_stairs" ,BeData=0 ,JeData=0,FriendlyName="Dark Oak Wood Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=165,Name="slime" ,BeData=0 ,JeData=0,FriendlyName="Slime Block" });
             output.Add(new BlockLookup{Id=166,Name="air" ,BeData=0 ,JeData=0,FriendlyName="Barrier" });
             output.Add(new BlockLookup{Id=167,Name="iron_trapdoor" ,BeData=0 ,JeData=0,FriendlyName="Iron Trapdoor" });
@@ -841,7 +841,7 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=179,Name="red_sandstone" ,BeData=0 ,JeData=0,FriendlyName="Red Sandstone" });
             output.Add(new BlockLookup{Id=179,Name="red_sandstone" ,BeData=1 ,JeData=1,FriendlyName="Chiseled Red Sandstone" });
             output.Add(new BlockLookup{Id=179,Name="red_sandstone" ,BeData=2 ,JeData=2,FriendlyName="Smooth Red Sandstone" });
-            output.Add(new BlockLookup{Id=180,Name="red_sandstone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Red Sandstone Stairs" });
+            output.Add(new BlockLookup{Id=180,Name="red_sandstone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Red Sandstone Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=181,Name="double_stone_slab2" ,BeData=0 ,JeData=0,FriendlyName="Double Red Sandstone Slab" });
             output.Add(new BlockLookup{Id=182,Name="stone_slab2" ,BeData=0 ,JeData=0,FriendlyName="Red Sandstone Slab" });
             output.Add(new BlockLookup{Id=183,Name="spruce_fence_gate" ,BeData=0 ,JeData=0,FriendlyName="Spruce Fence Gate" });
@@ -864,7 +864,7 @@ namespace SchematicExporter
             output.Add(new BlockLookup{Id=200,Name="chorus_flower" ,BeData=0 ,JeData=0,FriendlyName="Chorus Flower" });
             output.Add(new BlockLookup{Id=201,Name="purpur_block" ,BeData=0 ,JeData=0,FriendlyName="Purpur Block" });
             output.Add(new BlockLookup{Id=202,Name="air" ,BeData=0 ,JeData=0,FriendlyName="Purpur Pillar" });
-            output.Add(new BlockLookup{Id=203,Name="purpur_stairs" ,BeData=0 ,JeData=0,FriendlyName="Purpur Stairs" });
+            output.Add(new BlockLookup{Id=203,Name="purpur_stairs" ,BeData=0 ,JeData=0,FriendlyName="Purpur Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=204,Name="double_stone_slab2" ,BeData=1 ,JeData=0,FriendlyName="Purpur Double Slab" });
             output.Add(new BlockLookup{Id=205,Name="stone_slab2" ,BeData=1 ,JeData=0,FriendlyName="Purpur Slab" });
             output.Add(new BlockLookup{Id=206,Name="end_bricks" ,BeData=0 ,JeData=0,FriendlyName="End Stone Bricks" });
@@ -954,6 +954,7 @@ namespace SchematicExporter
         public int BeData{get;set;}
         public int JeData{get;set;}
         public string FriendlyName{get;set;}
+        public bool HasDirection { get; set; } = false;
     }
 
 }
