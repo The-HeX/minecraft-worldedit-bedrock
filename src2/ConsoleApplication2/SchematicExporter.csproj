@@ -48,8 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockCount.cs" />
     <Compile Include="BlockNameLoopup.cs" />
+    <Compile Include="Layer.cs" />
     <Compile Include="Line.cs" />
+    <Compile Include="ModelAnalyzer.cs" />
+    <Compile Include="ModelOverview.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
