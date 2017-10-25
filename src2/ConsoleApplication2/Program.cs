@@ -33,12 +33,10 @@ namespace WorldEdit
                     };
                     commandService.Wait();
                 }
-                codeConnectionProcess?.Close();
             }
-
         }
 
-        private static Process Prerequisites()
+        private static IDisposable Prerequisites()
         {
             var processes = Process.GetProcesses();
             if (!processes.Any(a => a.ProcessName.Contains("minecraft")))
@@ -77,7 +75,7 @@ namespace WorldEdit
                     }
                     process.CancelOutputRead();
                     Console.WriteLine("Started code connection: enter command in minecraft\n/connect " + wsUrl);
-                    return process;
+                    return new Disposable( process);
                 }
                 else
                 {
@@ -88,4 +86,20 @@ namespace WorldEdit
             return null;
         }
     }
+
+    public class Disposable : IDisposable
+    {
+        private readonly Process _process;
+
+        public Disposable(Process process)
+        {
+            _process = process;
+        }
+
+        public void Dispose()
+        {            
+            _process?.CloseMainWindow();
+        }
+    }
+
 }
