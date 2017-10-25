@@ -15,7 +15,7 @@ namespace ShapeGenerator.Generators
             var lowerY = opt.CenterY; ;
             var lowerZ = opt.CenterZ - opt.Length / 2;
             var upperX = opt.CenterX + opt.Width / 2;
-            var upperY = lowerY+ opt.Height; ;
+            var upperY = lowerY+ opt.Height-1; ;
             var upperZ = opt.CenterZ + opt.Length / 2;
            
             for (var x = lowerX; x <= upperX; x++)
@@ -63,7 +63,7 @@ namespace ShapeGenerator.Generators
             var lowerZ = opt.CenterZ - opt.Width / 2;
 
             var upperX = opt.CenterX + opt.Width / 2;
-            var upperY = lowerY + opt.Height; ;
+            var upperY = lowerY + opt.Height-1; ;
             var upperZ = opt.CenterZ + opt.Width / 2;
             return SphereGenerator.SplitLinesIntoMaxSizes( new List<Line>() { new Line { Block = opt.Block,Start=new Point {X=lowerX,Y=lowerY,Z=lowerZ },End=new Point {X=upperX,Y=upperY,Z=upperZ } } });
         }

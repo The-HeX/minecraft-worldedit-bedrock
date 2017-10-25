@@ -20,19 +20,28 @@ namespace ShapeGenerator.Generators
             var lowerZ = centerZ - radius - 1;
             var upperX = centerX + radius + 1;
             var upperZ = centerZ + radius + 1;
-
+            var lowerY = options.CenterY;
+            var upperY = options.CenterY + options.Height - 1;
+            if (upperY < lowerY)
+            {
+                var swap = upperY;
+                upperY = lowerY;
+                lowerY = swap;
+            }
             for (var x = lowerX; x < upperX; x++)
             for (var z = lowerZ; z < upperZ; z++)
-            for(var y = options.CenterY;y<=options.CenterY+options.Height;y++)
             {
-                var distance = Distance(centerX, centerZ, x, z);
+                for(var y = lowerY;y<=upperY;y++)
+                {
+                    var distance = Distance(centerX, centerZ, x, z);
 
-                if (distance == radius)
-                    points.Add(new Point {X = x, Z = z, Y = y});
-
-                if (fill)
-                    if (distance < radius)
+                    if (distance == radius)
                         points.Add(new Point {X = x, Z = z, Y = y});
+
+                    if (fill)
+                        if (distance < radius)
+                            points.Add(new Point {X = x, Z = z, Y = y});
+                }
             }
             return points;
         }
