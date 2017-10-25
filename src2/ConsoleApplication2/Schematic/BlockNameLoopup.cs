@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SchematicExporter
+namespace WorldEdit.Schematic
 {
     public class BlockNameLoopup
     {

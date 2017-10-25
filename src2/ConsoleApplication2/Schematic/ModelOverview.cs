@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ShapeGenerator;
 
-namespace SchematicExporter
+namespace WorldEdit.Schematic
 {
     public class ModelOverview
     {

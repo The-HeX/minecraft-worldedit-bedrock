@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
-using System.Runtime.InteropServices;
-using SchematicExporter;
 
-namespace ShapeGenerator
+namespace WorldEdit.Schematic
 {
     public class Point
     {

@@ -9,17 +9,11 @@ namespace ShapeGenerator
         public Point Start { get; set; }
         public Point End { get; set; }
 
-        public int Block { get; set; }
-        public int Data { get; internal set; }
-        public string BlockName { get; internal set; }
+        public string Block { get; set; }
 
-        public int Size()
-        {
-            return Math.Abs((End.X - Start.X) * (End.Y - Start.Y) * (End.Z = Start.Z));
-        }
         public bool CanCombine(Line line)
         {
-            if (line.Block.Equals(Block)&&line.Data.Equals(Data))
+            if (line.Block.Equals(Block))
             {
                 //combine the Z
                 if (line.Start.X == Start.X && line.Start.Y == Start.Y)
@@ -58,11 +52,6 @@ namespace ShapeGenerator
             return false;
         }
 
-        internal string Csv(int toX, int toY, int toZ)
-        {
-            return $"{Start.X + toX},{Start.Y + toY},{Start.Z + toZ},{End.X + toX},{End.Y + toY},{End.Z + toZ},{BlockName},{Data}";
-        }
-
         public  Line Combine(Line line)
         {
             if (CanCombine(line))
@@ -70,22 +59,10 @@ namespace ShapeGenerator
                 return new Line() {
                     Start= Start.Clone(),
                     End=line.End.Clone(),
-                    Block=Block,
-                    BlockName=BlockName,
-                    Data=Data
+                    Block=Block
                 };
             }
             throw new InvalidOperationException("lines cannot be combined");
-        }
-
-        public string Command(int toX, int toY, int toZ)
-        {
-            return $"fill {Start.X+toX} {Start.Y+toY} {Start.Z+toZ} {End.X+toX} {End.Y+toY} {End.Z+toZ} {BlockName} {Data}";
-        }
-
-        public Line Shift(Position position)
-        {
-            return new Line { Block=Block,BlockName=BlockName, Data=Data,Start=Start.Clone().Shift(position) ,End=End.Clone().Shift(position) };            
         }
 
         public bool IsSmallerThen(int size)
@@ -111,7 +88,7 @@ namespace ShapeGenerator
             while ((End.X - nextPoint.X) > size)
             {
                 var endPoint = new Point() {Y = End.Y, Z = End.Z, X = nextPoint.X + size};
-                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint, Data=Data,BlockName=BlockName});
+                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint});
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.Z = Start.Z;
@@ -127,19 +104,14 @@ namespace ShapeGenerator
             while ((End.Z - nextPoint.Z) > size)
             {
                 var endPoint = new Point() { Y = End.Y, X = End.X, Z = nextPoint.Z + size };
-                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint, Data = Data, BlockName = BlockName });
+                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint });
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.X = Start.X;
                 nextPoint.Z++;
             }
-            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block, Data = Data, BlockName = BlockName });
+            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block });
             return output;
-        }
-
-        public string Command(Position target)
-        {
-            return Command(target.X, target.Y, target.Z);
         }
     }
 }

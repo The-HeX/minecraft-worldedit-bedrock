@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
-namespace ShapeGenerator.Generators
+namespace WorldEdit.Schematic
 {
     public class LineFactory 
     {

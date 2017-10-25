@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ShapeGenerator;
 
-namespace SchematicExporter
+namespace WorldEdit.Schematic
 {
     public class ModelAnalyzer
     {

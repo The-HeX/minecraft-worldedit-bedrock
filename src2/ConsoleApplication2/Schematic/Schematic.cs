@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using fNbt;
-using ShapeGenerator;
 
-namespace SchematicExporter
+namespace WorldEdit.Schematic
 {
     public class Schematic
     {

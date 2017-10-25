@@ -1,4 +1,4 @@
-﻿namespace SchematicExporter
+﻿namespace WorldEdit.Schematic
 {
     public class BlockCount
     {
