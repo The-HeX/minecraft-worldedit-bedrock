@@ -17,15 +17,6 @@ namespace WorldEdit.Commands
             List<SavedPosition> savedPositions)
         {
             var command = commandArgs[0];
-            //create line [positionStart] [positionEnd] [block]
-            //create line x1 y1 z1 x2 y2 z2 [block]
-            //create walls [positionStart] [positionEnd] [block]
-            //create box
-            //create outline
-            //create sphere
-
-            var block = "air";
-            IGenerator generator;
             var lines = new List<Line>();
             switch (command.ToLower())
             {
@@ -35,37 +26,154 @@ namespace WorldEdit.Commands
                 case "ring":
                     lines = CreateRing(commandArgs, position, savedPositions, lines);
                     break;
-
                 case "walls":
                     lines = CreateWalls(commandArgs, position, savedPositions, lines);
                     break;
+                case "outline":
+                    lines = CreateOutline(commandArgs, position, savedPositions, lines);
+                    break;
+                case "box":
+                    lines = CreateBox(commandArgs, position, savedPositions, lines);
+                    break;
+                case "floor":
+                    lines = CreateFloor(commandArgs, position, savedPositions, lines);
+                    break;
+                case "sphere":
+                    lines = CreateSphere(commandArgs, position, savedPositions, lines);
+                    break;
             }
-            //else if(args[1]="outline"){
-            //   if(args.MaxIndex()=4){
-            //       BlockInput On
-            //       w:=args[2]
-            //       h:=args[3]
-            //       b:=args[4]
-            //       Walls(w, w, h, b,"~","~","~")
-            //       Floor(w, w, b,"~","~-1","~")
-            //       Floor(w, w, b,"~", "~" . h ,"~")
-            //       BlockInput Off
-            //       return
-            //   }
-            //   Display("/create outline width height blockname")
-            //}
-            //else if(args[1]="floor"){
-            //   if(args.MaxIndex()=3){
-            //       BlockInput On
-            //       w:=args[2]
-            //       b:=args[3]
-            //       Floor(w, w, b,"~","~-1","~")
-            //       BlockInput Off
-            //       return
-            //   }
-            //   Display("/create floor width blockname")
-            //}
-            //   return
+            return lines;
+        }
+
+        private static List<Line> CreateFloor(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+            {
+                IGenerator generator;
+                ISquareOptions walls = new Options();
+                walls.Fill = true;
+                switch (commandArgs.Length)
+                {
+                    // width height block [postition]
+                    case 4:
+                        walls.Width = commandArgs[1].ToInt();
+                        walls.Length = commandArgs[2].ToInt();
+                        walls.Height = 1;
+                        walls.Block = commandArgs[3];
+                        walls.CenterX = position.X;
+                        walls.CenterY = position.Y;
+                        walls.CenterZ = position.Z;
+                        break;
+                    case 5:
+
+                        walls.Width = commandArgs[1].ToInt();
+                        walls.Length = commandArgs[2].ToInt();
+                        walls.Height = 1;
+                        walls.Block = commandArgs[3];
+                        var center = savedPositions.Single(a => a.Name.Equals(commandArgs[4])).Position;
+                        walls.CenterX = center.X;
+                        walls.CenterY = center.Y;
+                        walls.CenterZ = center.Z;
+                        break;
+                    case 7:
+
+                        walls.Width = commandArgs[1].ToInt();
+                        walls.Length = commandArgs[2].ToInt();
+                        walls.Height = 1;
+                        walls.Block = commandArgs[3];
+                        walls.CenterX = commandArgs[4].ToInt();
+                        walls.CenterY = commandArgs[5].ToInt();
+                        walls.CenterZ = commandArgs[6].ToInt();
+                        break;
+                }
+                generator = new BoxGenerator();
+                lines = generator.Run((Options)walls);
+                return lines;
+            }
+        
+    private static List<Line> CreateBox(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        {
+            IGenerator generator;
+            ISquareOptions walls = new Options();
+            walls.Fill = true;
+            switch (commandArgs.Length)
+            {
+                // width height block [postition]
+                case 5:
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = position.X;
+                    walls.CenterY = position.Y;
+                    walls.CenterZ = position.Z;
+                    break;
+                case 6:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    var center = savedPositions.Single(a => a.Name.Equals(commandArgs[5])).Position;
+                    walls.CenterX = center.X;
+                    walls.CenterY = center.Y;
+                    walls.CenterZ = center.Z;
+                    break;
+                case 8:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = commandArgs[5].ToInt();
+                    walls.CenterY = commandArgs[6].ToInt();
+                    walls.CenterZ = commandArgs[7].ToInt();
+                    break;
+            }
+            generator = new BoxGenerator();
+            lines = generator.Run((Options) walls);
+            return lines;
+        }
+
+        private static List<Line> CreateOutline(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        {
+            IGenerator generator;
+            ISquareOptions walls = new Options();
+            walls.Fill = false;
+            switch (commandArgs.Length)
+            {
+                // width height block [postition]
+                case 5:
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = position.X;
+                    walls.CenterY = position.Y;
+                    walls.CenterZ = position.Z;
+                    break;
+                case 6:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    var center = savedPositions.Single(a => a.Name.Equals(commandArgs[5])).Position;
+                    walls.CenterX = center.X;
+                    walls.CenterY = center.Y;
+                    walls.CenterZ = center.Z;
+                    break;
+                case 8:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = commandArgs[5].ToInt();
+                    walls.CenterY = commandArgs[6].ToInt();
+                    walls.CenterZ = commandArgs[7].ToInt();
+                    break;
+            }
+            generator = new BoxGenerator();
+            lines = generator.Run((Options) walls);
             return lines;
         }
 
@@ -155,6 +263,50 @@ namespace WorldEdit.Commands
             lines = generator.Run((Options) circle);
             return lines;
         }
+
+        private static List<Line> CreateSphere(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        {
+            IGenerator generator;
+            ISphereOptions sphere = new Options();
+            
+            switch (commandArgs.Length)
+            {
+                // radius height block [position]
+                case 3:
+                    sphere.Radius = commandArgs[1].ToInt();
+                    //sphere.Height = commandArgs[2].ToInt();
+                    sphere.Block = commandArgs[2];
+
+                    sphere.CenterX = position.X;
+                    sphere.CenterY = position.Y;
+                    sphere.CenterZ = position.Z;
+                    break;
+
+                // radius height block position
+                case 4:
+                    sphere.Radius = commandArgs[1].ToInt();
+                    //sphere.Height = commandArgs[2].ToInt();
+                    sphere.Block = commandArgs[2];
+                    var center = savedPositions.Single(a => a.Name.Equals(commandArgs[3])).Position;
+                    sphere.CenterX = center.X;
+                    sphere.CenterY = center.Y;
+                    sphere.CenterZ = center.Z;
+                    break;
+                // radius height block x y z
+                case 6:
+                    sphere.Radius = commandArgs[1].ToInt();
+                    //sphere.Height = commandArgs[2].ToInt();
+                    sphere.Block = commandArgs[2];
+                    sphere.CenterX = commandArgs[3].ToInt();
+                    sphere.CenterY = commandArgs[4].ToInt();
+                    sphere.CenterZ = commandArgs[5].ToInt();
+                    break;
+            }
+            generator = new SphereGenerator();
+            lines = generator.Run((Options)sphere);
+            return lines;
+        }
+
 
         private static List<Line> CreateRing(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {

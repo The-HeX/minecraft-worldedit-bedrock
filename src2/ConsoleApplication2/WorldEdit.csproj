@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandControl.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Input\AutoHotKey.cs" />
     <Compile Include="Output\MinecraftCommandService.cs" />

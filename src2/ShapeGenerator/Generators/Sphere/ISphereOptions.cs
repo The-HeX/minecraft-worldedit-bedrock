@@ -11,5 +11,6 @@
         int CenterZ { get; set; }
 
         int CenterY { get; set; }
+        string Block { get; set; }
     }
 }
