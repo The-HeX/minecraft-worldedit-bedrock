@@ -109,6 +109,8 @@ send connect " + wsUrl+"{enter}");
                 else
                 {
                     Console.WriteLine("Could not start Code Connection.");
+                    Console.WriteLine("Download and install from Microsoft at https://aka.ms/meeccwin10");
+                    Console.WriteLine("Then restart this program.");
                     return null;
                 }
             }
