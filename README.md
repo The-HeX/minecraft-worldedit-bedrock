@@ -12,11 +12,28 @@ images of geometery
 images of schematics.
 
 ## How to Use
-| Command | Arguments | Description | Example |
-|---------|-----------|-------------|---------|
-|/pos         |           |             |         | 
-|/create         |           |             |         |   
-|/schematic         |           |             |         | 
+| Command | Subcommand | Arguments | Description | Example |
+|---------|------------|-------------|---------|---------|
+|/pos         | add          | name  | Adds the players currect position(coordinates) under the name specified.        | |
+|/pos         | list         |       | Lists the names and coordinates ( X , Y , Z) of all saved positions.    |  |
+|/pos         | remove       | name  | Removes the stored position by it's name.        | |
+|/create      | box     |             |         | |
+|/create      | circle  | radius height blockname   |         | |
+|/create      | circle  | radius height blockname position            |         | |
+|/create      | circle  | radius height blockname x y z        |         | |
+|/create      | floor     |             |         | |
+|/create      | outline     |             |         | |
+|/create      | ring | radius height blockname |         | |
+|/create      | ring | radius height blockname position |         | |
+|/create      | ring | radius height blockname x y z |         | |
+|/create      | sphere | radius block |         | |
+|/create      | sphere | radius block position |         | |
+|/create      | sphere | radius block x y z |         | |
+|/create      | walls     |             |         | |
+|/create      |           |             |         | |
+|/schematic   | list          |             |         | |
+|/schematic   | analyze          |             |         | |
+|/schematic   | import          |             |         | |
 
 ## Install
 1. Download Minecraft Code Connection from microsoft. ( https://aka.ms/meeccwin10 )
