@@ -33,9 +33,11 @@ namespace WorldEdit.Output
         {
             StopWhenEmpty = true;
         }
-        public static Task Run()
+        public static CancellationTokenSource Run()
         {
-            Task output = new Task(() =>
+            var tokenSource = new CancellationTokenSource()
+                ;
+            Task.Run( () =>
             {
                 string message;
                 using (var httpclient = new HttpClient())
@@ -70,7 +72,7 @@ namespace WorldEdit.Output
                             {
                                 if (StopWhenEmpty)
                                 {
-                                    return;
+                                    tokenSource.Cancel();
                                 }
                                 Thread.Sleep(SLEEP_WHEN_EMPTY);
                             }
@@ -85,9 +87,9 @@ namespace WorldEdit.Output
                         }
                     }
                 }
-            });
-            ;
-            return output;
+            }, tokenSource.Token);
+            
+            return tokenSource;
         }
 
         public Position GetLocation()

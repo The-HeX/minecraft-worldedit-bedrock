@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WorldEdit.Input;
 using WorldEdit.Output;
 
@@ -12,17 +13,22 @@ namespace WorldEdit
     {
         private static string wsUrl;
         private static string restURL;
+        private static bool keepRunning=true;
 
         //http://localhost:8080/fill?from=3%205%203&to=30 3f0 30&tileName=stone&tileData=0
         private static void Main()
         {
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+                e.Cancel = true;
+                Program.keepRunning = false;
+            };
             using (var codeConnectionProcess = Prerequisites())
             {
                 var cmdHandler = new CommandControl();
                 ;
                 using (var commandService = MinecraftCommandService.Run())
                 {
-                    commandService.Start();
+                    
                     //check if connected, if not send connection command through AHK
                     var ahk = AutoHotKey.Run();
                     AutoHotKey.Callback = (s) =>
@@ -31,7 +37,28 @@ namespace WorldEdit
                         var args = s.Split(' ');
                         cmdHandler.HandleCommand(args);
                     };
-                    commandService.Wait();
+                    Console.WriteLine(@"
+Press Ctrl-C to shutdown.");
+
+                    ahk.ExecRaw(@"
+WinMinimize Code Connection for Minecraft
+WinActivate Minecraft
+send {esc}
+sleep 500
+send /
+sleep 200
+send connect " + wsUrl+"{enter}");
+                    var minecraftAPI = new MinecraftCommandService();
+                    minecraftAPI.Command("executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20title%20WorldEdit%20Started");
+          
+                    while (keepRunning)
+                    {
+                        Thread.Sleep(500);
+                    }
+                    minecraftAPI.Command("executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20subtitle WorldEdit Shutting Down");
+                    minecraftAPI.Wait();
+                    MinecraftCommandService.ShutDown();
+                    commandService.Cancel();
                 }
             }
         }
@@ -39,11 +66,11 @@ namespace WorldEdit
         private static IDisposable Prerequisites()
         {
             var processes = Process.GetProcesses();
-            if (!processes.Any(a => a.ProcessName.Contains("minecraft")))
+            if (!processes.Any(a => a.ProcessName.ToLower().Contains("minecraft")))
             {
                 Console.WriteLine("ERROR: Minecraft is not running");
             }
-            if (!processes.Any(a => a.ProcessName.Contains("Code Connection")))
+            if (!processes.Any(a => a.ProcessName.ToLower().Contains("code connection")))
             {
                 //Console.WriteLine("ERROR: Code Connection is not running");
                 var codeconnectionExe =
@@ -55,10 +82,12 @@ namespace WorldEdit
 
                     processStartInfo.RedirectStandardOutput = true;
                     processStartInfo.UseShellExecute = false;
+                    processStartInfo.WindowStyle= ProcessWindowStyle.Hidden;
                     var process = Process.Start(processStartInfo);
                     process.OutputDataReceived += (s, e) =>
                     {
                         output = e.Data;
+                    
                         if (output.Contains("WS server"))
                         {
                             wsUrl = output.Replace("WS server listening at", "").Trim();
@@ -97,7 +126,11 @@ namespace WorldEdit
         }
 
         public void Dispose()
-        {            
+        {
+            var pid = _process?.Id;
+            if (pid != null)
+            { Process.Start("taskkill.exe", "/PID " + pid); }
+
             _process?.CloseMainWindow();
         }
     }

@@ -55,6 +55,21 @@
   <ItemGroup>
     <Compile Include="CommandControl.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Geometry\Generators\Circle\CircleGenerator.cs" />
+    <Compile Include="Geometry\Generators\Circle\ICircleOptions.cs" />
+    <Compile Include="Geometry\Generators\GeneratorFactory.cs" />
+    <Compile Include="Geometry\Generators\IGenerator.cs" />
+    <Compile Include="Geometry\Generators\Line\BoxGenerator.cs" />
+    <Compile Include="Geometry\Generators\Line\ILineOptions.cs" />
+    <Compile Include="Geometry\Generators\Line\ISquareOptions.cs" />
+    <Compile Include="Geometry\Generators\Line\LineGenerator.cs" />
+    <Compile Include="Geometry\Generators\Line\SquarGenerator.cs" />
+    <Compile Include="Geometry\Generators\Sphere\ISphereOptions.cs" />
+    <Compile Include="Geometry\Generators\Sphere\SphereGenerator.cs" />
+    <Compile Include="Geometry\Model\Line.cs" />
+    <Compile Include="Geometry\Model\Options.cs" />
+    <Compile Include="Geometry\Model\Point.cs" />
+    <Compile Include="Geometry\Model\Shape.cs" />
     <Compile Include="Input\AutoHotKey.cs" />
     <Compile Include="Output\MinecraftCommandService.cs" />
     <Compile Include="Schematic\Rotate.cs" />
@@ -82,7 +97,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Geometry\" />
+    <Folder Include="Geometry\Generators\Rectangle\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\refbins\x64\AutoHotkey.dll">
