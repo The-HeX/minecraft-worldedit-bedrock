@@ -15,6 +15,6 @@ images of schematics.
 
 ## Install
 1. Download Minecraft Code Connection from microsoft. ( https://aka.ms/meeccwin10 )
-2. Download worldedit from this page releases.
+2. Download worldedit from [releases](https://github.com/The-HeX/mcpe-geometry-generator/releases)
 3. Run WorldEdit.exe
 
