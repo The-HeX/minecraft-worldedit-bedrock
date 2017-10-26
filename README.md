@@ -12,6 +12,11 @@ images of geometery
 images of schematics.
 
 ## How to Use
+| Command | Arguments | Description | Example |
+|---------|-----------|-------------|---------|
+|/pos         |           |             |         | 
+|/create         |           |             |         |   
+|/schematic         |           |             |         | 
 
 ## Install
 1. Download Minecraft Code Connection from microsoft. ( https://aka.ms/meeccwin10 )
