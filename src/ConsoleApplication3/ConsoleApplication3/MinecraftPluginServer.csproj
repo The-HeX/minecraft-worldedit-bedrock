@@ -52,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatHandler.cs" />
+    <Compile Include="ChatConsoleLoggingHandler.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="IGameEventHander.cs" />
     <Compile Include="GameEvent.cs" />
