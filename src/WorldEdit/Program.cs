@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using WorldEdit.Input;
 using WorldEdit.Output;
 
@@ -11,27 +10,62 @@ namespace WorldEdit
 {
     internal class Program
     {
+        private static readonly bool UseCodeConnection = true;
         private static string wsUrl;
         private static string restURL;
-        private static bool keepRunning=true;
-
+        private static bool keepRunning = true;
         //http://localhost:8080/fill?from=3%205%203&to=30 3f0 30&tileName=stone&tileData=0
         private static void Main()
         {
-            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+            Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e)
+            {
                 e.Cancel = true;
-                Program.keepRunning = false;
+                keepRunning = false;
             };
+            if (UseCodeConnection)
+            {
+                CodeConnectionLoop();
+            }
+            else
+            {
+                WebsocketServerLoop();
+            }
+        }
+
+        private static void WebsocketServerLoop()
+        {
+            var minecraftService = new MinecraftCommandService();
+            var cmdHandler = new CommandControl(minecraftService, new CodeConnectCommandFormater());
+            using (var cancelationToken = minecraftService.Run())
+            {
+                minecraftService.MessageReceived = s =>
+                {
+                    var args = s.Split(' ');
+                    cmdHandler.HandleCommand(args);
+                };
+                minecraftService.Command(minecraftService.GetFormater().Title("WorldEdit Started", ""));
+                while (keepRunning)
+                {
+                    Thread.Sleep(500);
+                }
+                minecraftService.Command(minecraftService.GetFormater().Title("", "WorldEdit Shutting Down"));
+                minecraftService.Wait();
+                minecraftService.ShutDown();
+                cancelationToken.Cancel();
+            }
+        }
+
+        private static void CodeConnectionLoop()
+        {
             using (var codeConnectionProcess = Prerequisites())
             {
-                var cmdHandler = new CommandControl();
-                ;
-                using (var commandService = MinecraftCommandService.Run())
+                var minecraftService = new MinecraftCommandService();
+                var cmdHandler = new CommandControl(minecraftService, new CodeConnectCommandFormater());
+                using (var cancelationToken = minecraftService.Run())
                 {
-                    
                     //check if connected, if not send connection command through AHK
                     var ahk = AutoHotKey.Run();
-                    AutoHotKey.Callback = (s) =>
+                    AutoHotKey.Callback = s =>
                     {
                         Console.WriteLine(s);
                         var args = s.Split(' ');
@@ -47,18 +81,21 @@ send {esc}
 sleep 500
 send /
 sleep 200
-send connect " + wsUrl+"{enter}");
-                    var minecraftAPI = new MinecraftCommandService();
-                    minecraftAPI.Command("executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20title%20WorldEdit%20Started");
-          
+send connect " + wsUrl + "{enter}");
+
+                    var command = minecraftService.GetFormater().Title("WorldEdit Started", "");
+                    minecraftService.Command(command);
+
+
                     while (keepRunning)
                     {
                         Thread.Sleep(500);
                     }
-                    minecraftAPI.Command("executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20subtitle WorldEdit Shutting Down");
-                    minecraftAPI.Wait();
-                    MinecraftCommandService.ShutDown();
-                    commandService.Cancel();
+                    minecraftService.Command(minecraftService.GetFormater().Title("", "WorldEdit Shutting Down"));
+
+                    minecraftService.Wait();
+                    minecraftService.ShutDown();
+                    cancelationToken.Cancel();
                 }
             }
         }
@@ -82,12 +119,12 @@ send connect " + wsUrl+"{enter}");
 
                     processStartInfo.RedirectStandardOutput = true;
                     processStartInfo.UseShellExecute = false;
-                    processStartInfo.WindowStyle= ProcessWindowStyle.Hidden;
+                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     var process = Process.Start(processStartInfo);
                     process.OutputDataReceived += (s, e) =>
                     {
                         output = e.Data;
-                    
+
                         if (output.Contains("WS server"))
                         {
                             wsUrl = output.Replace("WS server listening at", "").Trim();
@@ -104,15 +141,12 @@ send connect " + wsUrl+"{enter}");
                     }
                     process.CancelOutputRead();
                     Console.WriteLine("Started code connection: enter command in minecraft\n/connect " + wsUrl);
-                    return new Disposable( process);
+                    return new Disposable(process);
                 }
-                else
-                {
-                    Console.WriteLine("Could not start Code Connection.");
-                    Console.WriteLine("Download and install from Microsoft at https://aka.ms/meeccwin10");
-                    Console.WriteLine("Then restart this program.");
-                    return null;
-                }
+                Console.WriteLine("Could not start Code Connection.");
+                Console.WriteLine("Download and install from Microsoft at https://aka.ms/meeccwin10");
+                Console.WriteLine("Then restart this program.");
+                return null;
             }
             return null;
         }
@@ -131,10 +165,11 @@ send connect " + wsUrl+"{enter}");
         {
             var pid = _process?.Id;
             if (pid != null)
-            { Process.Start("taskkill.exe", "/PID " + pid); }
+            {
+                Process.Start("taskkill.exe", "/PID " + pid);
+            }
 
             _process?.CloseMainWindow();
         }
     }
-
 }

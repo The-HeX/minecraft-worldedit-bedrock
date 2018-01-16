@@ -8,11 +8,18 @@ using WorldEdit.Output;
 
 namespace WorldEdit.Schematic
 {
-    public static class SchematicProcessor
+    public  class SchematicProcessor
     {
-        public static void SchematicCommandProcessor(string[] args)
+        private readonly IMinecraftCommandService _minecraftCommandService;
+
+        public SchematicProcessor(IMinecraftCommandService minecraftCommandService)
         {
-            var s = new MinecraftCommandService();
+            _minecraftCommandService = minecraftCommandService;
+        }
+
+        public void SchematicCommandProcessor(string[] args)
+        {
+         //   var s = new MinecraftCommandService();
             var target = new Position(0, 0, 0);
             var shift = new Position(0, 0, 0);
             var rotation = Rotate.None;
@@ -56,7 +63,7 @@ namespace WorldEdit.Schematic
                     var files = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
                     foreach (var file in files)
                     {
-                        s.Status(Path.GetFileName(file));
+                        _minecraftCommandService.Status(Path.GetFileName(file));
                     }
 
                     break;
@@ -66,7 +73,7 @@ namespace WorldEdit.Schematic
                         results.Layers.First(a => a.Blocks.Any(b => b.Block.Equals("air") && b.PercentOfLayer >= 0.5)).Y;
                     string output = $"{Path.GetFileName(FileName)} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width*results.Height*results.Length}";
                     Console.WriteLine(output);
-                    s.Status(output);
+                    _minecraftCommandService.Status(output);
                     break;
                 case "import":
                     if (args.Length >= 5)
@@ -75,7 +82,7 @@ namespace WorldEdit.Schematic
                         {
                             //get current position
                             //parse and add to current position.
-                            s.Status("relative positions are not supported.");
+                            _minecraftCommandService.Status("relative positions are not supported.");
                             return;                            
                         }
                         else
@@ -106,14 +113,14 @@ namespace WorldEdit.Schematic
         }
 
 
-        private static void SendCommandsToCodeConnection(Position target, List<Point> points, Rotate rotation,
+        private void SendCommandsToCodeConnection(Position target, List<Point> points, Rotate rotation,
             Position clip = null)
         {
-            var service = new MinecraftCommandService();
+           // var service = new MinecraftCommandService();
             var sw = new Stopwatch();
 
 
-            service.Status("preparing schematic");
+            _minecraftCommandService.Status("preparing schematic");
 
             if (clip != null)
             {
@@ -152,21 +159,22 @@ namespace WorldEdit.Schematic
 
             sw.Reset();
 
-            service.Status("starting schematic import");
+            _minecraftCommandService.Status("starting schematic import");
 
             sw.Start();
             foreach (var line in importLines)
             {
-                service.Command($"fill?from={line.Start.X} {line.Start.Y} {line.Start.Z}&to={line.End.X} {line.End.Y} {line.End.Z}&tileName={line.BlockName}&tileData={line.Data}");
+                var command = _minecraftCommandService.GetFormater().Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X, line.End.Y, line.End.Z, line.BlockName, line.Data.ToString());
+                _minecraftCommandService.Command(command);//$"fill?from={line.Start.X} {line.Start.Y} {line.Start.Z}&to={line.End.X} {line.End.Y} {line.End.Z}&tileName={line.BlockName}&tileData={line.Data}");
             }
             sw.Stop();
-            service.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");
+            _minecraftCommandService.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");
             Console.WriteLine($"time to queue commands {sw.Elapsed.TotalSeconds}");
             sw.Reset();
             sw.Start();
-            service.Wait();
+            _minecraftCommandService.Wait();
             sw.Stop();
-            service.Status($"time to complete import {sw.Elapsed.TotalSeconds}");
+            _minecraftCommandService.Status($"time to complete import {sw.Elapsed.TotalSeconds}");
             Console.WriteLine($"time to complete import {sw.Elapsed.TotalSeconds}");
         }
 

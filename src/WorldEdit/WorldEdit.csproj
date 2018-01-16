@@ -70,8 +70,9 @@
     <Compile Include="Geometry\Model\Options.cs" />
     <Compile Include="Geometry\Model\Point.cs" />
     <Compile Include="Geometry\Model\Shape.cs" />
-    <Compile Include="Input\AutoHotKey.cs" />
-    <Compile Include="Output\MinecraftCommandService.cs" />
+    <Compile Include="CodeConnection\AutoHotKey.cs" />
+    <Compile Include="Output\IMinecraftCommandService.cs" />
+    <Compile Include="CodeConnection\MinecraftCommandService.cs" />
     <Compile Include="Schematic\Rotate.cs" />
     <Compile Include="Schematic\SchematicProcessor.cs" />
     <Compile Include="Schematic\BlockCount.cs" />
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometry\Generators\Rectangle\" />
+    <Folder Include="Input\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\refbins\x64\AutoHotkey.dll">

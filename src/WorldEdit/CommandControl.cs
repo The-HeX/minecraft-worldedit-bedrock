@@ -11,12 +11,21 @@ namespace WorldEdit
 {
     public class CommandControl
     {
+        private readonly IMinecraftCommandService _minecraftCommandService;
+
+        public CommandControl(IMinecraftCommandService minecraftCommandService,ICommandFormater commandFormater)
+        {
+            _minecraftCommandService = minecraftCommandService;
+            _commandFormater = commandFormater;
+        }
+
         private readonly SavedPositionService SavedPositions = new SavedPositionService();
+        private readonly ICommandFormater _commandFormater;
 
         public void HandleCommand(string[] args)
         {
-            var minecraft = new MinecraftCommandService();
-            var position = minecraft.GetLocation();
+            
+            var position = _minecraftCommandService.GetLocation();
             var commandArgs = CommandArgs(args);
             if (args[0].StartsWith("schematic"))
             {
@@ -24,22 +33,23 @@ namespace WorldEdit
             }
             else if (args[0].StartsWith("create"))
             {
-                HandleCreateCommand(commandArgs, minecraft, position, SavedPositions.Positions);
+                HandleCreateCommand(commandArgs, _minecraftCommandService, position, SavedPositions.Positions);
             }
             else if (args[0].StartsWith("pos"))
             {
-                HandlePositionCommand(commandArgs, position, minecraft);
+                HandlePositionCommand(commandArgs, position, _minecraftCommandService);
             }
             //measure
         }
-        private void HandleCreateCommand(string[] commandArgs, MinecraftCommandService minecraft, Position position, List<SavedPosition> storaedPositions)
+        private void HandleCreateCommand(string[] commandArgs, IMinecraftCommandService minecraft, Position position, List<SavedPosition> storaedPositions)
         {
             var lines = new CreateCommandHandler().Handle(commandArgs, minecraft, position, storaedPositions);
             var sw = new Stopwatch();
             sw.Start();
             foreach (var line in lines)
             {
-                minecraft.Command($"fill?from={line.Start.X} {line.Start.Y} {line.Start.Z}&to={line.End.X} {line.End.Y} {line.End.Z}&tileName={line.Block}&tileData=0");
+                var command = _commandFormater.Fill(line.Start.X,line.Start.Y,line.Start.Z,line.End.X,line.End.Y,line.End.Z,line.Block,"0");
+                minecraft.Command(command);
             }
             sw.Stop();
             minecraft.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");
@@ -55,10 +65,10 @@ namespace WorldEdit
 
         private void HandelSchematicCommand(string[] commandArgs)
         {
-            SchematicProcessor.SchematicCommandProcessor(commandArgs);
+            new SchematicProcessor(_minecraftCommandService).SchematicCommandProcessor(commandArgs);
         }
 
-        private void HandlePositionCommand(string[] commandArgs, Position position, MinecraftCommandService minecraft)
+        private void HandlePositionCommand(string[] commandArgs, Position position, IMinecraftCommandService minecraft)
         {
             var name = commandArgs.Length > 1 ? commandArgs[1] : "";
             switch (commandArgs[0])
@@ -101,6 +111,35 @@ namespace WorldEdit
         private static string[] CommandArgs(string[] args)
         {
             return args.ToList().Skip(1).ToArray();
+        }
+    }
+
+    public interface ICommandFormater
+    {
+        string Fill(int startX, int startY, int startz, int endX, int endY, int endZ, string block="stone", string data = "0");
+        string Title(string title,string subtitle);
+    }
+
+    public class CodeConnectCommandFormater:ICommandFormater
+    {
+        public string Fill(int startX,int startY,int startZ,int endX,int endY,int endZ,string block,string data)
+        {
+            return
+                $"fill?from={startX} {startY} {startZ}&to={endX} {endY} {endZ}&tileName={block}&tileData={data}";
+        }
+
+        public string Title( string title,string subtitle)
+        {
+            var command = "executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20";
+            if (!string.IsNullOrEmpty(title))
+            {
+                command = command + "title " + title;
+            }
+            if (!string.IsNullOrEmpty(subtitle))
+            {
+                command = command + "subtitle " + subtitle;
+            }
+            return command;
         }
     }
 }

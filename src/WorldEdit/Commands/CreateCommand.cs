@@ -13,7 +13,7 @@ namespace WorldEdit.Commands
 {
     public class CreateCommandHandler
     {
-        public List<Line> Handle(string[] commandArgs, MinecraftCommandService minecraft, Position position,
+        public List<Line> Handle(string[] commandArgs, IMinecraftCommandService minecraft, Position position,
             List<SavedPosition> savedPositions)
         {
             var command = commandArgs[0];

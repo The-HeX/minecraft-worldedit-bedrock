@@ -8,16 +8,17 @@ using WorldEdit.Schematic;
 
 namespace WorldEdit.Output
 {
-    public class MinecraftCommandService
+    public class MinecraftCommandService : IMinecraftCommandService
     {
         private static bool pause;
         private const int SLEEP_WHEN_EMPTY = 5000;
         private const int SLEEP_WHEN_LOOPING = 100;
-        private static ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
-        private static ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
-        public static int MessageCount { get; private set; }
+        private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
+        private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
+        public int MessageCount { get; private set; }
 
         public static bool StopWhenEmpty { get; set; } = false;
+        public Action<string> MessageReceived = (s) => Console.WriteLine(s);
 
         public void Command(string command)
         {
@@ -29,11 +30,11 @@ namespace WorldEdit.Output
             Statuses.Enqueue(message);
         }
 
-        public static void ShutDown()
+        public void ShutDown()
         {
             StopWhenEmpty = true;
         }
-        public static CancellationTokenSource Run()
+        public  CancellationTokenSource Run()
         {
             var tokenSource = new CancellationTokenSource()
                 ;
@@ -90,6 +91,11 @@ namespace WorldEdit.Output
             }, tokenSource.Token);
             
             return tokenSource;
+        }
+
+        public ICommandFormater GetFormater()
+        {
+            return new CodeConnectCommandFormater();
         }
 
         public Position GetLocation()
