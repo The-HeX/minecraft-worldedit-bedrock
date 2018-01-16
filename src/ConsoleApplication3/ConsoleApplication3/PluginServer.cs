@@ -15,7 +15,7 @@ namespace MinecraftPluginServer
 
         protected void OnConnection(MinecraftPluginBase source)
         {
-            source.s
+            //source.s
         }
         public void Send(string command,string origin="")
         {
@@ -30,8 +30,11 @@ namespace MinecraftPluginServer
         {
             wssv = new WebSocketServer(url);
             wssv.AddWebSocketService<MinecraftPluginBase>("/");
-            wssv.Log.Level = LogLevel.Trace;
-            wssv.Log.Output = (d, a) => Console.WriteLine(a);            
+            wssv.Log.Level = LogLevel.Debug;
+            wssv.Log.Output = (d, a) => Console.WriteLine(a);
+            wssv.KeepClean = false;
+            
+
         }
 
         public void Start()

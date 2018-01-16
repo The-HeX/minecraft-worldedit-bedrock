@@ -40,27 +40,37 @@ namespace MinecraftPluginServer
 
         protected override void OnError(ErrorEventArgs e)
         {
-            Console.WriteLine(e.Message + " " + e.Exception);
+            Console.WriteLine("onError "  +e.Message + " " + e.Exception);
             base.OnError(e);
         }
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            var obj = JsonConvert.DeserializeObject<Response>(e.Data);
-
-            HandleRawMessages(e.Data, 0);
-            switch (obj.header.messagePurpose.ToMessagePurpose())
+            Console.WriteLine($"OnMessage {e.IsPing}");
+            try
             {
-                case MessagePurpose.Event:
-                    HandelEvents(obj,e.Data);
-                    Console.WriteLine("Event: " + e.Data);
-                    break;
-                case MessagePurpose.CommandResponse:
-                    Console.WriteLine("Command Response: " + e.Data);
-                    break;
-                default:
-                    Console.WriteLine("Unhandled Message: " + e.Data);
-                    break;
+                var obj = JsonConvert.DeserializeObject<Response>(e.Data);
+
+                HandleRawMessages(e.Data, 0);
+                switch (obj.header.messagePurpose.ToMessagePurpose())
+                {
+                    case MessagePurpose.Event:
+                        HandelEvents(obj, e.Data);
+                        Console.WriteLine("Event: " + e.Data);
+                        break;
+                    case MessagePurpose.CommandResponse:
+                        Console.WriteLine("Command Response: " + e.Data);
+                        break;
+                    default:
+                        Console.WriteLine("Unhandled Message: " + e.Data);
+                        break;
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(e.Data + " " +   exception);
+                throw;
             }
         }
 

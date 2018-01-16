@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using MinecraftPluginServer.Protocol;
 
 namespace MinecraftPluginServer
@@ -52,7 +56,14 @@ namespace MinecraftPluginServer
         {
             var server = new PluginServer(url);
             server.Start();
+
+            
+
             return server;
         }
+
+        
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }
