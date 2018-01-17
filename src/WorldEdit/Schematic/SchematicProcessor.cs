@@ -19,7 +19,7 @@ namespace WorldEdit.Schematic
 
         public void SchematicCommandProcessor(string[] args)
         {
-         //   var s = new MinecraftCommandService();
+         //   var s = new MinecraftCodeConnectionCommandService();
             var target = new Position(0, 0, 0);
             var shift = new Position(0, 0, 0);
             var rotation = Rotate.None;
@@ -116,7 +116,7 @@ namespace WorldEdit.Schematic
         private void SendCommandsToCodeConnection(Position target, List<Point> points, Rotate rotation,
             Position clip = null)
         {
-           // var service = new MinecraftCommandService();
+           // var service = new MinecraftCodeConnectionCommandService();
             var sw = new Stopwatch();
 
 

@@ -8,7 +8,7 @@ using WorldEdit.Schematic;
 
 namespace WorldEdit.Output
 {
-    public class MinecraftCommandService : IMinecraftCommandService
+    public class MinecraftCodeConnectionCommandService : IMinecraftCommandService
     {
         private static bool pause;
         private const int SLEEP_WHEN_EMPTY = 5000;

@@ -12,5 +12,7 @@ namespace WorldEdit.Output
         CancellationTokenSource Run();
 
         ICommandFormater GetFormater();
+
+        void ShutDown();
     }
 }

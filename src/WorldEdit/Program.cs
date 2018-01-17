@@ -3,8 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MinecraftPluginServer;
+using WorldEdit;
 using WorldEdit.Input;
 using WorldEdit.Output;
+using WorldEdit.Schematic;
 
 namespace WorldEdit
 {
@@ -34,24 +37,29 @@ namespace WorldEdit
 
         private static void WebsocketServerLoop()
         {
-            var minecraftService = new MinecraftCommandService();
-            var cmdHandler = new CommandControl(minecraftService, new CodeConnectCommandFormater());
-            using (var cancelationToken = minecraftService.Run())
+            using (var server = new PluginServer("ws://127.0.0.1:12112")) // will stop on disposal.
             {
-                minecraftService.MessageReceived = s =>
+                server.Start();
+                var minecraftService = new MinecraftWebsocketCommandService(server);
+                var cmdHandler = new CommandControl(minecraftService, new WebsocketCommandFormater());
+                using (var cancelationToken = minecraftService.Run())
                 {
-                    var args = s.Split(' ');
-                    cmdHandler.HandleCommand(args);
-                };
-                minecraftService.Command(minecraftService.GetFormater().Title("WorldEdit Started", ""));
-                while (keepRunning)
-                {
-                    Thread.Sleep(500);
+                    minecraftService.MessageReceived = s =>
+                    {
+                        var args = s.Split(' ');
+                        cmdHandler.HandleCommand(args);
+                    };
+                    minecraftService.Command(minecraftService.GetFormater().Title("WorldEdit Started", ""));
+                    while (keepRunning)
+                    {
+                        Thread.Sleep(500);
+                    }
+                    minecraftService.Command(minecraftService.GetFormater().Title("", "WorldEdit Shutting Down"));
+                    minecraftService.Wait();
+                    minecraftService.ShutDown();
+                    cancelationToken.Cancel();
                 }
-                minecraftService.Command(minecraftService.GetFormater().Title("", "WorldEdit Shutting Down"));
-                minecraftService.Wait();
-                minecraftService.ShutDown();
-                cancelationToken.Cancel();
+                server.Stop();
             }
         }
 
@@ -59,7 +67,7 @@ namespace WorldEdit
         {
             using (var codeConnectionProcess = Prerequisites())
             {
-                var minecraftService = new MinecraftCommandService();
+                var minecraftService = new MinecraftCodeConnectionCommandService();
                 var cmdHandler = new CommandControl(minecraftService, new CodeConnectCommandFormater());
                 using (var cancelationToken = minecraftService.Run())
                 {
@@ -152,6 +160,78 @@ send connect " + wsUrl + "{enter}");
         }
     }
 
+    public class WebsocketCommandFormater : ICommandFormater
+    {
+        public string Fill(int startX, int startY, int startz, int endX, int endY, int endZ, string block = "stone",
+            string data = "0")
+        {
+            return $"fill {startX} {startY} {startz} {endX} {endY} {endZ} {block} {data}";
+        }
+
+        public string Title(string title, string subtitle)
+        {
+            var command = "title @s ";
+            if (!string.IsNullOrEmpty(title))
+            {
+                command = command + "title " + title;
+            }
+            if (!string.IsNullOrEmpty(subtitle))
+            {
+                command = command + "subtitle " + subtitle;
+            }
+            return command;
+        }
+
+    }
+
+
+    public class MinecraftWebsocketCommandService : IMinecraftCommandService
+    {
+        private readonly PluginServer _server;
+
+        public MinecraftWebsocketCommandService(PluginServer server)
+        {
+            _server = server;
+        }
+
+        public void Command(string command)
+        {
+            _server.Send(command);
+        }
+
+        public void Status(string message)
+        {
+            _server.Send("tell @s " + message);
+        }
+
+        public Position GetLocation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Wait()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CancellationTokenSource Run()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICommandFormater GetFormater()
+        {
+            return new WebsocketCommandFormater();
+        }
+
+        public void ShutDown()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Action<string> MessageReceived = (a) => { };
+    }
+
     public class Disposable : IDisposable
     {
         private readonly Process _process;
@@ -172,4 +252,5 @@ send connect " + wsUrl + "{enter}");
             _process?.CloseMainWindow();
         }
     }
+
 }

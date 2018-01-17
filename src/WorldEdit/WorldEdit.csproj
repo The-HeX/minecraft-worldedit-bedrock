@@ -72,7 +72,7 @@
     <Compile Include="Geometry\Model\Shape.cs" />
     <Compile Include="CodeConnection\AutoHotKey.cs" />
     <Compile Include="Output\IMinecraftCommandService.cs" />
-    <Compile Include="CodeConnection\MinecraftCommandService.cs" />
+    <Compile Include="CodeConnection\MinecraftCodeConnectionCommandService.cs" />
     <Compile Include="Schematic\Rotate.cs" />
     <Compile Include="Schematic\SchematicProcessor.cs" />
     <Compile Include="Schematic\BlockCount.cs" />
@@ -111,6 +111,10 @@
     <ProjectReference Include="..\ShapeGenerator\ShapeGenerator.csproj">
       <Project>{7b48af51-c705-4727-85d9-a54a7ec5a941}</Project>
       <Name>ShapeGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebsocketServer\MinecraftPluginServer.csproj">
+      <Project>{b03c6d98-4542-4724-9ea4-9b7cee20f611}</Project>
+      <Name>MinecraftPluginServer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
