@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using MinecraftPluginServer.Protocol;
 using MinecraftPluginServer.Protocol.Response;
 using Newtonsoft.Json;
@@ -12,6 +13,12 @@ namespace MinecraftPluginServer
     public class PluginServer : IDisposable
     {
         private readonly WebSocketServer wssv;
+        private string _lastId;
+
+        protected List<IGameEventHander> Handlers = new List<IGameEventHander>();
+        protected List<IGameRawEventHander> RawHandlers = new List<IGameRawEventHander>();
+        protected List<IConnectionEventHander> ConnectionHandlers = new List<IConnectionEventHander>();
+        private Response _lastResponse;
 
         public PluginServer()
         {
@@ -23,15 +30,29 @@ namespace MinecraftPluginServer
             MinecraftPluginBase.ErrorReceived = OnError;
         }
 
-        public PluginServer(IGameEventHander[] handlers):this()
+        public PluginServer(string url,IGameEventHander[] handlers) : this(url)
         {
             Handlers.AddRange(handlers);
-            
+        }
+
+
+        public PluginServer(string url) : this()
+        {
+            wssv = new WebSocketServer(url);
+            wssv.AddWebSocketService<MinecraftPluginBase>("/");
+            wssv.Log.Level = LogLevel.Debug;
+            wssv.Log.Output = (d, a) => Console.WriteLine(a);
+            wssv.KeepClean = false;
+        }
+
+        public void Dispose()
+        {
+            if (wssv != null && wssv.IsListening)
+                wssv.Stop();
         }
 
         private void OnError(ErrorEventArgs obj)
         {
-            
         }
 
         private void OnMessage(MessageEventArgs e)
@@ -50,7 +71,9 @@ namespace MinecraftPluginServer
                         break;
                     case MessagePurpose.CommandResponse:
                         Console.WriteLine("Command Response: " + e.Data);
+                        _lastResponse = obj;
                         _lastId = obj.header.requestId;
+                        
                         break;
                     default:
                         Console.WriteLine("Unhandled Message: " + e.Data);
@@ -62,7 +85,6 @@ namespace MinecraftPluginServer
                 Console.WriteLine(e.Data + " " + exception);
                 throw;
             }
-
         }
 
         private void HandelEvents(Response eventMessage, string rawMessage)
@@ -70,44 +92,15 @@ namespace MinecraftPluginServer
             var eventname = eventMessage.body.eventName.ToEvent();
 
             foreach (var hander in Handlers)
-            {
                 if (hander.CanHandle(eventname))
-                {
                     hander.Handle(eventMessage);
-                }
-            }
-
         }
 
         private void HandleRawMessages(string rawMessage, GameEvent eventname)
         {
             foreach (var hander in RawHandlers)
-            {
                 if (hander.CanHandle(eventname))
-                {
                     hander.Handle(rawMessage);
-                }
-            }
-        }
-
-        protected List<IGameEventHander> Handlers = new List<IGameEventHander>();
-        protected List<IGameRawEventHander> RawHandlers = new List<IGameRawEventHander>();
-        private string _lastId;
-
-
-        public PluginServer(string url):this()
-        {
-            wssv = new WebSocketServer(url);
-            wssv.AddWebSocketService<MinecraftPluginBase>("/");
-            wssv.Log.Level = LogLevel.Debug;
-            wssv.Log.Output = (d, a) => Console.WriteLine(a);
-            wssv.KeepClean = false;
-        }
-
-        public void Dispose()
-        {
-            if (wssv != null && wssv.IsListening)
-                wssv.Stop();
         }
 
         protected void OnConnection(MinecraftPluginBase source)
@@ -115,25 +108,36 @@ namespace MinecraftPluginServer
             Console.WriteLine("opened.");
             var message = new CommandMessage("geteduclientinfo");
             Send(message.ToString());
+
+            foreach (var hander in ConnectionHandlers)                
+                    hander.OnConnection();
         }
 
-        public void Send(string command, string origin = "")
+        public Response Send(string command, string origin = "")
         {
             var m = new CommandMessage(command);
             if (!string.IsNullOrEmpty(origin))
                 m.body.origin.type = origin;
-            wssv.WebSocketServices.Broadcast(m.ToString());
             var id = m.header.requestId;
+
+            Task.Run(() =>
+            {
+                wssv.WebSocketServices.Broadcast(m.ToString());
+            }).Wait();
+            
 
             var counter = 0;
             do
             {
                 counter++;
                 Thread.Sleep(500);
-            } while (!id.Equals(_lastId) && counter <10);
-            
+                if (id.Equals(_lastId))
+                    return _lastResponse;
+            } while (!id.Equals(_lastId) && counter < 20);
+
 
             //wait for request id to be returned.
+            return null;
         }
 
         public void Start()
@@ -150,5 +154,19 @@ namespace MinecraftPluginServer
         {
             wssv.WebSocketServices.Broadcast(toString);
         }
+
+        public void AddHandler(IGameEventHander handler)
+        {
+            Handlers.Add(handler);
+        }
+        public void AddHandler(IConnectionEventHander handler)
+        {
+            ConnectionHandlers.Add(handler);
+        }
+    }
+
+    public interface IConnectionEventHander
+    {
+        void OnConnection();
     }
 }

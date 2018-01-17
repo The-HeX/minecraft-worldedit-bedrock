@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using MinecraftPluginServer;
+using MinecraftPluginServer.Protocol;
 using WorldEdit;
 using WorldEdit.Input;
 using WorldEdit.Output;
@@ -13,7 +17,7 @@ namespace WorldEdit
 {
     internal class Program
     {
-        private static readonly bool UseCodeConnection = true;
+        private static readonly bool UseCodeConnection = false;
         private static string wsUrl;
         private static string restURL;
         private static bool keepRunning = true;
@@ -42,14 +46,10 @@ namespace WorldEdit
                 server.Start();
                 var minecraftService = new MinecraftWebsocketCommandService(server);
                 var cmdHandler = new CommandControl(minecraftService, new WebsocketCommandFormater());
+                server.AddHandler(new WorldEditHandler(cmdHandler));
+                server.AddHandler(new ConnectionHandler(minecraftService));
                 using (var cancelationToken = minecraftService.Run())
                 {
-                    minecraftService.MessageReceived = s =>
-                    {
-                        var args = s.Split(' ');
-                        cmdHandler.HandleCommand(args);
-                    };
-                    minecraftService.Command(minecraftService.GetFormater().Title("WorldEdit Started", ""));
                     while (keepRunning)
                     {
                         Thread.Sleep(500);
@@ -160,6 +160,25 @@ send connect " + wsUrl + "{enter}");
         }
     }
 
+    class ConnectionHandler : IConnectionEventHander
+    {
+        private readonly MinecraftWebsocketCommandService _minecraftService;
+
+        public ConnectionHandler(MinecraftWebsocketCommandService minecraftService)
+        {
+            _minecraftService = minecraftService;
+        }
+
+        public void OnConnection()
+        {
+            _minecraftService.Command(_minecraftService.GetFormater().Title("WorldEdit Started", ""));
+            _minecraftService.Subscribe((new SubscribeMessage("PlayerMessage")).ToString());
+            //_minecraftService.siub
+            //wssv.Subscribe((new SubscribeMessage("PlayerMessage")).ToString());
+            //_minecraftService.Command("");
+        }
+    }
+
     public class WebsocketCommandFormater : ICommandFormater
     {
         public string Fill(int startX, int startY, int startz, int endX, int endY, int endZ, string block = "stone",
@@ -194,6 +213,11 @@ send connect " + wsUrl + "{enter}");
             _server = server;
         }
 
+
+        public void Subscribe(string message)
+        {
+            _server.Subscribe(message);
+        }
         public void Command(string command)
         {
             _server.Send(command);
@@ -201,22 +225,84 @@ send connect " + wsUrl + "{enter}");
 
         public void Status(string message)
         {
-            _server.Send("tell @s " + message);
+            //_server.Send("tell @s " + message);
+            Statuses.Enqueue("tell @s " + message);
         }
 
         public Position GetLocation()
         {
-            throw new NotImplementedException();
+            var result = _server.Send("testforblock ~ ~ ~ air");
+            
+            return new Position(result.body.position.x, result.body.position.y, result.body.position.z);
         }
 
         public void Wait()
         {
-            throw new NotImplementedException();
+            while (!(Commands.IsEmpty && Statuses.IsEmpty))
+            {
+                Thread.Sleep(1000);
+            }
+            return;
         }
+
+        private static bool pause=false;
+        private const int SLEEP_WHEN_EMPTY = 5000;
+        private const int SLEEP_WHEN_LOOPING = 100;
+        private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
+        private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
+        public int MessageCount { get; private set; }
+        public static bool StopWhenEmpty { get; set; } = false;
 
         public CancellationTokenSource Run()
         {
-            throw new NotImplementedException();
+            var tokenSource = new CancellationTokenSource()
+                ;
+            Task.Run(() =>
+            {
+                string message;
+                    while (true)
+                    {
+                        if (!pause)
+                        {
+                            while (!Statuses.IsEmpty)
+                            {
+                                if (Statuses.TryDequeue(out message))
+                                {
+                                        _server.Send(message);
+                                    MessageCount++;
+                                }
+                            }
+                            if (!Commands.IsEmpty)
+                            {
+                                if (Commands.TryDequeue(out message))
+                                {
+                                    _server.Send(message);
+//                                    var result = httpclient.GetStringAsync($"http://localhost:8080/" + message);
+                                    MessageCount++;
+//                                    Console.WriteLine(result.Result);
+                                }
+                            }
+                            if (Statuses.IsEmpty && Commands.IsEmpty)
+                            {
+                                if (StopWhenEmpty)
+                                {
+                                    tokenSource.Cancel();
+                                }
+                                Thread.Sleep(SLEEP_WHEN_EMPTY);
+                            }
+                            else
+                            {
+                                Thread.Sleep(SLEEP_WHEN_LOOPING);
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(SLEEP_WHEN_EMPTY);
+                        }
+                    }
+            }, tokenSource.Token);
+
+            return tokenSource;
         }
 
         public ICommandFormater GetFormater()
@@ -226,7 +312,7 @@ send connect " + wsUrl + "{enter}");
 
         public void ShutDown()
         {
-            throw new NotImplementedException();
+            StopWhenEmpty = true;
         }
 
         public Action<string> MessageReceived = (a) => { };
