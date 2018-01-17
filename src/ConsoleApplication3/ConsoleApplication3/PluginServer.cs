@@ -23,9 +23,10 @@ namespace MinecraftPluginServer
             MinecraftPluginBase.ErrorReceived = OnError;
         }
 
-        public PluginServer(IGameEventHander[] handlers)
+        public PluginServer(IGameEventHander[] handlers):this()
         {
             Handlers.AddRange(handlers);
+            
         }
 
         private void OnError(ErrorEventArgs obj)
@@ -94,7 +95,7 @@ namespace MinecraftPluginServer
         private string _lastId;
 
 
-        public PluginServer(string url)
+        public PluginServer(string url):this()
         {
             wssv = new WebSocketServer(url);
             wssv.AddWebSocketService<MinecraftPluginBase>("/");
@@ -111,7 +112,9 @@ namespace MinecraftPluginServer
 
         protected void OnConnection(MinecraftPluginBase source)
         {
-            //source.s
+            Console.WriteLine("opened.");
+            var message = new CommandMessage("geteduclientinfo");
+            Send(message.ToString());
         }
 
         public void Send(string command, string origin = "")
@@ -122,10 +125,12 @@ namespace MinecraftPluginServer
             wssv.WebSocketServices.Broadcast(m.ToString());
             var id = m.header.requestId;
 
+            var counter = 0;
             do
             {
+                counter++;
                 Thread.Sleep(500);
-            } while (!id.Equals(_lastId));
+            } while (!id.Equals(_lastId) && counter <10);
             
 
             //wait for request id to be returned.

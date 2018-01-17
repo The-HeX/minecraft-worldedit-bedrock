@@ -21,10 +21,7 @@ namespace MinecraftPluginServer
         protected override void OnOpen()
         {
             base.OnOpen();
-            OnConnected(this);
-            Console.WriteLine("opened.");
-            var message = new CommandMessage("geteduclientinfo");
-            Send(message.ToString());
+            OnConnected.Invoke(this);
         }
 
         public void Send(RequestMessage message)
@@ -34,13 +31,14 @@ namespace MinecraftPluginServer
 
         protected override void OnError(ErrorEventArgs e)
         {
-            ErrorReceived(e);
             base.OnError(e);
+            ErrorReceived.Invoke(e);            
         }
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            MessageReceived(e);
+            base.OnMessage(e);
+            MessageReceived.Invoke(e);            
         }
     }
 
