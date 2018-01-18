@@ -43,7 +43,7 @@ namespace WorldEdit
         }
         private void HandleCreateCommand(string[] commandArgs, IMinecraftCommandService minecraft, Position position, List<SavedPosition> storaedPositions)
         {
-            var lines = new CreateCommandHandler().Handle(commandArgs, minecraft, position, storaedPositions);
+            var lines = new CreateCommandHandler(minecraft).Handle(commandArgs,  position, storaedPositions);
             var sw = new Stopwatch();
             sw.Start();
             foreach (var line in lines)
@@ -111,35 +111,6 @@ namespace WorldEdit
         private static string[] CommandArgs(string[] args)
         {
             return args.ToList().Skip(1).ToArray();
-        }
-    }
-
-    public interface ICommandFormater
-    {
-        string Fill(int startX, int startY, int startz, int endX, int endY, int endZ, string block="stone", string data = "0");
-        string Title(string title,string subtitle);
-    }
-
-    public class CodeConnectCommandFormater:ICommandFormater
-    {
-        public string Fill(int startX,int startY,int startZ,int endX,int endY,int endZ,string block,string data)
-        {
-            return
-                $"fill?from={startX} {startY} {startZ}&to={endX} {endY} {endZ}&tileName={block}&tileData={data}";
-        }
-
-        public string Title( string title,string subtitle)
-        {
-            var command = "executeasother?origin=@p&position=~%20~%20~&command=title%20@s%20";
-            if (!string.IsNullOrEmpty(title))
-            {
-                command = command + "title " + title;
-            }
-            if (!string.IsNullOrEmpty(subtitle))
-            {
-                command = command + "subtitle " + subtitle;
-            }
-            return command;
         }
     }
 }

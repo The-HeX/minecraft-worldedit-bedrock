@@ -53,8 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeConnectCommandFormater.cs" />
     <Compile Include="CommandControl.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="ConnectionHandler.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="Geometry\Generators\Circle\CircleGenerator.cs" />
     <Compile Include="Geometry\Generators\Circle\ICircleOptions.cs" />
     <Compile Include="Geometry\Generators\GeneratorFactory.cs" />
@@ -71,6 +74,8 @@
     <Compile Include="Geometry\Model\Point.cs" />
     <Compile Include="Geometry\Model\Shape.cs" />
     <Compile Include="CodeConnection\AutoHotKey.cs" />
+    <Compile Include="ICommandFormater.cs" />
+    <Compile Include="MinecraftWebsocketCommandService.cs" />
     <Compile Include="Output\IMinecraftCommandService.cs" />
     <Compile Include="CodeConnection\MinecraftCodeConnectionCommandService.cs" />
     <Compile Include="Schematic\Rotate.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schematic\LineFactory.cs" />
     <Compile Include="Schematic\Schematic.cs" />
+    <Compile Include="WebsocketCommandFormater.cs" />
     <Compile Include="WorldEditHandler.cs" />
   </ItemGroup>
   <ItemGroup>

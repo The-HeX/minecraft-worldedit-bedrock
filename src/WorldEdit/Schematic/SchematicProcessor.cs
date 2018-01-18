@@ -58,13 +58,11 @@ namespace WorldEdit.Schematic
 
             switch (command)
             {
-                case "list":
-                    
+                case "list":                    
                     var files = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
-                    foreach (var file in files)
-                    {
-                        _minecraftCommandService.Status(Path.GetFileName(file));
-                    }
+
+                    _minecraftCommandService
+                        .Status("Schematics: " + files.Select(b => $"\n" + Path.GetFileName(b)).OrderBy(a=>a).Aggregate((a, b) => a += b));
 
                     break;
                 case "analyze":
@@ -72,7 +70,7 @@ namespace WorldEdit.Schematic
                     var firstGroundLayer =
                         results.Layers.First(a => a.Blocks.Any(b => b.Block.Equals("air") && b.PercentOfLayer >= 0.5)).Y;
                     string output = $"{Path.GetFileName(FileName)} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width*results.Height*results.Length}";
-                    Console.WriteLine(output);
+                    
                     _minecraftCommandService.Status(output);
                     break;
                 case "import":
@@ -107,9 +105,13 @@ namespace WorldEdit.Schematic
                     SendCommandsToCodeConnection(target, points, rotation, shift);
                     break;
                 default:
+                    _minecraftCommandService.Status("schematic command\n" +
+                                                    "schematic list\n" +
+                                                    "schematic analyze [name]\n" +
+                                                    "schematic import name x y z (rotation) (Shift X) (Shift Y) (Shift Z)");
                     break;
             }
-            Console.WriteLine($"{FileName}  ${outputFilename} {target.X} {target.Y} {target.Z}");
+            
         }
 
 
