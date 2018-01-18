@@ -112,7 +112,8 @@ namespace MinecraftPluginServer
         {
             Console.WriteLine("opened.");
             var message = new CommandMessage("geteduclientinfo");
-            Send(message.ToString());
+            
+            Send(message.ToString(),"",false);
 
             foreach (var hander in ConnectionHandlers)                
                     hander.OnConnection();

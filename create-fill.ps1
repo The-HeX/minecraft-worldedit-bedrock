@@ -1,1 +1,0 @@
-dir schematics\*.schematic | select-object -expandProperty fullname | sort  | % {$i=1}{ src2\ConsoleApplication2\bin\Debug\ConsoleApplication2.exe analyze $_ ;$i++}
