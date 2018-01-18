@@ -220,7 +220,8 @@ send connect " + wsUrl + "{enter}");
         }
         public void Command(string command)
         {
-            _server.Send(command);
+            //_server.Send(command);
+            Commands.Enqueue(command);
         }
 
         public void Status(string message)
@@ -268,7 +269,7 @@ send connect " + wsUrl + "{enter}");
                             {
                                 if (Statuses.TryDequeue(out message))
                                 {
-                                        _server.Send(message);
+                                    _server.Send(message,"",false);
                                     MessageCount++;
                                 }
                             }
@@ -276,10 +277,8 @@ send connect " + wsUrl + "{enter}");
                             {
                                 if (Commands.TryDequeue(out message))
                                 {
-                                    _server.Send(message);
-//                                    var result = httpclient.GetStringAsync($"http://localhost:8080/" + message);
+                                    _server.Send(message,"",false);
                                     MessageCount++;
-//                                    Console.WriteLine(result.Result);
                                 }
                             }
                             if (Statuses.IsEmpty && Commands.IsEmpty)
