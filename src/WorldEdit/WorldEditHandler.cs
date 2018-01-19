@@ -14,16 +14,20 @@ namespace WorldEdit
 
         public bool CanHandle(GameEvent eventname)
         {
-            return eventname == GameEvent.PlayerMessage;
+            return eventname == GameEvent.PlayerMessage ;
         }
 
         public Result Handle(Response message)
         {
-            var args = message.body.properties.Message.Split(' ');
-            if (args.Length>1 && (args[0].Equals("schematic") || args[0].Equals("create") || args[0].Equals("pos")))
+            if (message.body.properties.MessageType.Equals("chat"))
             {
-                _cmdHandler.HandleCommand(args);
-            }            
+                var args = message.body.properties.Message.Split(' ');
+                if (args.Length > 1 &&
+                    (args[0].Equals("schematic") || args[0].Equals("create") || args[0].Equals("pos")))
+                {
+                    _cmdHandler.HandleCommand(args);
+                }
+            }
             return new Result() {};
         }
     }

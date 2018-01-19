@@ -12,7 +12,7 @@ namespace MinecraftPluginServer
 
         public Result Handle(Response message)
         {
-            Console.WriteLine($"chat: {message.body.properties.UserId} {message.body.properties.Message} ");
+            Console.WriteLine($"chat: {message.body.properties.UserId} {message.body.properties.MessageType} {message.body.properties.Message} ");
             return new Result();
         }
     }

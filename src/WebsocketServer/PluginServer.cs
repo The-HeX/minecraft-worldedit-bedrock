@@ -61,7 +61,7 @@ namespace MinecraftPluginServer
             {
 
                
-                Console.WriteLine($"OnMessage {e.IsPing}");
+                //Console.WriteLine($"OnMessage {e.IsPing}");
                 try
                 {
                     var obj = JsonConvert.DeserializeObject<Response>(e.Data);

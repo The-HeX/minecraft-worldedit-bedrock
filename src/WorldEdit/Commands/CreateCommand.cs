@@ -61,7 +61,7 @@ namespace WorldEdit.Commands
             return lines;
         }
 
-        private static List<Line> CreateFloor(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        private List<Line> CreateFloor(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
             {
                 IGenerator generator;
                 ISquareOptions walls = new Options();
@@ -99,13 +99,19 @@ namespace WorldEdit.Commands
                         walls.CenterY = commandArgs[5].ToInt();
                         walls.CenterZ = commandArgs[6].ToInt();
                         break;
-                }
-                generator = new BoxGenerator();
+                default:
+                    var help = "create floor length width block - center at current position\n" +
+                               "create floor length width block [named position]\n" +
+                               "create floor length width block x y z";
+                    _minecraft.Status(help);
+                    return new List<Line>();
+            }
+            generator = new BoxGenerator();
                 lines = generator.Run((Options)walls);
                 return lines;
             }
         
-    private static List<Line> CreateBox(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+    private  List<Line> CreateBox(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {
             IGenerator generator;
             ISquareOptions walls = new Options();
@@ -143,13 +149,19 @@ namespace WorldEdit.Commands
                     walls.CenterY = commandArgs[6].ToInt();
                     walls.CenterZ = commandArgs[7].ToInt();
                     break;
+                default:
+                    var help = "create box length width height block - center at current position\n" +
+                               "create box length width height block [named position]\n" +
+                               "create box length width height block x y z";
+                    _minecraft.Status(help);
+                    return new List<Line>();
             }
             generator = new BoxGenerator();
             lines = generator.Run((Options) walls);
             return lines;
         }
 
-        private static List<Line> CreateOutline(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        private List<Line> CreateOutline(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {
             IGenerator generator;
             ISquareOptions walls = new Options();
@@ -187,13 +199,19 @@ namespace WorldEdit.Commands
                     walls.CenterY = commandArgs[6].ToInt();
                     walls.CenterZ = commandArgs[7].ToInt();
                     break;
+                default:
+                    var help =  "create outline length width height block - center at current position\n" +
+                                "create outline length width height block [named position]\n" +
+                                "create outline length width height block x y z";
+                    _minecraft.Status(help);
+                    return new List<Line>();
             }
             generator = new BoxGenerator();
             lines = generator.Run((Options) walls);
             return lines;
         }
 
-        private static List<Line> CreateWalls(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        private List<Line> CreateWalls(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {
             IGenerator generator;
             ISquareOptions walls = new Options();
@@ -231,6 +249,12 @@ namespace WorldEdit.Commands
                     walls.CenterY = commandArgs[6].ToInt();
                     walls.CenterZ = commandArgs[7].ToInt();
                     break;
+                default:
+                    var help = "create walls  length width height block - center at current position\n" +
+                     "create walls length width height block [named position]\n" +
+                     "create walls length width height block x y z";
+                    _minecraft.Status(help);
+                    return new List<Line>();
             }
             generator = new SquareGenerator();
             lines = generator.Run((Options) walls);
@@ -288,7 +312,7 @@ namespace WorldEdit.Commands
             return lines;
         }
 
-        private static List<Line> CreateSphere(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        private List<Line> CreateSphere(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {
             IGenerator generator;
             ISphereOptions sphere = new Options();
@@ -325,6 +349,13 @@ namespace WorldEdit.Commands
                     sphere.CenterY = commandArgs[4].ToInt();
                     sphere.CenterZ = commandArgs[5].ToInt();
                     break;
+                default:
+                    _minecraft.Status("\ncreate sphere syntax\n" +
+                                      "create sphere radius block - current postion\n" +
+                                      "create sphere radius block [named position]\n" +
+                                      "create sphere raidus block x y z");
+                    return new List<Line>();
+                    break;
             }
             generator = new SphereGenerator();
             lines = generator.Run((Options)sphere);
@@ -332,7 +363,7 @@ namespace WorldEdit.Commands
         }
 
 
-        private static List<Line> CreateRing(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        private List<Line> CreateRing(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
         {
             IGenerator generator;
             ICircleOptions ring = new Options();
@@ -369,19 +400,16 @@ namespace WorldEdit.Commands
                     ring.CenterY = commandArgs[5].ToInt();
                     ring.CenterZ = commandArgs[6].ToInt();
                     break;
+                default:
+                    _minecraft.Status("\ncreate ring syntax\n" +
+                                      "create ring radius height block - current position\n" +
+                                      "create ring radius height block [named position]\n" +
+                                      "create ring radius height block x y z");
+                    return new List<Line>();
             }
             generator = new CircleGenerator();
             lines = generator.Run((Options) ring);
             return lines;
-        }
-    }
-
-
-    public static class StringExtensions
-    {
-        public static int ToInt(this string input)
-        {
-            return int.Parse(input);
         }
     }
 }

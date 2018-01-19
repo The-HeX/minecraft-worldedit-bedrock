@@ -34,8 +34,9 @@ namespace WorldEdit
 
         public Position GetLocation()
         {
+            pause = true;
             var result = _server.Send("testforblock ~ ~ ~ air");
-            
+            pause = false;            
             return new Position(result.body.position.x, result.body.position.y, result.body.position.z);
         }
 

@@ -56,6 +56,7 @@
     <Compile Include="CodeConnectCommandFormater.cs" />
     <Compile Include="CommandControl.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Commands\StringExtensions.cs" />
     <Compile Include="ConnectionHandler.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="Geometry\Generators\Circle\CircleGenerator.cs" />

@@ -9,7 +9,7 @@ namespace MinecraftPluginServer.Protocol.Request
         public override string ToString()
         {
             var serializeObject = JsonConvert.SerializeObject(this);
-            Console.WriteLine(serializeObject);
+            //Console.WriteLine(serializeObject);
             return serializeObject;
         }
     }

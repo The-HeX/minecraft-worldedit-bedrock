@@ -44,22 +44,26 @@ namespace WorldEdit
         private void HandleCreateCommand(string[] commandArgs, IMinecraftCommandService minecraft, Position position, List<SavedPosition> storaedPositions)
         {
             var lines = new CreateCommandHandler(minecraft).Handle(commandArgs,  position, storaedPositions);
-            var sw = new Stopwatch();
-            sw.Start();
-            foreach (var line in lines)
+            if (lines.Any())
             {
-                var command = _commandFormater.Fill(line.Start.X,line.Start.Y,line.Start.Z,line.End.X,line.End.Y,line.End.Z,line.Block,"0");
-                minecraft.Command(command);
+                var sw = new Stopwatch();
+                sw.Start();
+                foreach (var line in lines)
+                {
+                    var command = _commandFormater.Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X, line.End.Y,
+                        line.End.Z, line.Block, "0");
+                    minecraft.Command(command);
+                }
+                sw.Stop();
+                minecraft.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");
+                Console.WriteLine($"time to queue commands {sw.Elapsed.TotalSeconds}");
+                sw.Reset();
+                sw.Start();
+                minecraft.Wait();
+                sw.Stop();
+                minecraft.Status($"time to complete import {sw.Elapsed.TotalSeconds}");
+                Console.WriteLine($"time to complete import {sw.Elapsed.TotalSeconds}");
             }
-            sw.Stop();
-            minecraft.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");
-            Console.WriteLine($"time to queue commands {sw.Elapsed.TotalSeconds}");
-            sw.Reset();
-            sw.Start();
-            minecraft.Wait();
-            sw.Stop();
-            minecraft.Status($"time to complete import {sw.Elapsed.TotalSeconds}");
-            Console.WriteLine($"time to complete import {sw.Elapsed.TotalSeconds}");
 
         }
 
