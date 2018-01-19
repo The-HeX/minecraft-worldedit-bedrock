@@ -46,7 +46,11 @@ Import Schematics
 |/schematic   | import | name x y z rotation shiftX shiftY shiftZ  |         | |
 
 ## Install
+1. Download worldedit from [releases](https://github.com/The-HeX/mcpe-geometry-generator/releases)
+2. Run WorldEdit.exe
+3. From within a minecraft chat window type /wsserver 127.0.0.1:12112 
+4. Start using the commands.
+
+Optionally: there is an integration which uses the EDU Code Connection to talk with bedrock, but current the plugin does not require this. 
 1. Download Minecraft Code Connection from microsoft. ( https://aka.ms/meeccwin10 )
-2. Download worldedit from [releases](https://github.com/The-HeX/mcpe-geometry-generator/releases)
-3. Run WorldEdit.exe
 
