@@ -59,25 +59,18 @@ namespace MinecraftPluginServer
         {
             Task.Run(() =>
             {
-
-               
-                //Console.WriteLine($"OnMessage {e.IsPing}");
                 try
                 {
                     var obj = JsonConvert.DeserializeObject<Response>(e.Data);
-
                     HandleRawMessages(e.Data, 0);
                     switch (obj.header.messagePurpose.ToMessagePurpose())
                     {
                         case MessagePurpose.Event:
                             HandelEvents(obj, e.Data);
-                            //Console.WriteLine("Event: " + e.Data);
                             break;
                         case MessagePurpose.CommandResponse:
-                            //Console.WriteLine("Command Response: " + e.Data);
                             _lastResponse = obj;
                             _lastId = obj.header.requestId;
-
                             break;
                         default:
                             Console.WriteLine("Unhandled Message: " + e.Data);
@@ -86,8 +79,7 @@ namespace MinecraftPluginServer
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(e.Data + " " + exception);
-                    throw;
+                    Console.WriteLine(e.Data + " " + exception);                    
                 }
             });
         }

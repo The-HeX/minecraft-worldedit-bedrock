@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using WorldEdit.Commands;
 using WorldEdit.Input;
 using WorldEdit.Output;
@@ -104,10 +106,16 @@ namespace WorldEdit
                     }
                     break;
                 case "save":
-                    //SavedPositions.Positions
-                    //JsonConvert
+                    var json = JsonConvert.SerializeObject(SavedPositions.Positions);
+                    File.WriteAllText("SavedPositions.json",json);
                     break;
                 case "load":
+                    if (File.Exists("savedpositions.json"))
+                    {
+                        var jsonstring = File.ReadAllText("savedpositions.json");
+                        SavedPositions.Positions.AddRange(
+                            JsonConvert.DeserializeObject<List<SavedPosition>>(jsonstring));
+                    }
                     break;
             }
         }

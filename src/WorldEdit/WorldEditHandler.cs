@@ -25,6 +25,7 @@ namespace WorldEdit
                 if (args.Length > 1 &&
                     (args[0].Equals("schematic") || args[0].Equals("create") || args[0].Equals("pos")))
                 {
+
                     _cmdHandler.HandleCommand(args);
                 }
             }

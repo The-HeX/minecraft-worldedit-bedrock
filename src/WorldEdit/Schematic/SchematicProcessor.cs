@@ -26,35 +26,7 @@ namespace WorldEdit.Schematic
 
             var command = args[0];
 
-            var FileName = "";
-            var points = new List<Point>();
-            Schematic schematic;
-            if (args.Length > 1)
-            {
-                FileName = args[1];
-                if (!FileName.EndsWith("schematic"))
-                {
-                    FileName += ".schematic";
-                }
-                var combine = Path.Combine(ConfigurationManager.AppSettings["data"], FileName);
-                if (!File.Exists(FileName) && File.Exists(combine))
-                {
-                    FileName = combine;
-                }
-                schematic = Schematic.LoadFromFile(FileName);
-                points = schematic.GetPoints();
-            }
-            var outputFilename = Path.GetFileNameWithoutExtension(FileName) + ".fill";
-            if (args.Length > 2)
-            {
-                outputFilename = args[2];
-            }
-            if (args.Length == 6)
-            {
-                target.X = Convert.ToInt32(args[3]);
-                target.Y = Convert.ToInt32(args[4]);
-                target.Z = Convert.ToInt32(args[5]);
-            }
+
 
             switch (command)
             {
@@ -66,14 +38,26 @@ namespace WorldEdit.Schematic
 
                     break;
                 case "analyze":
+                {
+                    List<Point> points = LoadFile(args[1]);
                     var results = ModelAnalyzer.Analyze(points);
                     var firstGroundLayer =
-                        results.Layers.First(a => a.Blocks.Any(b => b.Block.Equals("air") && b.PercentOfLayer >= 0.5)).Y;
-                    string output = $"{Path.GetFileName(FileName)} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width*results.Height*results.Length}";
-                    
+                        results.Layers.First(a => a.Blocks.Any(b => b.Block.Equals("air") && b.PercentOfLayer >= 0.5))
+                            .Y;
+                    string output =
+                        $"{Path.GetFileName(args[1])} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width * results.Height * results.Length}";
+
                     _minecraftCommandService.Status(output);
                     break;
+                }
                 case "import":
+                    var FileName = args[1];
+                    if (args.Length == 6)
+                    {
+                        target.X = Convert.ToInt32(args[3]);
+                        target.Y = Convert.ToInt32(args[4]);
+                        target.Z = Convert.ToInt32(args[5]);
+                    }
                     if (args.Length >= 5)
                     {
                         if (args[2].StartsWith("~")||args[3].StartsWith("~")||args[4].StartsWith("~"))
@@ -102,7 +86,27 @@ namespace WorldEdit.Schematic
                     }
 
                     Console.WriteLine($"importing {FileName} to {target}");
-                    SendCommandsToCodeConnection(target, points, rotation, shift);
+                    List<Point> points1 = LoadFile(FileName);
+                    SendCommandsToCodeConnection(target, points1, rotation, shift);
+                    break;
+                case "test":
+                    //analyze then import all schematics in the folder.
+                    var x = int.Parse( args[1]);
+                    var y = int.Parse(args[2]);
+                    var z = int.Parse(args[3]);
+                    var files1 = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
+                    foreach (var f in files1)
+                    {
+                        target.X = x;
+                        target.Y = y;
+                        target.Z = z;
+                        List<Point> p = LoadFile(f);
+                        SendCommandsToCodeConnection(target, p, rotation, shift);
+                        var results = ModelAnalyzer.Analyze(p);
+                        x = x + results.Width + 15;
+                    }
+
+
                     break;
                 default:
                     _minecraftCommandService.Status("schematic command\n" +
@@ -112,6 +116,30 @@ namespace WorldEdit.Schematic
                     break;
             }
             
+        }
+
+        private static List<Point> LoadFile(string FileName)
+        {
+            
+            var points = new List<Point>();
+            Schematic schematic;
+                if (!FileName.EndsWith("schematic"))
+                {
+                    FileName += ".schematic";
+                }
+                var combine = Path.Combine(ConfigurationManager.AppSettings["data"], FileName);
+                if (!File.Exists(FileName) && File.Exists(combine))
+                {
+                    FileName = combine;
+                }
+                schematic = Schematic.LoadFromFile(FileName);
+                points = schematic.GetPoints();
+            //var outputFilename = Path.GetFileNameWithoutExtension(FileName) + ".fill";
+            //if (args.Length > 2)
+            //{
+            //    outputFilename = args[2];
+            //}
+            return points;
         }
 
 

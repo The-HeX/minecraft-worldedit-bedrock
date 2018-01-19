@@ -20,7 +20,9 @@ namespace WorldEdit
 
         public void Subscribe(string message)
         {
+            pause = true;
             _server.Subscribe(message);
+            pause = false;
         }
         public void Command(string command)
         {
@@ -50,7 +52,7 @@ namespace WorldEdit
         }
 
         private static bool pause=false;
-        private const int SLEEP_WHEN_EMPTY = 5000;
+        private const int SLEEP_WHEN_EMPTY = 2000;
         private const int SLEEP_WHEN_LOOPING = 100;
         private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
         private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
