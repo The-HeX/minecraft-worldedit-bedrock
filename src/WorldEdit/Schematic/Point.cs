@@ -11,10 +11,11 @@ namespace WorldEdit.Schematic
         public int BlockId { get; internal set; }
         public string BlockName { get; internal set; }
         public int Data { get; internal set; }
+        public int SortOrder { get; set; }
 
         public  Point Clone()
         {
-            return new Point { X = X, Y = Y, Z = Z, BlockId=BlockId,BlockName=BlockName,Data=Data };
+            return new Point { X = X, Y = Y, Z = Z, BlockId=BlockId,BlockName=BlockName,Data=Data ,SortOrder = SortOrder};
         }
 
         internal Point Shift(Position position)

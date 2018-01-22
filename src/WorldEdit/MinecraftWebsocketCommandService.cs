@@ -53,7 +53,7 @@ namespace WorldEdit
 
         private static bool pause=false;
         private const int SLEEP_WHEN_EMPTY = 2000;
-        private const int SLEEP_WHEN_LOOPING = 100;
+        private const int SLEEP_WHEN_LOOPING = 75;
         private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
         private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
         public int MessageCount { get; private set; }

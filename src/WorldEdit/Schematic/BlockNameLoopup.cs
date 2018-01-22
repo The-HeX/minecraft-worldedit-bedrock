@@ -529,13 +529,13 @@ namespace WorldEdit.Schematic
             output.Add(new BlockLookup{Id=6,Name="sapling" ,BeData=4 ,JeData=4,FriendlyName="Acacia Sapling" });
             output.Add(new BlockLookup{Id=6,Name="sapling" ,BeData=5 ,JeData=5,FriendlyName="Dark Oak Sapling" });
             output.Add(new BlockLookup{Id=7,Name="bedrock" ,BeData=0 ,JeData=0,FriendlyName="Bedrock" });
-            output.Add(new BlockLookup{Id=8,Name="flowing_water" ,BeData=0 ,JeData=0,FriendlyName="Flowing Water" });
-            output.Add(new BlockLookup{Id=9,Name="water" ,BeData=0 ,JeData=0,FriendlyName="Still Water" });
-            output.Add(new BlockLookup{Id=10,Name="flowing_lava" ,BeData=0 ,JeData=0,FriendlyName="Flowing Lava" });
-            output.Add(new BlockLookup{Id=11,Name="lava" ,BeData=0 ,JeData=0,FriendlyName="Still Lava" });
-            output.Add(new BlockLookup{Id=12,Name="sand" ,BeData=0 ,JeData=0,FriendlyName="Sand" });
-            output.Add(new BlockLookup{Id=12,Name="sand" ,BeData=1 ,JeData=1,FriendlyName="Red Sand" });
-            output.Add(new BlockLookup{Id=13,Name="gravel" ,BeData=0 ,JeData=0,FriendlyName="Gravel" });
+            output.Add(new BlockLookup{Id=8,Name="flowing_water" ,BeData=0 ,JeData=0,FriendlyName="Flowing Water",SortOrder = 10});
+            output.Add(new BlockLookup{Id=9,Name="water" ,BeData=0 ,JeData=0,FriendlyName="Still Water" ,SortOrder = 10});
+            output.Add(new BlockLookup{Id=10,Name="flowing_lava" ,BeData=0 ,JeData=0,FriendlyName="Flowing Lava" ,SortOrder = 11});
+            output.Add(new BlockLookup{Id=11,Name="lava" ,BeData=0 ,JeData=0,FriendlyName="Still Lava" ,SortOrder = 11});
+            output.Add(new BlockLookup{Id=12,Name="sand" ,BeData=0 ,JeData=0,FriendlyName="Sand" ,SortOrder = 2});
+            output.Add(new BlockLookup{Id=12,Name="sand" ,BeData=1 ,JeData=1,FriendlyName="Red Sand", SortOrder = 2 });
+            output.Add(new BlockLookup{Id=13,Name="gravel" ,BeData=0 ,JeData=0,FriendlyName="Gravel", SortOrder = 2 });
             output.Add(new BlockLookup{Id=14,Name="gold_ore" ,BeData=0 ,JeData=0,FriendlyName="Gold Ore" });
             output.Add(new BlockLookup{Id=15,Name="iron_ore" ,BeData=0 ,JeData=0,FriendlyName="Iron Ore" });
             output.Add(new BlockLookup{Id=16,Name="coal_ore" ,BeData=0 ,JeData=0,FriendlyName="Coal Ore" });
@@ -633,23 +633,23 @@ namespace WorldEdit.Schematic
             output.Add(new BlockLookup{Id=61,Name="furnace" ,BeData=0 ,JeData=0,FriendlyName="Furnace" });
             output.Add(new BlockLookup{Id=62,Name="lit_furnace" ,BeData=0 ,JeData=0,FriendlyName="Burning Furnace" });
             output.Add(new BlockLookup{Id=63,Name="standing_sign" ,BeData=0 ,JeData=0,FriendlyName="Standing Sign Block", HasDirection = true });
-            output.Add(new BlockLookup{Id=64,Name="wooden_door" ,BeData=0 ,JeData=0,FriendlyName="Oak Door Block" });
-            output.Add(new BlockLookup{Id=65,Name="ladder" ,BeData=0 ,JeData=0,FriendlyName="Ladder" });
-            output.Add(new BlockLookup{Id=66,Name="rail" ,BeData=0 ,JeData=0,FriendlyName="Rail" });
+            output.Add(new BlockLookup{Id=64,Name="wooden_door" ,BeData=0 ,JeData=0,FriendlyName="Oak Door Block",SortOrder = 3});
+            output.Add(new BlockLookup{Id=65,Name="ladder" ,BeData=0 ,JeData=0,FriendlyName="Ladder" ,SortOrder = 2});
+            output.Add(new BlockLookup{Id=66,Name="rail" ,BeData=0 ,JeData=0,FriendlyName="Rail", SortOrder = 2 });
             output.Add(new BlockLookup{Id=67,Name="stone_stairs" ,BeData=0 ,JeData=0,FriendlyName="Cobblestone Stairs", HasDirection = true });
-            output.Add(new BlockLookup{Id=68,Name="wall_sign" ,BeData=0 ,JeData=0,FriendlyName="Wall-mounted Sign Block" });
+            output.Add(new BlockLookup{Id=68,Name="wall_sign" ,BeData=0 ,JeData=0,FriendlyName="Wall-mounted Sign Block", SortOrder = 2 });
             output.Add(new BlockLookup{Id=69,Name="lever" ,BeData=0 ,JeData=0,FriendlyName="Lever" });
             output.Add(new BlockLookup{Id=70,Name="stone_pressure_plate" ,BeData=0 ,JeData=0,FriendlyName="Stone Pressure Plate" });
-            output.Add(new BlockLookup{Id=71,Name="iron_door" ,BeData=0 ,JeData=0,FriendlyName="Iron Door Block" });
+            output.Add(new BlockLookup{Id=71,Name="iron_door" ,BeData=0 ,JeData=0,FriendlyName="Iron Door Block", SortOrder = 2 });
             output.Add(new BlockLookup{Id=72,Name="wooden_pressure_plate" ,BeData=0 ,JeData=0,FriendlyName="Wooden Pressure Plate" });
             output.Add(new BlockLookup{Id=73,Name="redstone_ore" ,BeData=0 ,JeData=0,FriendlyName="Redstone Ore" });
             output.Add(new BlockLookup{Id=74,Name="lit_redstone_ore" ,BeData=0 ,JeData=0,FriendlyName="Glowing Redstone Ore" });
             output.Add(new BlockLookup{Id=75,Name="unlit_redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (off)" ,HasDirection = true});
             output.Add(new BlockLookup{Id=76,Name="redstone_torch" ,BeData=0 ,JeData=0,FriendlyName="Redstone Torch (on)",HasDirection = true});
             output.Add(new BlockLookup{Id=77,Name="stone_button" ,BeData=0 ,JeData=0,FriendlyName="Stone Button" });
-            output.Add(new BlockLookup{Id=78,Name="snow_layer" ,BeData=0 ,JeData=0,FriendlyName="Snow" });
+            output.Add(new BlockLookup{Id=78,Name="snow_layer" ,BeData=0 ,JeData=0,FriendlyName="Snow", SortOrder = 2 });
             output.Add(new BlockLookup{Id=79,Name="ice" ,BeData=0 ,JeData=0,FriendlyName="Ice" });
-            output.Add(new BlockLookup{Id=80,Name="snow" ,BeData=0 ,JeData=0,FriendlyName="Snow Block" });
+            output.Add(new BlockLookup{Id=80,Name="snow" ,BeData=0 ,JeData=0,FriendlyName="Snow Block", SortOrder = 2 });
             output.Add(new BlockLookup{Id=81,Name="cactus" ,BeData=0 ,JeData=0,FriendlyName="Cactus" });
             output.Add(new BlockLookup{Id=82,Name="clay" ,BeData=0 ,JeData=0,FriendlyName="Clay" });
             output.Add(new BlockLookup{Id=83,Name="reeds" ,BeData=0 ,JeData=0,FriendlyName="Sugar Canes" });
@@ -703,7 +703,7 @@ namespace WorldEdit.Schematic
             output.Add(new BlockLookup{Id=108,Name="brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Brick Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=109,Name="stone_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Stone Brick Stairs", HasDirection = true });
             output.Add(new BlockLookup{Id=110,Name="mycelium" ,BeData=0 ,JeData=0,FriendlyName="Mycelium" });
-            output.Add(new BlockLookup{Id=111,Name="waterlily" ,BeData=0 ,JeData=0,FriendlyName="Lily Pad" });
+            output.Add(new BlockLookup{Id=111,Name="waterlily" ,BeData=0 ,JeData=0,FriendlyName="Lily Pad" ,SortOrder = 11});
             output.Add(new BlockLookup{Id=112,Name="double_stone_slab" ,BeData=7 ,JeData=0,FriendlyName="Nether Brick" });
             output.Add(new BlockLookup{Id=113,Name="nether_brick_fence" ,BeData=0 ,JeData=0,FriendlyName="Nether Brick Fence" });
             output.Add(new BlockLookup{Id=114,Name="nether_brick_stairs" ,BeData=0 ,JeData=0,FriendlyName="Nether Brick Stairs", HasDirection = true });
@@ -948,7 +948,9 @@ namespace WorldEdit.Schematic
             return output;
         }
     }
-    public class BlockLookup{
+    public class BlockLookup
+    {
+        public int SortOrder { get; set; } = 0;
         public int Id{get;set;}
         public string Name{get;set;}
         public int BeData{get;set;}

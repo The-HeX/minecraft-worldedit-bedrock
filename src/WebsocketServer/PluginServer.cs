@@ -125,13 +125,13 @@ namespace MinecraftPluginServer
             
 
             var counter = 0;
-            do
+            while (!id.Equals(_lastId) && counter < 20 && wait)
             {
                 counter++;
                 Thread.Sleep(500);
                 if (id.Equals(_lastId))
                     return _lastResponse;
-            } while (!id.Equals(_lastId) && counter < 20 && wait);
+            } ;
 
 
             //wait for request id to be returned.

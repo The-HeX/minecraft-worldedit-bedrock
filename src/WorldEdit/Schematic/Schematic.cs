@@ -18,9 +18,6 @@ namespace WorldEdit.Schematic
             var beBlocknames = BlockNameLoopup.BlockNamesBE();
             var blocknames = BlockNameLoopup.Lookup();
             var output = new List<Point>();
-            //foreach (var x1 in Blocks.GroupBy(a => a & 0xFF).Select(a => new {BlockId = a.Key, Count = a.Count()})
-            //    .OrderByDescending(a => a.Count))
-            //    Console.WriteLine($"{x1.BlockId} {x1.Count}");
 
             for (var x = 0; x < Width; x++)
             for (var y = 0; y < Height; y++)
@@ -29,20 +26,26 @@ namespace WorldEdit.Schematic
                 var index = x + (y * Length + z) * Width;
                 var blockID = Blocks[index];//& 0xFF;
                 var meta = Data[index] & 0xFF;
-                var blockName = blocknames.Where(a => a.Id == blockID).DefaultIfEmpty(new BlockLookup() {Name = "air"}).FirstOrDefault();
+                var blockLookup =  BlockLookup(blocknames, beBlocknames, blockID);
                 //var blockName = jeBlocknames.Length>blockID? jeBlocknames[blockID]:"stone";
                 output.Add(new Point
                 {
-                    BlockName = blockName.Name,
+                    BlockName = blockLookup.Name,
                     BlockId = blockID,
-                    Data = blockName.BeData>0? blockName.BeData:  meta,
+                    Data = blockLookup.BeData>0? blockLookup.BeData:  meta,
                     X = x,
                     Y = y,
-                    Z = z
+                    Z = z,
+                    SortOrder=blockLookup.SortOrder
                 });
             }
 
             return output;
+        }
+
+        private BlockLookup BlockLookup(List<BlockLookup> blocknames, string[] beBlocknames, short blockID)
+        {
+            return Materials.Equals("Pocket") ?  blocknames.Where(a => a.Name== beBlocknames[blockID]).DefaultIfEmpty(new BlockLookup() { Name = "air" }).FirstOrDefault():  blocknames.Where(a => a.Id == blockID).DefaultIfEmpty(new BlockLookup() {Name = "air"}).FirstOrDefault();
         }
 
         public static Schematic LoadFromFile(string FileName)
@@ -57,6 +60,8 @@ namespace WorldEdit.Schematic
             output.BlockIds = schematicFile.RootTag.Get<NbtByteArray>("Blocks").Value;
             output.Data = schematicFile.RootTag.Get<NbtByteArray>("Data").Value;
             
+            output.Materials = schematicFile.RootTag.Get<NbtString>("Materials").Value;
+
             var nbtByteArray = schematicFile.RootTag.Get<NbtByteArray>("AddBlocks");
             if (nbtByteArray != null)
             {
@@ -90,6 +95,8 @@ namespace WorldEdit.Schematic
 
             return output;
         }
+
+        public string Materials { get; set; }
 
         public byte[] BlockIds { get; set; }
 

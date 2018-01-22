@@ -95,14 +95,20 @@ namespace WorldEdit.Schematic
                     var y = int.Parse(args[2]);
                     var z = int.Parse(args[3]);
                     var files1 = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
-                    foreach (var f in files1)
+                    var filesToProcess=files1.Select(a => new {Points = LoadFile(a), Filename = a})
+                        .ToList()
+                        .Select(a => new {a.Filename, a.Points, Analysis = ModelAnalyzer.Analyze(a.Points)}).OrderBy(a=>a.Analysis.TotalBlocks)
+                        .ToList();
+                    foreach (var f in filesToProcess)
                     {
                         target.X = x;
                         target.Y = y;
                         target.Z = z;
-                        List<Point> p = LoadFile(f);
-                        SendCommandsToCodeConnection(target, p, rotation, shift);
-                        var results = ModelAnalyzer.Analyze(p);
+                        
+                        _minecraftCommandService.Command($"tp @s {x+f.Analysis.Width/2} {y+f.Analysis.Height} {z-5}");
+                        _minecraftCommandService.Status($"importing {f.Filename}");
+                        SendCommandsToCodeConnection(target, f.Points, rotation, shift);
+                        var results = f.Analysis;
                         x = x + results.Width + 15;
                     }
 
@@ -184,7 +190,7 @@ namespace WorldEdit.Schematic
             sw.Reset();
             sw.Start();
             var importLines =
-                shift.AsParallel().OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
+                shift.AsParallel().OrderBy(a=>a.Start.SortOrder).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
             Console.WriteLine($"time to sort {sw.Elapsed}");
 
             sw.Reset();

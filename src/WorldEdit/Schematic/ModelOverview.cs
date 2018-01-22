@@ -10,5 +10,6 @@ namespace WorldEdit.Schematic
         public List<Layer> Layers { get; set; }
         public Position Minimum { get; set; }
         public Position Maximum { get; set; }
+        public int TotalBlocks { get; set; }
     }
 }

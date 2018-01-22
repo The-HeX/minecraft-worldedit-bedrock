@@ -19,6 +19,7 @@ namespace WorldEdit.Schematic
             results.Length = maxZ - minZ;
             results.Minimum=new Position(minX,minY,minZ);
             results.Maximum=new Position(maxX,maxY,maxZ);
+            results.TotalBlocks = maxX*maxY*maxZ;
             results.Layers= points.GroupBy(a => a.Y).Select(a => new Layer
             {
                 Y = a.Key,
