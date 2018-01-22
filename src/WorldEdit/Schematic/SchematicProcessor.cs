@@ -97,7 +97,7 @@ namespace WorldEdit.Schematic
                     var files1 = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
                     var filesToProcess=files1.Select(a => new {Points = LoadFile(a), Filename = a})
                         .ToList()
-                        .Select(a => new {a.Filename, a.Points, Analysis = ModelAnalyzer.Analyze(a.Points)}).OrderBy(a=>a.Analysis.TotalBlocks)
+                        .Select(a => new {a.Filename, a.Points, Analysis = ModelAnalyzer.Analyze(a.Points)}).OrderBy(a=>a.Analysis.TotalPlaceableBlocks)
                         .ToList();
                     foreach (var f in filesToProcess)
                     {
@@ -106,7 +106,7 @@ namespace WorldEdit.Schematic
                         target.Z = z;
                         
                         _minecraftCommandService.Command($"tp @s {x+f.Analysis.Width/2} {y+f.Analysis.Height} {z-5}");
-                        _minecraftCommandService.Status($"importing {f.Filename}");
+                        _minecraftCommandService.Status($"importing {Path.GetFileName(f.Filename)}");
                         SendCommandsToCodeConnection(target, f.Points, rotation, shift);
                         var results = f.Analysis;
                         x = x + results.Width + 15;

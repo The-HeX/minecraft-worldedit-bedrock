@@ -11,5 +11,7 @@ namespace WorldEdit.Schematic
         public Position Minimum { get; set; }
         public Position Maximum { get; set; }
         public int TotalBlocks { get; set; }
+
+        public int TotalPlaceableBlocks { get; set; }
     }
 }
