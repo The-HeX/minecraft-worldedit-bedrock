@@ -23,7 +23,7 @@ namespace MinecraftPluginServer
         public PluginServer()
         {
             Handlers.Add(new ChatConsoleLoggingHandler());
-            RawHandlers.Add(new MessageFileLogger());
+            //RawHandlers.Add(new MessageFileLogger());
 
             MinecraftPluginBase.OnConnected = OnConnection;
             MinecraftPluginBase.MessageReceived = OnMessage;
