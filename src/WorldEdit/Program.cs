@@ -39,7 +39,17 @@ namespace WorldEdit
                 var minecraftService = new MinecraftWebsocketCommandService(server);
                 var cmdHandler = new CommandControl(minecraftService, new WebsocketCommandFormater());
                 server.AddHandler(new WorldEditHandler(cmdHandler));
+                server.AddHandler(new DrainHandler() {_commandService = minecraftService});
+                server.AddHandler(new ThawHandler() { _commandService = minecraftService });
                 server.AddHandler(new ConnectionHandler(minecraftService));
+                var ahk = AutoHotKey.Run("hotkeys.ahk");
+                AutoHotKey.Callback = s =>
+                {
+                    Console.WriteLine(s);
+                    var args = s.Split(' ');
+                    HandleHotKeys(args,minecraftService);
+                };
+
                 using (var cancelationToken = minecraftService.Run())
                 {
                     while (keepRunning)
@@ -53,6 +63,25 @@ namespace WorldEdit
             }
         }
 
+        private static void HandleHotKeys(string[] args, MinecraftWebsocketCommandService minecraftService)
+        {
+            switch (args[0])
+            {
+                case "1":
+                    minecraftService.Status("Increased radius");
+                    break;
+                case "2":
+                    minecraftService.Status("Decreased radius");
+                    break;
+                case "3":
+                    minecraftService.Status("Shape Hills");
+                    break;
+                case "4":
+                    minecraftService.Status("Replace stone with grass");
+                    break;
+            }
+        }
+
         private static void CodeConnectionLoop()
         {
             using (var codeConnectionProcess = Prerequisites())
@@ -62,7 +91,7 @@ namespace WorldEdit
                 using (var cancelationToken = minecraftService.Run())
                 {
                     //check if connected, if not send connection command through AHK
-                    var ahk = AutoHotKey.Run();
+                    var ahk = AutoHotKey.Run("input.ahk");
                     AutoHotKey.Callback = s =>
                     {
                         Console.WriteLine(s);

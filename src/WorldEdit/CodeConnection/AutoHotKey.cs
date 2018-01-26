@@ -16,12 +16,12 @@ namespace WorldEdit.Input
             Callback(s);
         }
 
-        public static AutoHotkeyEngine Run()
+        public static AutoHotkeyEngine Run(string script)
             //toto make disposable wrapper to deal with saving state, saved positions..ect.
         {
             var ptr = Marshal.GetFunctionPointerForDelegate(ahkDelegate);
             var ahk = new AutoHotkeyEngine();
-            ahk.Load("input.ahk");
+            ahk.Load(script);
             ahk.SetVar("ptr", ptr.ToString());
             return ahk;
         }

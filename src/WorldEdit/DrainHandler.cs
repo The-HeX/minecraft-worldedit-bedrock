@@ -4,17 +4,15 @@ namespace WorldEdit
 {
     public class DrainHandler : ChatHandler
     {
-        private readonly IMinecraftCommandService _commandService;
-
-        public DrainHandler(IMinecraftCommandService commandService)
+        
+        public DrainHandler()
         {
-            _commandService = commandService;
-            _command = "drain";
+            ChatCommand = "drain";
         }
 
         protected override void HandleMessage(string[] args)
         {
-            _commandService.Command("fill ~-15 ~-15 ~-15 ~15 ~15 ~15 air 0 replace water");
+            Command("fill ~-15 ~-15 ~-15 ~15 ~15 ~15 air 0 replace water");
         }
     }
 }

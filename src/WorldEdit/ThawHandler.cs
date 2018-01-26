@@ -1,20 +1,15 @@
-﻿using WorldEdit.Output;
-
-namespace WorldEdit
+﻿namespace WorldEdit
 {
     public class ThawHandler : ChatHandler
     {
-        private readonly IMinecraftCommandService _commandService;
-
-        public ThawHandler(IMinecraftCommandService commandService)
+        public ThawHandler()
         {
-            _commandService = commandService;
-            _command = "thaw";
+            ChatCommand = "thaw";
         }
 
         protected override void HandleMessage(string[] args)
         {
-            _commandService.Command("fill ~-15 ~-15 ~-15 ~15 ~15 ~15 water 0 replace ice");
+            Command("fill ~-15 ~-15 ~-15 ~15 ~15 ~15 water 0 replace ice");
         }
     }
 }
