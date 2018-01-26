@@ -3,20 +3,44 @@
 
 global prt
 
+F2::
+F3::
+F4::
+F6::
+F7::
+F8::
+F9::
+F10::
 F11::
-	 DllCall( ptr , "Str", "1")
-return
 F12::
-	 DllCall( ptr , "Str", "2")
-return
-^s::
-	 DllCall( ptr , "Str", "3")
-return
+^a::
+^b::
+^c::
+^d::
+^e::
+^f::
+^g::
+^h::
+^i::
+^j::
 ^k::
-	 DllCall( ptr , "Str", "4")
-return
 ^l::
-	 DllCall( ptr , "Str", "5")
+^m::
+^n::
+^o::
+^p::
+^q::
+^r::
+^s::
+^t::
+^u::
+^v::
+^w::
+^x::
+^y::
+^z::
+
+DllCall( ptr , "Str", %A_ThisHotkey%)
 return
 
 

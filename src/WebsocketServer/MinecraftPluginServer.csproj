@@ -61,7 +61,7 @@
     <Compile Include="GameEvent.cs" />
     <Compile Include="MessageFileLogger.cs" />
     <Compile Include="MessagePurpose.cs" />
-    <Compile Include="PluginServer.cs" />
+    <Compile Include="SocketServer.cs" />
     <Compile Include="Protocol\Response\Body.cs" />
     <Compile Include="Protocol\CommandMessage.cs" />
     <Compile Include="Protocol\Response\Header.cs" />

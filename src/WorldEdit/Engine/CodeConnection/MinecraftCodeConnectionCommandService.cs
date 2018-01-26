@@ -34,6 +34,12 @@ namespace WorldEdit.Output
         {
             StopWhenEmpty = true;
         }
+
+        public void Subscribe(string toString)
+        {
+            throw new NotImplementedException();
+        }
+
         public  CancellationTokenSource Run()
         {
             var tokenSource = new CancellationTokenSource()

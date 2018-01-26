@@ -1,13 +1,14 @@
 ﻿using MinecraftPluginServer;
 using MinecraftPluginServer.Protocol;
+using WorldEdit.Output;
 
 namespace WorldEdit
 {
     class ConnectionHandler : IConnectionEventHander
     {
-        private readonly MinecraftWebsocketCommandService _minecraftService;
+        private readonly IMinecraftCommandService _minecraftService;
 
-        public ConnectionHandler(MinecraftWebsocketCommandService minecraftService)
+        public ConnectionHandler(IMinecraftCommandService minecraftService)
         {
             _minecraftService = minecraftService;
         }

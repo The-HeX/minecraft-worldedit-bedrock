@@ -9,7 +9,7 @@ namespace MinecraftPluginServer
 {
     class Program
     {
-        static PluginServer wssv;
+        static SocketServer wssv;
         static void Main(string[] args)
         {
             using (var wssv = StartServer("ws://127.0.0.1:12112")) // will stop on disposal.
@@ -52,9 +52,9 @@ namespace MinecraftPluginServer
             }            
         } 
 
-        private static PluginServer StartServer(string url)
+        private static SocketServer StartServer(string url)
         {
-            var server = new PluginServer(url);
+            var server = new SocketServer(url);
             server.Start();
 
             

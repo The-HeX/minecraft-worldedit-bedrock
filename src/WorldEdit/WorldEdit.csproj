@@ -73,58 +73,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatHandler.cs" />
-    <Compile Include="CodeConnectCommandFormater.cs" />
-    <Compile Include="CommandControl.cs" />
-    <Compile Include="Commands\CreateCommand.cs" />
-    <Compile Include="Commands\StringExtensions.cs" />
-    <Compile Include="ConnectionHandler.cs" />
-    <Compile Include="Disposable.cs" />
-    <Compile Include="DrainHandler.cs" />
-    <Compile Include="Geometry\Generators\Circle\CircleGenerator.cs" />
-    <Compile Include="Geometry\Generators\Circle\ICircleOptions.cs" />
-    <Compile Include="Geometry\Generators\GeneratorFactory.cs" />
-    <Compile Include="Geometry\Generators\IGenerator.cs" />
-    <Compile Include="Geometry\Generators\Line\BoxGenerator.cs" />
-    <Compile Include="Geometry\Generators\Line\ILineOptions.cs" />
-    <Compile Include="Geometry\Generators\Line\ISquareOptions.cs" />
-    <Compile Include="Geometry\Generators\Line\LineGenerator.cs" />
-    <Compile Include="Geometry\Generators\Line\SquarGenerator.cs" />
-    <Compile Include="Geometry\Generators\Sphere\ISphereOptions.cs" />
-    <Compile Include="Geometry\Generators\Sphere\SphereGenerator.cs" />
-    <Compile Include="Geometry\Model\Line.cs" />
-    <Compile Include="Geometry\Model\Options.cs" />
-    <Compile Include="Geometry\Model\Point.cs" />
-    <Compile Include="Geometry\Model\Shape.cs" />
-    <Compile Include="CodeConnection\AutoHotKey.cs" />
-    <Compile Include="ICommandFormater.cs" />
-    <Compile Include="MinecraftWebsocketCommandService.cs" />
-    <Compile Include="Output\IMinecraftCommandService.cs" />
-    <Compile Include="CodeConnection\MinecraftCodeConnectionCommandService.cs" />
-    <Compile Include="Schematic\Rotate.cs" />
-    <Compile Include="Schematic\SchematicProcessor.cs" />
-    <Compile Include="Schematic\BlockCount.cs" />
-    <Compile Include="Schematic\BlockNameLoopup.cs" />
-    <Compile Include="Schematic\Layer.cs" />
-    <Compile Include="Schematic\Line.cs" />
-    <Compile Include="Schematic\ModelAnalyzer.cs" />
-    <Compile Include="Schematic\ModelOverview.cs" />
-    <Compile Include="Schematic\Point.cs" />
+    <Compile Include="Engine\ChatHandler.cs" />
+    <Compile Include="Engine\CodeConnectCommandFormater.cs" />
+    <Compile Include="IHotkeyHandler.cs" />
+    <Compile Include="ISendCommand.cs" />
+    <Compile Include="Plugins\CommandControl.cs" />
+    <Compile Include="Engine\Commands\CreateCommand.cs" />
+    <Compile Include="Engine\Commands\StringExtensions.cs" />
+    <Compile Include="Plugins\ConnectionHandler.cs" />
+    <Compile Include="Engine\Disposable.cs" />
+    <Compile Include="Plugins\CreateHandler.cs" />
+    <Compile Include="Plugins\DrainHandler.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Circle\CircleGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Circle\ICircleOptions.cs" />
+    <Compile Include="Plugins\Geometry\Generators\GeneratorFactory.cs" />
+    <Compile Include="Plugins\Geometry\Generators\IGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Line\BoxGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Line\ILineOptions.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Line\ISquareOptions.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Line\LineGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Line\SquarGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Sphere\ISphereOptions.cs" />
+    <Compile Include="Plugins\Geometry\Generators\Sphere\SphereGenerator.cs" />
+    <Compile Include="Plugins\Geometry\Model\Line.cs" />
+    <Compile Include="Plugins\Geometry\Model\Options.cs" />
+    <Compile Include="Plugins\Geometry\Model\Point.cs" />
+    <Compile Include="Plugins\Geometry\Model\Shape.cs" />
+    <Compile Include="Engine\CodeConnection\AutoHotKey.cs" />
+    <Compile Include="Engine\ICommandFormater.cs" />
+    <Compile Include="Engine\MinecraftWebsocketCommandService.cs" />
+    <Compile Include="Engine\IMinecraftCommandService.cs" />
+    <Compile Include="Engine\CodeConnection\MinecraftCodeConnectionCommandService.cs" />
+    <Compile Include="Engine\PluginServer.cs" />
+    <Compile Include="Plugins\SchematicHandler.cs" />
+    <Compile Include="Plugins\Schematic\Rotate.cs" />
+    <Compile Include="Plugins\Schematic\SchematicProcessor.cs" />
+    <Compile Include="Plugins\Schematic\BlockCount.cs" />
+    <Compile Include="Plugins\Schematic\BlockNameLoopup.cs" />
+    <Compile Include="Plugins\Schematic\Layer.cs" />
+    <Compile Include="Plugins\Schematic\Line.cs" />
+    <Compile Include="Plugins\Schematic\ModelAnalyzer.cs" />
+    <Compile Include="Plugins\Schematic\ModelOverview.cs" />
+    <Compile Include="Plugins\Schematic\Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schematic\LineFactory.cs" />
-    <Compile Include="Schematic\Schematic.cs" />
-    <Compile Include="ThawHandler.cs" />
-    <Compile Include="WebsocketCommandFormater.cs" />
-    <Compile Include="WorldEditHandler.cs" />
+    <Compile Include="Plugins\Schematic\LineFactory.cs" />
+    <Compile Include="Plugins\Schematic\Schematic.cs" />
+    <Compile Include="Plugins\ThawHandler.cs" />
+    <Compile Include="Engine\WebsocketCommandFormater.cs" />
+    <Compile Include="Plugins\WorldEditHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="..\refbins\x64\AutoHotkey.exe">
       <Link>x64\AutoHotkey.exe</Link>
-    </Content>
-    <Content Include="Input.ahk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="hotkeys.ahk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -132,8 +134,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Geometry\Generators\Rectangle\" />
-    <Folder Include="Input\" />
+    <Folder Include="Plugins\Geometry\Generators\Rectangle\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\refbins\x64\AutoHotkey.dll">

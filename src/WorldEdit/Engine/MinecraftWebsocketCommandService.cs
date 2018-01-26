@@ -10,9 +10,9 @@ namespace WorldEdit
 {
     public class MinecraftWebsocketCommandService : IMinecraftCommandService
     {
-        private readonly PluginServer _server;
+        private readonly SocketServer _server;
 
-        public MinecraftWebsocketCommandService(PluginServer server)
+        public MinecraftWebsocketCommandService(SocketServer server)
         {
             _server = server;
         }

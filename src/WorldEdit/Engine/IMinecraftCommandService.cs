@@ -14,5 +14,6 @@ namespace WorldEdit.Output
         ICommandFormater GetFormater();
 
         void ShutDown();
+        void Subscribe(string toString);
     }
 }
