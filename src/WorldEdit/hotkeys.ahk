@@ -39,8 +39,9 @@ F12::
 ^x::
 ^y::
 ^z::
-
-DllCall( ptr , "Str", %A_ThisHotkey%)
+^-::
+^=::
+DllCall( ptr , "Str", A_ThisHotkey)
 return
 
 

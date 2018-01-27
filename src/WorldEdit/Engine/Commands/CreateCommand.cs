@@ -20,7 +20,7 @@ namespace WorldEdit.Commands
             _minecraft = minecraft;
         }
 
-        public List<Line> Handle(string[] commandArgs, Position position,List<SavedPosition> savedPositions)
+        public List<Line>   Handle(string[] commandArgs, Position position,List<SavedPosition> savedPositions)
         {
             var command = commandArgs[0];
             var lines = new List<Line>();
