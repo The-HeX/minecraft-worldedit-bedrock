@@ -11,7 +11,7 @@ namespace WorldEdit
 
         public void Handle(string[] args, IMinecraftCommandService minecraftService)
         {
-            for (int i = 0; i <= RadiusHandler.Radius; i++)
+            for (var i = 0; i <= RadiusHandler.Radius; i++)
             {
                 minecraftService.Command($"fill ~-{i} ~{i} ~-{i} ~{i} ~{i} ~{i} air");
             }

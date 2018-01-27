@@ -5,6 +5,7 @@ namespace WorldEdit
     public class RadiusHandler : IHotkeyHandler
     {
         public static int Radius { get; private set; } = 3;
+
         public bool CanHandle(string[] args)
         {
             if (args.Length > 0)
@@ -24,7 +25,7 @@ namespace WorldEdit
                 Radius--;
                 if (Radius == 0)
                 {
-                    Radius=1;
+                    Radius = 1;
                 }
             }
             else

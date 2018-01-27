@@ -10,9 +10,7 @@ namespace WorldEdit.Output
         Position GetLocation();
         void Wait();
         CancellationTokenSource Run();
-
         ICommandFormater GetFormater();
-
         void ShutDown();
         void Subscribe(string toString);
     }

@@ -11,7 +11,6 @@ namespace WorldEdit
     {
         private static bool keepRunning = true;
         private IMinecraftCommandService minecraftService;
-
         private List<IGameEventHander> GameHandlers { get; } = new List<IGameEventHander>();
         private List<IHotkeyHandler> HotkeyHandlers { get; } = new List<IHotkeyHandler>();
 
@@ -28,7 +27,7 @@ namespace WorldEdit
                 {
                     if (gameHandler is ISendCommand)
                     {
-                        ((ISendCommand)gameHandler).CommandService = minecraftService;
+                        ((ISendCommand) gameHandler).CommandService = minecraftService;
                     }
                     server.AddHandler(gameHandler);
                 }
@@ -72,7 +71,7 @@ namespace WorldEdit
             {
                 if (handler.CanHandle(args))
                 {
-                    handler.Handle(args,minecraftService);
+                    handler.Handle(args, minecraftService);
                 }
             }
         }

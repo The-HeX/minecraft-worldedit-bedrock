@@ -8,7 +8,7 @@ using WorldEdit.Output;
 
 namespace WorldEdit.Schematic
 {
-    public  class SchematicProcessor
+    public class SchematicProcessor
     {
         private readonly IMinecraftCommandService _minecraftCommandService;
 
@@ -19,7 +19,7 @@ namespace WorldEdit.Schematic
 
         public void SchematicCommandProcessor(string[] args)
         {
-         //   var s = new MinecraftCodeConnectionCommandService();
+            //   var s = new MinecraftCodeConnectionCommandService();
             var target = new Position(0, 0, 0);
             var shift = new Position(0, 0, 0);
             var rotation = Rotate.None;
@@ -27,25 +27,27 @@ namespace WorldEdit.Schematic
             var command = args[0];
 
 
-
             switch (command)
             {
-                case "list":                    
+                case "list":
                     var files = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
 
                     _minecraftCommandService
-                        .Status("Schematics: " + files.Select(b => $"\n" + Path.GetFileName(b)).OrderBy(a=>a).Aggregate((a, b) => a += b));
+                        .Status("Schematics: " +
+                                files.Select(b => $"\n" + Path.GetFileName(b))
+                                    .OrderBy(a => a)
+                                    .Aggregate((a, b) => a += b));
 
                     break;
                 case "analyze":
                 {
-                    List<Point> points = LoadFile(args[1]);
+                    var points = LoadFile(args[1]);
                     var results = ModelAnalyzer.Analyze(points);
                     var firstGroundLayer =
                         results.Layers.First(a => a.Blocks.Any(b => b.Block.Equals("air") && b.PercentOfLayer >= 0.5))
                             .Y;
                     string output =
-                        $"{Path.GetFileName(args[1])} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width * results.Height * results.Length}";
+                        $"{Path.GetFileName(args[1])} Model Size: X:{results.Width} Y:{results.Height} Z:{results.Length} Ground Level:{firstGroundLayer} Total Blocks:{results.Width*results.Height*results.Length}";
 
                     _minecraftCommandService.Status(output);
                     break;
@@ -60,19 +62,16 @@ namespace WorldEdit.Schematic
                     }
                     if (args.Length >= 5)
                     {
-                        if (args[2].StartsWith("~")||args[3].StartsWith("~")||args[4].StartsWith("~"))
+                        if (args[2].StartsWith("~") || args[3].StartsWith("~") || args[4].StartsWith("~"))
                         {
                             //get current position
                             //parse and add to current position.
                             _minecraftCommandService.Status("relative positions are not supported.");
-                            return;                            
+                            return;
                         }
-                        else
-                        {
-                            target.X = Convert.ToInt32(args[2]);
-                            target.Y = Convert.ToInt32(args[3]);
-                            target.Z = Convert.ToInt32(args[4]);
-                        }
+                        target.X = Convert.ToInt32(args[2]);
+                        target.Y = Convert.ToInt32(args[3]);
+                        target.Z = Convert.ToInt32(args[4]);
                     }
                     if (args.Length >= 6)
                     {
@@ -86,26 +85,28 @@ namespace WorldEdit.Schematic
                     }
 
                     Console.WriteLine($"importing {FileName} to {target}");
-                    List<Point> points1 = LoadFile(FileName);
+                    var points1 = LoadFile(FileName);
                     SendCommandsToCodeConnection(target, points1, rotation, shift);
                     break;
                 case "test":
                     //analyze then import all schematics in the folder.
-                    var x = int.Parse( args[1]);
+                    var x = int.Parse(args[1]);
                     var y = int.Parse(args[2]);
                     var z = int.Parse(args[3]);
                     var files1 = Directory.GetFiles(ConfigurationManager.AppSettings["data"], "*.schematic");
-                    var filesToProcess=files1.Select(a => new {Points = LoadFile(a), Filename = a})
+                    var filesToProcess = files1.Select(a => new {Points = LoadFile(a), Filename = a})
                         .ToList()
-                        .Select(a => new {a.Filename, a.Points, Analysis = ModelAnalyzer.Analyze(a.Points)}).OrderBy(a=>a.Analysis.TotalPlaceableBlocks)
+                        .Select(a => new {a.Filename, a.Points, Analysis = ModelAnalyzer.Analyze(a.Points)})
+                        .OrderBy(a => a.Analysis.TotalPlaceableBlocks)
                         .ToList();
                     foreach (var f in filesToProcess)
                     {
                         target.X = x;
                         target.Y = y;
                         target.Z = z;
-                        
-                        _minecraftCommandService.Command($"tp @s {x+f.Analysis.Width/2} {y+f.Analysis.Height} {z-5}");
+
+                        _minecraftCommandService.Command(
+                            $"tp @s {x + f.Analysis.Width/2} {y + f.Analysis.Height} {z - 5}");
                         _minecraftCommandService.Status($"importing {Path.GetFileName(f.Filename)}");
                         SendCommandsToCodeConnection(target, f.Points, rotation, shift);
                         var results = f.Analysis;
@@ -121,25 +122,23 @@ namespace WorldEdit.Schematic
                                                     "schematic import name x y z (rotation) (Shift X) (Shift Y) (Shift Z)");
                     break;
             }
-            
         }
 
         private static List<Point> LoadFile(string FileName)
         {
-            
             var points = new List<Point>();
             Schematic schematic;
-                if (!FileName.EndsWith("schematic"))
-                {
-                    FileName += ".schematic";
-                }
-                var combine = Path.Combine(ConfigurationManager.AppSettings["data"], FileName);
-                if (!File.Exists(FileName) && File.Exists(combine))
-                {
-                    FileName = combine;
-                }
-                schematic = Schematic.LoadFromFile(FileName);
-                points = schematic.GetPoints();
+            if (!FileName.EndsWith("schematic"))
+            {
+                FileName += ".schematic";
+            }
+            var combine = Path.Combine(ConfigurationManager.AppSettings["data"], FileName);
+            if (!File.Exists(FileName) && File.Exists(combine))
+            {
+                FileName = combine;
+            }
+            schematic = Schematic.LoadFromFile(FileName);
+            points = schematic.GetPoints();
             //var outputFilename = Path.GetFileNameWithoutExtension(FileName) + ".fill";
             //if (args.Length > 2)
             //{
@@ -148,11 +147,10 @@ namespace WorldEdit.Schematic
             return points;
         }
 
-
         private void SendCommandsToCodeConnection(Position target, List<Point> points, Rotate rotation,
             Position clip = null)
         {
-           // var service = new MinecraftCodeConnectionCommandService();
+            // var service = new MinecraftCodeConnectionCommandService();
             var sw = new Stopwatch();
 
 
@@ -190,7 +188,12 @@ namespace WorldEdit.Schematic
             sw.Reset();
             sw.Start();
             var importLines =
-                shift.AsParallel().OrderBy(a=>a.Start.SortOrder).ThenBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
+                shift.AsParallel()
+                    .OrderBy(a => a.Start.SortOrder)
+                    .ThenBy(a => a.Start.Y)
+                    .ThenBy(a => a.Start.X)
+                    .ThenBy(a => a.Start.Z)
+                    .ToList();
             Console.WriteLine($"time to sort {sw.Elapsed}");
 
             sw.Reset();
@@ -200,8 +203,11 @@ namespace WorldEdit.Schematic
             sw.Start();
             foreach (var line in importLines)
             {
-                var command = _minecraftCommandService.GetFormater().Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X, line.End.Y, line.End.Z, line.BlockName, line.Data.ToString());
-                _minecraftCommandService.Command(command);//$"fill?from={line.Start.X} {line.Start.Y} {line.Start.Z}&to={line.End.X} {line.End.Y} {line.End.Z}&tileName={line.BlockName}&tileData={line.Data}");
+                var command = _minecraftCommandService.GetFormater()
+                    .Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X, line.End.Y, line.End.Z, line.BlockName,
+                        line.Data.ToString());
+                _minecraftCommandService.Command(command);
+                    //$"fill?from={line.Start.X} {line.Start.Y} {line.Start.Z}&to={line.End.X} {line.End.Y} {line.End.Z}&tileName={line.BlockName}&tileData={line.Data}");
             }
             sw.Stop();
             _minecraftCommandService.Status($"time to queue commands {sw.Elapsed.TotalSeconds}");

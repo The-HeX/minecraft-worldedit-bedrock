@@ -23,9 +23,8 @@ namespace ShapeGenerator.Generators
                 case Shape.Triangle:
                 case Shape.Rectangle:
                 default:
-                    throw new NotImplementedException($"Cannot process a {shape.ToString()} yet");
+                    throw new NotImplementedException($"Cannot process a {shape} yet");
             }
-            
         }
     }
 }

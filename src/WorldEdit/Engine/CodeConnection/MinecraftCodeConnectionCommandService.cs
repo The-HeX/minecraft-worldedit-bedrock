@@ -10,15 +10,14 @@ namespace WorldEdit.Output
 {
     public class MinecraftCodeConnectionCommandService : IMinecraftCommandService
     {
-        private static bool pause;
         private const int SLEEP_WHEN_EMPTY = 5000;
         private const int SLEEP_WHEN_LOOPING = 100;
+        private static bool pause;
+        public Action<string> MessageReceived = s => Console.WriteLine(s);
         private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
         private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
         public int MessageCount { get; private set; }
-
-        public static bool StopWhenEmpty { get; set; } = false;
-        public Action<string> MessageReceived = (s) => Console.WriteLine(s);
+        public static bool StopWhenEmpty { get; set; }
 
         public void Command(string command)
         {
@@ -40,11 +39,11 @@ namespace WorldEdit.Output
             throw new NotImplementedException();
         }
 
-        public  CancellationTokenSource Run()
+        public CancellationTokenSource Run()
         {
             var tokenSource = new CancellationTokenSource()
                 ;
-            Task.Run( () =>
+            Task.Run(() =>
             {
                 string message;
                 using (var httpclient = new HttpClient())
@@ -58,7 +57,6 @@ namespace WorldEdit.Output
                                 if (Statuses.TryDequeue(out message))
                                 {
                                     var result =
-
                                         httpclient.GetStringAsync(
                                             $"http://localhost:8080/executeasother?origin=@p&position=~%20~%20~&command=tell%20@s%20" +
                                             message);
@@ -95,7 +93,7 @@ namespace WorldEdit.Output
                     }
                 }
             }, tokenSource.Token);
-            
+
             return tokenSource;
         }
 
@@ -114,11 +112,10 @@ namespace WorldEdit.Output
                     httpclient.GetStringAsync($"http://localhost:8080/testforblock?position=~ ~ ~&tileName=air").Result;
                 var data = JsonConvert.DeserializeObject<TestForBlock>(stringResult);
                 location = data.position;
-
             }
             pause = false;
-                        
-            return new Position(location.x,location.y,location.z);
+
+            return new Position(location.x, location.y, location.z);
         }
 
         public void Wait()
@@ -127,9 +124,9 @@ namespace WorldEdit.Output
             {
                 Thread.Sleep(1000);
             }
-            return;
         }
     }
+
     public class TestForBlock
     {
         public bool matches { get; set; }
@@ -141,10 +138,10 @@ namespace WorldEdit.Output
         public int x { get; set; }
         public int y { get; set; }
         public int z { get; set; }
+
         public override string ToString()
         {
             return $"X: {x} Y:{y} Z:{z}";
         }
     }
-
 }

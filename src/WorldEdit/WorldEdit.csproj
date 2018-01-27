@@ -77,6 +77,7 @@
     <Compile Include="Engine\CodeConnectCommandFormater.cs" />
     <Compile Include="IHotkeyHandler.cs" />
     <Compile Include="ISendCommand.cs" />
+    <Compile Include="Plugins\LandSculptHandler.cs" />
     <Compile Include="Plugins\CommandControl.cs" />
     <Compile Include="Engine\Commands\CreateCommand.cs" />
     <Compile Include="Engine\Commands\StringExtensions.cs" />
@@ -122,7 +123,7 @@
     <Compile Include="Plugins\ThawHandler.cs" />
     <Compile Include="Engine\WebsocketCommandFormater.cs" />
     <Compile Include="Plugins\WorldEditHandler.cs" />
-    <Compile Include="RadiusHandler.cs" />
+    <Compile Include="Plugins\RadiusHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

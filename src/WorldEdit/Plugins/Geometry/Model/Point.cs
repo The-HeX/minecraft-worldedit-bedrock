@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShapeGenerator
+﻿namespace ShapeGenerator
 {
     public class Point
     {
@@ -8,9 +6,9 @@ namespace ShapeGenerator
         public int Y { get; set; }
         public int Z { get; set; }
 
-        public  Point Clone()
+        public Point Clone()
         {
-            return new Point { X = X, Y = Y, Z = Z };
+            return new Point {X = X, Y = Y, Z = Z};
         }
     }
 }

@@ -6,6 +6,16 @@ namespace ShapeGenerator.Generators
 {
     public class SphereGenerator : IGenerator
     {
+        public List<Line> TransformToLines(List<Point> points, Options options)
+        {
+            return LinesFromPoints(points, options);
+        }
+
+        List<Line> IGenerator.Run(Options options)
+        {
+            return TransformToLines(Run(options), options);
+        }
+
         public List<Point> Run(Options options)
         {
             var points = new List<Point>();
@@ -23,27 +33,22 @@ namespace ShapeGenerator.Generators
             var upperY = centerY + radius + 1;
 
             for (var y = lowerY; y < upperY; y++)
-            for (var x = lowerX; x < upperX; x++)
-            for (var z = lowerZ; z < upperZ; z++)
-            {
-                var distance = Distance(centerX, centerZ, centerY, x, z, y);
-
-                if (distance == radius)
-                    points.Add(new Point { X = x, Z = z, Y = y });
-                if (options.Fill)
-                {
-                    if (distance < radius)
+                for (var x = lowerX; x < upperX; x++)
+                    for (var z = lowerZ; z < upperZ; z++)
                     {
-                        points.Add(new Point { X = x, Z = z, Y = y });
-                    }
-                }
-            }
-            return points;
-        }
+                        var distance = Distance(centerX, centerZ, centerY, x, z, y);
 
-        public List<Line> TransformToLines(List<Point> points,Options options)
-        {
-            return LinesFromPoints(points, options);
+                        if (distance == radius)
+                            points.Add(new Point {X = x, Z = z, Y = y});
+                        if (options.Fill)
+                        {
+                            if (distance < radius)
+                            {
+                                points.Add(new Point {X = x, Z = z, Y = y});
+                            }
+                        }
+                    }
+            return points;
         }
 
         public static List<Line> LinesFromPoints(List<Point> points, Options options)
@@ -51,11 +56,11 @@ namespace ShapeGenerator.Generators
             var lines = new List<Line>();
             foreach (var point in points.ToList())
             {
-                var item1 = new Line { Start = point.Clone(), End = point.Clone() ,Block = options.Block};
+                var item1 = new Line {Start = point.Clone(), End = point.Clone(), Block = options.Block};
                 lines.Add(item1);
             }
-            lines = lines.OrderBy(a => a.Start.X).ThenBy(a=>a.Start.Z).ThenBy(a => a.Start.Y).ToList();
-            lines= SquashLines(lines);
+            lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ToList();
+            lines = SquashLines(lines);
             lines = lines.OrderBy(a => a.Start.Y).ThenBy(a => a.Start.X).ThenBy(a => a.Start.Z).ToList();
             lines = SquashLines(lines);
 
@@ -89,14 +94,13 @@ namespace ShapeGenerator.Generators
                 {
                     output.AddRange(line.SplitToAMaxSize(32));
                 }
-
             }
             return output;
         }
 
         public static List<Line> SquashLines(List<Line> lines)
-        {       
-            for(var i = 0;i<lines.Count-1;i++)
+        {
+            for (var i = 0; i < lines.Count - 1; i++)
             {
                 for (var j = i + 1; j < lines.Count; j++)
                 {
@@ -116,11 +120,6 @@ namespace ShapeGenerator.Generators
         {
             return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),
                 0);
-        }
-
-        List<Line> IGenerator.Run(Options options)
-        {
-            return TransformToLines(Run(options), options);
         }
     }
 }

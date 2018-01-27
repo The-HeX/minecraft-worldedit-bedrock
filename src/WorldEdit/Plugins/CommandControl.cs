@@ -12,7 +12,6 @@ namespace WorldEdit
     {
         private readonly ICommandFormater _commandFormater;
         private readonly IMinecraftCommandService _minecraftCommandService;
-
         private readonly SavedPositionService SavedPositions = new SavedPositionService();
 
         public CommandControl(IMinecraftCommandService minecraftCommandService, ICommandFormater commandFormater)
@@ -35,6 +34,7 @@ namespace WorldEdit
                 HandlePositionCommand(commandArgs, position, _minecraftCommandService);
             //measure
         }
+
         //private void HandleCreateCommand(string[] commandArgs, IMinecraftCommandService minecraft, Position position, List<SavedPosition> storaedPositions)
         //{
         //    var lines = new CreateCommandHandler(minecraft).Handle(commandArgs,  position, storaedPositions);

@@ -10,13 +10,21 @@ namespace WorldEdit
 {
     public class MinecraftWebsocketCommandService : IMinecraftCommandService
     {
+        private const int SLEEP_WHEN_EMPTY = 2000;
+        private const int SLEEP_WHEN_LOOPING = 75;
+        private static bool pause;
         private readonly SocketServer _server;
+        public Action<string> MessageReceived = a => { };
 
         public MinecraftWebsocketCommandService(SocketServer server)
         {
             _server = server;
         }
 
+        private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
+        private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
+        public int MessageCount { get; private set; }
+        public static bool StopWhenEmpty { get; set; }
 
         public void Subscribe(string message)
         {
@@ -24,6 +32,7 @@ namespace WorldEdit
             _server.Subscribe(message);
             pause = false;
         }
+
         public void Command(string command)
         {
             Commands.Enqueue(command);
@@ -38,7 +47,7 @@ namespace WorldEdit
         {
             pause = true;
             var result = _server.Send("testforblock ~ ~ ~ air");
-            pause = false;            
+            pause = false;
             return new Position(result.body.position.x, result.body.position.y, result.body.position.z);
         }
 
@@ -48,16 +57,7 @@ namespace WorldEdit
             {
                 Thread.Sleep(1000);
             }
-            return;
         }
-
-        private static bool pause=false;
-        private const int SLEEP_WHEN_EMPTY = 2000;
-        private const int SLEEP_WHEN_LOOPING = 75;
-        private ConcurrentQueue<string> Commands { get; } = new ConcurrentQueue<string>();
-        private ConcurrentQueue<string> Statuses { get; } = new ConcurrentQueue<string>();
-        public int MessageCount { get; private set; }
-        public static bool StopWhenEmpty { get; set; } = false;
 
         public CancellationTokenSource Run()
         {
@@ -74,7 +74,7 @@ namespace WorldEdit
                         {
                             if (Statuses.TryDequeue(out message))
                             {
-                                _server.Send(message,"",false);
+                                _server.Send(message, "", false);
                                 MessageCount++;
                             }
                         }
@@ -82,7 +82,7 @@ namespace WorldEdit
                         {
                             if (Commands.TryDequeue(out message))
                             {
-                                _server.Send(message,"",false);
+                                _server.Send(message, "", false);
                                 MessageCount++;
                             }
                         }
@@ -118,7 +118,5 @@ namespace WorldEdit
         {
             StopWhenEmpty = true;
         }
-
-        public Action<string> MessageReceived = (a) => { };
     }
 }

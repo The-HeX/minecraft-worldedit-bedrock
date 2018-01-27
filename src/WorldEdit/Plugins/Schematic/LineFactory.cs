@@ -4,14 +4,11 @@ using System.Linq;
 
 namespace WorldEdit.Schematic
 {
-    public class LineFactory 
+    public class LineFactory
     {
-
-
         public static List<Line> CreateFromPoints(List<Point> points)
         {
-
-            var lines = points.Count<=50000? WorkingMethod(points): Parallel(points);
+            var lines = points.Count <= 50000 ? WorkingMethod(points) : Parallel(points);
             return lines;
         }
 
@@ -30,34 +27,12 @@ namespace WorldEdit.Schematic
                                 BlockName = point.BlockName,
                                 Data = point.Data
                             }));
-            lines=lines.AsParallel().GroupBy(a => new {a.Start.X, a.Start.Z}).Select(b =>
+            lines = lines.AsParallel().GroupBy(a => new {a.Start.X, a.Start.Z}).Select(b =>
             {
                 var items = b.OrderBy(a => a.Start.Y).ToList();
                 var output = new List<Line>();
                 output.Add(items[0]);
-                for (int i = 0; i < items.Count; i++)
-                {
-                    var last = output.Last();
-                    if (last.CanCombine(items[i]))
-                    {
-                        output.Add(last.Combine(items[i]));
-                        output.Remove(last);
-                    }
-                    else
-                    {
-                        output.Add(items[i]);
-                    }
-                }
-                return output;
-            }).SelectMany(a=>a.ToList()).ToList();
-
-
-            lines = lines.AsParallel().GroupBy(a => new { a.Start.Y, a.Start.Z }).Select(b =>
-            {
-                var items = b.OrderBy(a => a.Start.X).ToList();
-                var output = new List<Line>();
-                output.Add(items[0]);
-                for (int i = 0; i < items.Count; i++)
+                for (var i = 0; i < items.Count; i++)
                 {
                     var last = output.Last();
                     if (last.CanCombine(items[i]))
@@ -73,12 +48,34 @@ namespace WorldEdit.Schematic
                 return output;
             }).SelectMany(a => a.ToList()).ToList();
 
-            lines = lines.AsParallel().GroupBy(a => new { a.Start.Y, a.Start.X }).Select(b =>
+
+            lines = lines.AsParallel().GroupBy(a => new {a.Start.Y, a.Start.Z}).Select(b =>
+            {
+                var items = b.OrderBy(a => a.Start.X).ToList();
+                var output = new List<Line>();
+                output.Add(items[0]);
+                for (var i = 0; i < items.Count; i++)
+                {
+                    var last = output.Last();
+                    if (last.CanCombine(items[i]))
+                    {
+                        output.Add(last.Combine(items[i]));
+                        output.Remove(last);
+                    }
+                    else
+                    {
+                        output.Add(items[i]);
+                    }
+                }
+                return output;
+            }).SelectMany(a => a.ToList()).ToList();
+
+            lines = lines.AsParallel().GroupBy(a => new {a.Start.Y, a.Start.X}).Select(b =>
             {
                 var items = b.OrderBy(a => a.Start.Z).ToList();
                 var output = new List<Line>();
                 output.Add(items[0]);
-                for (int i = 0; i < items.Count; i++)
+                for (var i = 0; i < items.Count; i++)
                 {
                     var last = output.Last();
                     if (last.CanCombine(items[i]))
@@ -149,14 +146,13 @@ namespace WorldEdit.Schematic
                 {
                     output.AddRange(line.SplitToAMaxSize(32));
                 }
-
             }
             return output;
         }
 
         public static List<Line> SquashLines(List<Line> lines)
-        {       
-            for(var i = 0;i<lines.Count-1;i++)
+        {
+            for (var i = 0; i < lines.Count - 1; i++)
             {
                 for (var j = i + 1; j < lines.Count; j++)
                 {
@@ -177,7 +173,5 @@ namespace WorldEdit.Schematic
             return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),
                 0);
         }
-
-     
     }
 }

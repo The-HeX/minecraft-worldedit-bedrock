@@ -1,10 +1,7 @@
-﻿using WorldEdit.Output;
-
-namespace WorldEdit
+﻿namespace WorldEdit
 {
     public class DrainHandler : ChatHandler
     {
-        
         public DrainHandler()
         {
             ChatCommand = "drain";
@@ -16,4 +13,3 @@ namespace WorldEdit
         }
     }
 }
-

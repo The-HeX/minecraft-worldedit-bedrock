@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Lifetime;
 
 namespace ShapeGenerator
 {
@@ -8,7 +7,6 @@ namespace ShapeGenerator
     {
         public Point Start { get; set; }
         public Point End { get; set; }
-
         public string Block { get; set; }
 
         public bool CanCombine(Line line)
@@ -52,14 +50,15 @@ namespace ShapeGenerator
             return false;
         }
 
-        public  Line Combine(Line line)
+        public Line Combine(Line line)
         {
             if (CanCombine(line))
             {
-                return new Line() {
-                    Start= Start.Clone(),
-                    End=line.End.Clone(),
-                    Block=Block
+                return new Line
+                {
+                    Start = Start.Clone(),
+                    End = line.End.Clone(),
+                    Block = Block
                 };
             }
             throw new InvalidOperationException("lines cannot be combined");
@@ -87,30 +86,31 @@ namespace ShapeGenerator
             var nextPoint = Start.Clone();
             while ((End.X - nextPoint.X) > size)
             {
-                var endPoint = new Point() {Y = End.Y, Z = End.Z, X = nextPoint.X + size};
-                output.Add(new Line() {Block = Block, Start = nextPoint.Clone(), End = endPoint});
+                var endPoint = new Point {Y = End.Y, Z = End.Z, X = nextPoint.X + size};
+                output.Add(new Line {Block = Block, Start = nextPoint.Clone(), End = endPoint});
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.Z = Start.Z;
                 nextPoint.X++;
             }
-            output.Add(new Line() {Start = nextPoint, End = End.Clone(), Block = Block});
+            output.Add(new Line {Start = nextPoint, End = End.Clone(), Block = Block});
             return output;
         }
+
         private IEnumerable<Line> SplitZAxis(int size)
         {
             var output = new List<Line>();
             var nextPoint = Start.Clone();
             while ((End.Z - nextPoint.Z) > size)
             {
-                var endPoint = new Point() { Y = End.Y, X = End.X, Z = nextPoint.Z + size };
-                output.Add(new Line() { Block = Block, Start = nextPoint.Clone(), End = endPoint });
+                var endPoint = new Point {Y = End.Y, X = End.X, Z = nextPoint.Z + size};
+                output.Add(new Line {Block = Block, Start = nextPoint.Clone(), End = endPoint});
                 nextPoint = endPoint.Clone();
                 nextPoint.Y = Start.Y;
                 nextPoint.X = Start.X;
                 nextPoint.Z++;
             }
-            output.Add(new Line() { Start = nextPoint, End = End.Clone(), Block = Block });
+            output.Add(new Line {Start = nextPoint, End = End.Clone(), Block = Block});
             return output;
         }
     }

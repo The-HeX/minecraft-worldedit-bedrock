@@ -3,7 +3,7 @@ using MinecraftPluginServer.Protocol.Response;
 
 namespace WorldEdit
 {
-    public class WorldEditHandler: IGameEventHander
+    public class WorldEditHandler : IGameEventHander
     {
         private readonly CommandControl _cmdHandler;
 
@@ -14,7 +14,7 @@ namespace WorldEdit
 
         public bool CanHandle(GameEvent eventname)
         {
-            return eventname == GameEvent.PlayerMessage ;
+            return eventname == GameEvent.PlayerMessage;
         }
 
         public Result Handle(Response message)
@@ -25,11 +25,10 @@ namespace WorldEdit
                 if (args.Length > 1 &&
                     (args[0].Equals("schematic") || args[0].Equals("create") || args[0].Equals("pos")))
                 {
-
                     _cmdHandler.HandleCommand(args);
                 }
             }
-            return new Result() {};
+            return new Result;
         }
     }
 }

@@ -22,11 +22,13 @@ namespace WorldEdit
                 var args = message.body.properties.Message.Split(' ');
                 if (args.Length >= 1 && args[0].Equals(ChatCommand))
                 {
-                    HandleMessage(args.Where(a=>!string.IsNullOrWhiteSpace(a)).ToArray());
+                    HandleMessage(args.Where(a => !string.IsNullOrWhiteSpace(a)).ToArray());
                 }
             }
             return new Result();
         }
+
+        public IMinecraftCommandService CommandService { get; set; }
 
         public void Command(string commannd)
         {
@@ -36,7 +38,5 @@ namespace WorldEdit
         protected virtual void HandleMessage(string[] args)
         {
         }
-
-        public IMinecraftCommandService CommandService { get; set; }
     }
 }
