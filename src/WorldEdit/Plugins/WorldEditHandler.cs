@@ -22,13 +22,12 @@ namespace WorldEdit
             if (message.body.properties.MessageType.Equals("chat"))
             {
                 var args = message.body.properties.Message.Split(' ');
-                if (args.Length > 1 &&
-                    (args[0].Equals("schematic") || args[0].Equals("create") || args[0].Equals("pos")))
+                if (args.Length > 1 && (args[0].Equals("pos")))
                 {
                     _cmdHandler.HandleCommand(args);
                 }
             }
-            return new Result;
+            return new Result();
         }
     }
 }
