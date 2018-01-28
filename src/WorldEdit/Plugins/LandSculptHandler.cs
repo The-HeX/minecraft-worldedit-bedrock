@@ -1,4 +1,5 @@
-﻿using WorldEdit.Output;
+﻿using MinecraftPluginServer.Protocol.Response;
+using WorldEdit.Output;
 
 namespace WorldEdit
 {
@@ -11,9 +12,11 @@ namespace WorldEdit
 
         public void Handle(string[] args, IMinecraftCommandService minecraftService)
         {
+            var position = minecraftService.GetLocation();
             for (var i = 0; i <= RadiusHandler.Radius; i++)
             {
-                minecraftService.Command($"fill ~-{i} ~{i} ~-{i} ~{i} ~{i} ~{i} air");
+                CreateHandler.CreateGeometry(minecraftService,"create","circle",$"{i}","1","air",$"{position.X}",$"{position.Y+i}",$"{position.Z}");
+                //minecraftService.Command($"fill ~-{i} ~{i} ~-{i} ~{i} ~{i} ~{i} air");
             }
         }
     }

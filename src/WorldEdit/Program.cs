@@ -14,7 +14,7 @@ namespace WorldEdit
 
             pluginServer.Plugin(new RadiusHandler());
             pluginServer.Plugin(new LandSculptHandler());
-            //pluginServer.Plugin(new RadiusHandler());
+            pluginServer.Plugin(new GetDataHandler());
 
             Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e)
             {
