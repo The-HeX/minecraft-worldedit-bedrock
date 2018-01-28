@@ -7,7 +7,7 @@ using WorldEdit.Output;
 
 namespace WorldEdit
 {
-    internal class ConnectionHandler : IConnectionEventHander
+    public class ConnectionHandler : IConnectionEventHander
     {
         private readonly IMinecraftCommandService _minecraftService;
         private readonly string _serverName;

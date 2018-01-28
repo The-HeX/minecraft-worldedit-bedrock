@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MinecraftPluginServer</RootNamespace>
     <AssemblyName>MinecraftPluginServer</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoHotkey.Interop">
+      <HintPath>..\refbins\AutoHotkey.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -55,33 +59,55 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatConsoleLoggingHandler.cs" />
-    <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Engine\ChatHandler.cs" />
+    <Compile Include="Engine\CodeConnectCommandFormater.cs" />
+    <Compile Include="Engine\CodeConnection\AutoHotKey.cs" />
+    <Compile Include="Engine\CodeConnection\MinecraftCodeConnectionCommandService.cs" />
+    <Compile Include="Engine\ConnectionHandler.cs" />
+    <Compile Include="Engine\Disposable.cs" />
+    <Compile Include="Engine\ICommandFormater.cs" />
+    <Compile Include="Engine\IHotkeyHandler.cs" />
+    <Compile Include="Engine\IMinecraftCommandService.cs" />
+    <Compile Include="Engine\ISendCommand.cs" />
+    <Compile Include="Engine\MinecraftWebsocketCommandService.cs" />
+    <Compile Include="Engine\PluginServer.cs" />
+    <Compile Include="Engine\Position.cs" />
+    <Compile Include="Engine\WebsocketCommandFormater.cs" />
+    <Compile Include="Websockets\ChatConsoleLoggingHandler.cs" />
+    <Compile Include="Websockets\EnumExtensions.cs" />
     <Compile Include="IGameEventHander.cs" />
     <Compile Include="GameEvent.cs" />
-    <Compile Include="MessageFileLogger.cs" />
-    <Compile Include="MessagePurpose.cs" />
-    <Compile Include="SocketServer.cs" />
-    <Compile Include="Protocol\Response\Body.cs" />
-    <Compile Include="Protocol\CommandMessage.cs" />
-    <Compile Include="Protocol\Response\Header.cs" />
-    <Compile Include="MinecraftPluginBase.cs" />
-    <Compile Include="Protocol\Request\mcBody.cs" />
-    <Compile Include="Protocol\Request\mcBodyCommand.cs" />
-    <Compile Include="Protocol\Request\mcBodysubscribe.cs" />
-    <Compile Include="Protocol\Request\mcHeader.cs" />
-    <Compile Include="Protocol\Response\Measurements.cs" />
-    <Compile Include="Protocol\Request\RequestMessage.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Protocol\Response\Properties.cs" />
+    <Compile Include="Websockets\MessageFileLogger.cs" />
+    <Compile Include="Websockets\MessagePurpose.cs" />
+    <Compile Include="Websockets\SocketServer.cs" />
+    <Compile Include="Websockets\Protocol\Response\Body.cs" />
+    <Compile Include="Websockets\Protocol\CommandMessage.cs" />
+    <Compile Include="Websockets\Protocol\Response\Header.cs" />
+    <Compile Include="Websockets\MinecraftPluginBase.cs" />
+    <Compile Include="Websockets\Protocol\Request\mcBody.cs" />
+    <Compile Include="Websockets\Protocol\Request\mcBodyCommand.cs" />
+    <Compile Include="Websockets\Protocol\Request\mcBodysubscribe.cs" />
+    <Compile Include="Websockets\Protocol\Request\mcHeader.cs" />
+    <Compile Include="Websockets\Protocol\Response\Measurements.cs" />
+    <Compile Include="Websockets\Protocol\Request\RequestMessage.cs" />
+    <Compile Include="Websockets\Protocol\Response\Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protocol\Response\Response.cs" />
-    <Compile Include="Protocol\SubscribeMessage.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="Websockets\Protocol\Response\Response.cs" />
+    <Compile Include="Websockets\Protocol\SubscribeMessage.cs" />
+    <Compile Include="Websockets\Result.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\refbins\x64\AutoHotkey.dll">
+      <Link>x64\AutoHotkey.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\refbins\x64\AutoHotkey.exe">
+      <Link>x64\AutoHotkey.exe</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

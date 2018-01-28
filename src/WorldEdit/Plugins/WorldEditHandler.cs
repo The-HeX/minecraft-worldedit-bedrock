@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
 using MinecraftPluginServer;
 using MinecraftPluginServer.Protocol.Response;
+using WorldEdit.Output;
 
 namespace WorldEdit
 {
-    public class WorldEditHandler : IGameEventHander
+    public class WorldEditHandler : IGameEventHander, ISendCommand
     {
-        private readonly CommandControl _cmdHandler;
-
-        public WorldEditHandler(CommandControl cmdHandler)
-        {
-            _cmdHandler = cmdHandler;
-        }
+        private  CommandControl _cmdHandler;
 
         public List<GameEvent> CanHandle()
         {
@@ -25,10 +21,16 @@ namespace WorldEdit
                 var args = message.body.properties.Message.Split(' ');
                 if (args.Length > 1 && (args[0].Equals("pos")))
                 {
+                    if (_cmdHandler == null)
+                    {
+                        _cmdHandler=new CommandControl(CommandService,CommandService.GetFormater());
+                    }
                     _cmdHandler.HandleCommand(args);
                 }
             }
             return new Result();
         }
+
+        public IMinecraftCommandService CommandService { get; set; }
     }
 }

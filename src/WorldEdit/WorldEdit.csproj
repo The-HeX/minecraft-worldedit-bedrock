@@ -54,9 +54,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoHotkey.Interop">
-      <HintPath>..\refbins\AutoHotkey.Interop.dll</HintPath>
-    </Reference>
+    <Reference Include="AutoHotkey.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="fNbt, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MiNET.fnbt.1.0.12\lib\net461\fNbt.dll</HintPath>
       <Private>True</Private>
@@ -73,17 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\ChatHandler.cs" />
-    <Compile Include="Engine\CodeConnectCommandFormater.cs" />
-    <Compile Include="Engine\IHotkeyHandler.cs" />
-    <Compile Include="Engine\ISendCommand.cs" />
+    <Compile Include="Plugins\Geometry\StringExtensions.cs" />
+    <Compile Include="Plugins\Geometry\CommandControl.cs" />
     <Compile Include="Plugins\GetDataHandler.cs" />
     <Compile Include="Plugins\LandSculptHandler.cs" />
-    <Compile Include="Plugins\CommandControl.cs" />
-    <Compile Include="Engine\Commands\CreateCommand.cs" />
-    <Compile Include="Engine\Commands\StringExtensions.cs" />
-    <Compile Include="Plugins\ConnectionHandler.cs" />
-    <Compile Include="Engine\Disposable.cs" />
+    <Compile Include="Plugins\Geometry\CreateCommand.cs" />
     <Compile Include="Plugins\CreateHandler.cs" />
     <Compile Include="Plugins\DrainHandler.cs" />
     <Compile Include="Plugins\Geometry\Generators\Circle\CircleGenerator.cs" />
@@ -101,12 +93,6 @@
     <Compile Include="Plugins\Geometry\Model\Options.cs" />
     <Compile Include="Plugins\Geometry\Model\Point.cs" />
     <Compile Include="Plugins\Geometry\Model\Shape.cs" />
-    <Compile Include="Engine\CodeConnection\AutoHotKey.cs" />
-    <Compile Include="Engine\ICommandFormater.cs" />
-    <Compile Include="Engine\MinecraftWebsocketCommandService.cs" />
-    <Compile Include="Engine\IMinecraftCommandService.cs" />
-    <Compile Include="Engine\CodeConnection\MinecraftCodeConnectionCommandService.cs" />
-    <Compile Include="Engine\PluginServer.cs" />
     <Compile Include="Plugins\SchematicHandler.cs" />
     <Compile Include="Plugins\Schematic\Rotate.cs" />
     <Compile Include="Plugins\Schematic\SchematicProcessor.cs" />
@@ -122,34 +108,21 @@
     <Compile Include="Plugins\Schematic\LineFactory.cs" />
     <Compile Include="Plugins\Schematic\Schematic.cs" />
     <Compile Include="Plugins\ThawHandler.cs" />
-    <Compile Include="Engine\WebsocketCommandFormater.cs" />
     <Compile Include="Plugins\WorldEditHandler.cs" />
     <Compile Include="Plugins\RadiusHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="..\refbins\x64\AutoHotkey.exe">
-      <Link>x64\AutoHotkey.exe</Link>
-    </Content>
     <Content Include="hotkeys.ahk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Engine\Commands\" />
     <Folder Include="Plugins\Geometry\Generators\Rectangle\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\refbins\x64\AutoHotkey.dll">
-      <Link>x64\AutoHotkey.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ShapeGenerator\ShapeGenerator.csproj">
-      <Project>{7b48af51-c705-4727-85d9-a54a7ec5a941}</Project>
-      <Name>ShapeGenerator</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WebsocketServer\MinecraftPluginServer.csproj">
       <Project>{b03c6d98-4542-4724-9ea4-9b7cee20f611}</Project>
       <Name>MinecraftPluginServer</Name>
