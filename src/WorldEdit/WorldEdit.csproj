@@ -119,7 +119,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\Commands\" />
     <Folder Include="Plugins\Geometry\Generators\Rectangle\" />
   </ItemGroup>
   <ItemGroup>
