@@ -75,8 +75,8 @@
   <ItemGroup>
     <Compile Include="Engine\ChatHandler.cs" />
     <Compile Include="Engine\CodeConnectCommandFormater.cs" />
-    <Compile Include="IHotkeyHandler.cs" />
-    <Compile Include="ISendCommand.cs" />
+    <Compile Include="Engine\IHotkeyHandler.cs" />
+    <Compile Include="Engine\ISendCommand.cs" />
     <Compile Include="Plugins\GetDataHandler.cs" />
     <Compile Include="Plugins\LandSculptHandler.cs" />
     <Compile Include="Plugins\CommandControl.cs" />

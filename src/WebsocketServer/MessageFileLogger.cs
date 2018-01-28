@@ -1,15 +1,22 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using MinecraftPluginServer.Protocol.Response;
 using Newtonsoft.Json;
 
 namespace MinecraftPluginServer
 {
-    public class MessageFileLogger : IGameEventHander,IGameRawEventHander {
-        public bool CanHandle(GameEvent eventname)
+    public class MessageFileLogger : IGameRawEventHander {
+        public List<GameEvent> CanHandle()
+        {
+            return Enum.GetValues(typeof (GameEvent)).Cast<GameEvent>().ToList();
+
+        }
+
+        bool IGameRawEventHander.CanHandle(GameEvent eventname)
         {
             return true;
-
         }
 
         public Result Handle(string rawMessage)
@@ -20,6 +27,7 @@ namespace MinecraftPluginServer
             return new Result();
 
         }
+
 
         public Result Handle(Response message)
         {

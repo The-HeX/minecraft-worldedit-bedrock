@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using MinecraftPluginServer.Protocol.Response;
 
 namespace MinecraftPluginServer
 {
     public class ChatConsoleLoggingHandler : IGameEventHander
     {
-        public bool CanHandle(GameEvent eventname)
+        public List<GameEvent> CanHandle()
         {
-            return eventname == GameEvent.PlayerMessage;
+            return new List<GameEvent> {GameEvent.PlayerMessage};
         }
 
         public Result Handle(Response message)

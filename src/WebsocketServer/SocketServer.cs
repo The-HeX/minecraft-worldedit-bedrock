@@ -89,7 +89,7 @@ namespace MinecraftPluginServer
             var eventname = eventMessage.body.eventName.ToEvent();
 
             foreach (var hander in Handlers)
-                if (hander.CanHandle(eventname))
+                if (hander.CanHandle().Contains(eventname) )
                     hander.Handle(eventMessage);
         }
 

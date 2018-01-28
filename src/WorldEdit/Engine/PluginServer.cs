@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using MinecraftPluginServer;
 using WorldEdit.Input;
@@ -14,9 +15,9 @@ namespace WorldEdit
         private List<IGameEventHander> GameHandlers { get; } = new List<IGameEventHander>();
         private List<IHotkeyHandler> HotkeyHandlers { get; } = new List<IHotkeyHandler>();
 
-        public void Start()
+        public void Start(string serverName, string portNumber)
         {
-            using (var server = new SocketServer("ws://0.0.0.0:12112")) // will stop on disposal.
+            using (var server = new SocketServer("ws://0.0.0.0:"+portNumber)) // will stop on disposal.
             {
                 server.Start();
                 minecraftService = new MinecraftWebsocketCommandService(server);
@@ -31,8 +32,8 @@ namespace WorldEdit
                     }
                     server.AddHandler(gameHandler);
                 }
-
-                server.AddHandler(new ConnectionHandler(minecraftService));
+                var eventSubscriptions=GameHandlers.SelectMany(a => a.CanHandle()).Distinct().OrderBy(a => a).ToList();
+                server.AddHandler(new ConnectionHandler(minecraftService,serverName, eventSubscriptions ));
                 var ahk = AutoHotKey.Run("hotkeys.ahk");
                 AutoHotKey.Callback = s =>
                 {
@@ -46,7 +47,7 @@ namespace WorldEdit
                     while (keepRunning)
                         Thread.Sleep(500);
                     ahk.Terminate();
-                    minecraftService.Status("WorldEdit Shutting Down");
+                    minecraftService.Status(serverName+" Shutting Down");
                     minecraftService.Wait();
                     minecraftService.ShutDown();
                     cancelationToken.Cancel();

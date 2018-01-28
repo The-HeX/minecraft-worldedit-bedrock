@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using MinecraftPluginServer.Protocol.Response;
 
 namespace MinecraftPluginServer
 {
     public interface IGameEventHander
     {
-        bool CanHandle(GameEvent eventname);
+        List<GameEvent> CanHandle();
         Result Handle(Response message);    
     }
 }

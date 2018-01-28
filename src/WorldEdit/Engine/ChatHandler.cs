@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MinecraftPluginServer;
 using MinecraftPluginServer.Protocol.Response;
 using WorldEdit.Output;
@@ -10,9 +11,9 @@ namespace WorldEdit
         private readonly CommandControl _cmdHandler;
         protected string ChatCommand;
 
-        public bool CanHandle(GameEvent eventname)
+        public List<GameEvent> CanHandle()
         {
-            return eventname == GameEvent.PlayerMessage;
+            return new List<GameEvent>(){ GameEvent.PlayerMessage};
         }
 
         public Result Handle(Response message)

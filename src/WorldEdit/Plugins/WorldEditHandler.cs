@@ -1,4 +1,5 @@
-﻿using MinecraftPluginServer;
+﻿using System.Collections.Generic;
+using MinecraftPluginServer;
 using MinecraftPluginServer.Protocol.Response;
 
 namespace WorldEdit
@@ -12,9 +13,9 @@ namespace WorldEdit
             _cmdHandler = cmdHandler;
         }
 
-        public bool CanHandle(GameEvent eventname)
+        public List<GameEvent> CanHandle()
         {
-            return eventname == GameEvent.PlayerMessage;
+            return new List<GameEvent>() { GameEvent.PlayerMessage };
         }
 
         public Result Handle(Response message)
