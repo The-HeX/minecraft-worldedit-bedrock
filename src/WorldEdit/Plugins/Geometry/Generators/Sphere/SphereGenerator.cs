@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace ShapeGenerator.Generators
 {
@@ -56,7 +57,7 @@ namespace ShapeGenerator.Generators
             var lines = new List<Line>();
             foreach (var point in points.ToList())
             {
-                var item1 = new Line {Start = point.Clone(), End = point.Clone(), Block = options.Block};
+                var item1 = new Line {Start = point.Clone(), End = point.Clone(), Block = GetBlockName(options)};
                 lines.Add(item1);
             }
             lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ToList();
@@ -78,6 +79,25 @@ namespace ShapeGenerator.Generators
 
             lines = SplitLinesIntoMaxSizes(lines);
             return lines;
+        }
+
+        private static Random random = new Random();
+
+        private static string GetBlockName(Options options)
+        {
+            if (options.Block.Equals("castle", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var numb = random.Next(0, 101);
+                if (numb < 90)
+                    return "stonebrick 0";
+                else if (numb < 100)
+                    return "stonebrick 2";
+                else
+                {
+                    return "stonebrick 1";
+                }
+            }
+                return options.Block;
         }
 
         public static List<Line> SplitLinesIntoMaxSizes(List<Line> lines)
@@ -116,10 +136,9 @@ namespace ShapeGenerator.Generators
             return lines;
         }
 
-        private static double Distance(int centerX, int centerZ, int centerY, int x, int z, int y)
+        public static double Distance(int centerX, int centerZ, int centerY, int x, int z, int y)
         {
-            return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),
-                0);
+            return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),0);
         }
     }
 }

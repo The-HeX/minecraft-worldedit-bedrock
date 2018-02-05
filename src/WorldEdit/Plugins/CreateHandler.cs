@@ -29,11 +29,14 @@ namespace WorldEdit
                 var _commandFormater = commandService.GetFormater();
                 var sw = new Stopwatch();
                 sw.Start();
+                var lastLine = lines.First();
                 foreach (var line in lines)
                 {
-                    var command = _commandFormater.Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X,
-                        line.End.Y,
-                        line.End.Z, line.Block, "0");
+                    if (lastLine.Start.Distance(line.Start) > 75)
+                    {                        
+                        commandService.Command($"tp @s {line.Start.X} ~ {line.Start.Z}");
+                    }
+                    var command = _commandFormater.Fill(line.Start.X, line.Start.Y, line.Start.Z, line.End.X,line.End.Y,line.End.Z, line.Block, line.Block.Contains(" ")?"":"0");
                     commandService.Command(command);
                 }
                 sw.Stop();

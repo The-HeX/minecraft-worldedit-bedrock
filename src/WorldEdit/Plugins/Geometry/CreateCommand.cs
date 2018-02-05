@@ -242,7 +242,6 @@ namespace WorldEdit.Commands
                     walls.CenterZ = center.Z;
                     break;
                 case 8:
-
                     walls.Width = commandArgs[1].ToInt();
                     walls.Length = commandArgs[2].ToInt();
                     walls.Height = commandArgs[3].ToInt();
@@ -250,6 +249,17 @@ namespace WorldEdit.Commands
                     walls.CenterX = commandArgs[5].ToInt();
                     walls.CenterY = commandArgs[6].ToInt();
                     walls.CenterZ = commandArgs[7].ToInt();
+                    walls.Thickness = 1;
+                    break;
+                case 9:
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = commandArgs[5].ToInt();
+                    walls.CenterY = commandArgs[6].ToInt();
+                    walls.CenterZ = commandArgs[7].ToInt();
+                    walls.Thickness = commandArgs[8].ToInt();
                     break;
                 default:
                     var help = "create walls  length width height block - center at current position\n" +
