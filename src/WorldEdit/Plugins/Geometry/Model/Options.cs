@@ -21,6 +21,8 @@ namespace ShapeGenerator
         public int CenterZ { get; set; }
         public int CenterY { get; set; }
         public string Block { get; set; } = "stone";
+        public int Thickness { get; set; } = 1;
+        public bool Merlon { get; set; } = false;
         public int Length { get; set; }
         public int Width { get; set; }
     }

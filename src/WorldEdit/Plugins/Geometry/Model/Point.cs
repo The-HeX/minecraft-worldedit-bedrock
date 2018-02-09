@@ -1,4 +1,6 @@
-﻿namespace ShapeGenerator
+﻿using ShapeGenerator.Generators;
+
+namespace ShapeGenerator
 {
     public class Point
     {
@@ -10,5 +12,14 @@
         {
             return new Point {X = X, Y = Y, Z = Z};
         }
+        public double Distance(Point from)
+        {
+            return SphereGenerator.Distance(X, Z, Y, from.X, from.Z, from.Y);
+        }
+        public double Distance2D(Point from)
+        {
+            return SphereGenerator.Distance(X, Z, 0, from.X, from.Z, 0);
+        }
+
     }
 }

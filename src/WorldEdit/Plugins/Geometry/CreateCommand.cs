@@ -45,6 +45,9 @@ namespace WorldEdit.Commands
                 case "sphere":
                     lines = CreateSphere(commandArgs, position, savedPositions, lines);
                     break;
+                case "merlon":
+                    lines = CreateMerlon(commandArgs, position, savedPositions, lines);
+                    break;
                 default:
                     _minecraft.Status("create [syntax]\n" +
                                       "create circle\n" +
@@ -53,10 +56,64 @@ namespace WorldEdit.Commands
                                       "create outline\n" +
                                       "create box\n" +
                                       "create floor\n" +
-                                      "create sphere\n");
+                                      "create sphere\n" +
+                                      "create merlon\n" 
+                                      );
                     break;
             }
             return lines;
+        }
+
+        private List<Line> CreateMerlon(string[] commandArgs, Position position, List<SavedPosition> savedPositions, List<Line> lines)
+        {
+            IGenerator generator;
+            ISquareOptions walls = new Options();
+            walls.Fill = false;
+            walls.Merlon = true;
+            switch (commandArgs.Length)
+            {
+                // width height block [postition]
+                case 4:
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = 1;
+                    walls.Block = commandArgs[3];
+                    walls.CenterX = position.X;
+                    walls.CenterY = position.Y;
+                    walls.CenterZ = position.Z;
+                    break;
+                case 5:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = 1;
+                    walls.Block = commandArgs[3];
+                    var center = savedPositions.Single(a => a.Name.Equals(commandArgs[4])).Position;
+                    walls.CenterX = center.X;
+                    walls.CenterY = center.Y;
+                    walls.CenterZ = center.Z;
+                    break;
+                case 7:
+
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = 1;
+                    walls.Block = commandArgs[3];
+                    walls.CenterX = commandArgs[4].ToInt();
+                    walls.CenterY = commandArgs[5].ToInt();
+                    walls.CenterZ = commandArgs[6].ToInt();
+                    break;
+                default:
+                    var help = "create merlon length width block - center at current position\n" +
+                               "create merlon length width block [named position]\n" +
+                               "create merlon length width block x y z";
+                    _minecraft.Status(help);
+                    return new List<Line>();
+            }
+            generator = new MerlonGenerator();
+            lines = generator.Run((Options)walls);
+            return lines;
+
         }
 
         private List<Line> CreateFloor(string[] commandArgs, Position position, List<SavedPosition> savedPositions,
@@ -115,7 +172,7 @@ namespace WorldEdit.Commands
         {
             IGenerator generator;
             ISquareOptions walls = new Options();
-            walls.Fill = true;
+               walls.Fill = true;
             switch (commandArgs.Length)
             {
                 // width height block [postition]
@@ -242,7 +299,6 @@ namespace WorldEdit.Commands
                     walls.CenterZ = center.Z;
                     break;
                 case 8:
-
                     walls.Width = commandArgs[1].ToInt();
                     walls.Length = commandArgs[2].ToInt();
                     walls.Height = commandArgs[3].ToInt();
@@ -250,6 +306,17 @@ namespace WorldEdit.Commands
                     walls.CenterX = commandArgs[5].ToInt();
                     walls.CenterY = commandArgs[6].ToInt();
                     walls.CenterZ = commandArgs[7].ToInt();
+                    walls.Thickness = 1;
+                    break;
+                case 9:
+                    walls.Width = commandArgs[1].ToInt();
+                    walls.Length = commandArgs[2].ToInt();
+                    walls.Height = commandArgs[3].ToInt();
+                    walls.Block = commandArgs[4];
+                    walls.CenterX = commandArgs[5].ToInt();
+                    walls.CenterY = commandArgs[6].ToInt();
+                    walls.CenterZ = commandArgs[7].ToInt();
+                    walls.Thickness = commandArgs[8].ToInt();
                     break;
                 default:
                     var help = "create walls  length width height block - center at current position\n" +

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace ShapeGenerator.Generators
 {
@@ -56,7 +57,7 @@ namespace ShapeGenerator.Generators
             var lines = new List<Line>();
             foreach (var point in points.ToList())
             {
-                var item1 = new Line {Start = point.Clone(), End = point.Clone(), Block = options.Block};
+                var item1 = new Line {Start = point.Clone(), End = point.Clone(), Block = GetBlockName(options)};
                 lines.Add(item1);
             }
             lines = lines.OrderBy(a => a.Start.X).ThenBy(a => a.Start.Z).ThenBy(a => a.Start.Y).ToList();
@@ -80,19 +81,48 @@ namespace ShapeGenerator.Generators
             return lines;
         }
 
+        private static Random random = new Random();
+
+        private static string GetBlockName(Options options)
+        {
+
+            if (options.Block.Equals("castle", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var blocks = new List<Tuple<string, int>>();
+                blocks.Add(new Tuple<string, int>("stonebrick 0", 78));
+                blocks.Add(new Tuple<string, int>("stone", 5));
+                blocks.Add(new Tuple<string, int>("stonebrick 2", 15));
+                blocks.Add(new Tuple<string, int>("stonebrick 1", 2));
+
+                var total = blocks.Sum(a => a.Item2);
+                var normalized = blocks.Select(a => new { Item = a.Item1, Percentage = a.Item2 / total, Frequency = a.Item2 }).OrderByDescending(a => a.Frequency).ToList();
+
+                    var number = random.Next(0, total);
+                    foreach (var item in normalized)
+                    {
+                        number -= item.Frequency;
+                        if (number <= 0)
+                        {
+                            return item.Item;
+                        }
+                    }
+                }
+            return options.Block;
+        }
+
         public static List<Line> SplitLinesIntoMaxSizes(List<Line> lines)
         {
             var output = new List<Line>();
 
             foreach (var line in lines)
             {
-                if (line.IsSmallerThen(50))
+                if (line.IsSmallerThen(20))
                 {
                     output.Add(line);
                 }
                 else //need to split the line into  smaller segments.
                 {
-                    output.AddRange(line.SplitToAMaxSize(32));
+                    output.AddRange(line.SplitToAMaxSize(20));
                 }
             }
             return output;
@@ -116,10 +146,9 @@ namespace ShapeGenerator.Generators
             return lines;
         }
 
-        private static double Distance(int centerX, int centerZ, int centerY, int x, int z, int y)
+        public static double Distance(int centerX, int centerZ, int centerY, int x, int z, int y)
         {
-            return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),
-                0);
+            return Math.Round(Math.Sqrt(Math.Pow(centerX - x, 2) + Math.Pow(centerZ - z, 2) + Math.Pow(centerY - y, 2)),0);
         }
     }
 }

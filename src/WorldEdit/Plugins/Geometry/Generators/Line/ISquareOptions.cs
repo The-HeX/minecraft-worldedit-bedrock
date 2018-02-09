@@ -10,5 +10,7 @@
         bool Fill { get; set; }
         int Length { get; set; }
         string Block { get; set; }
+        int Thickness { get; set; }
+        bool Merlon { get; set; } 
     }
 }

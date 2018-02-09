@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ShapeGenerator.Generators;
 
 namespace WorldEdit.Schematic
 {
@@ -62,5 +63,6 @@ namespace WorldEdit.Schematic
         {
             return (Math.PI/180)*angle;
         }
+
     }
 }
