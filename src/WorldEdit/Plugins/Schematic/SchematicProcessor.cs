@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using ShapeGenerator;
+using ShapeGenerator.Generators;
 using WorldEdit.Output;
 
 namespace WorldEdit.Schematic
@@ -52,41 +54,11 @@ namespace WorldEdit.Schematic
                     _minecraftCommandService.Status(output);
                     break;
                 }
+                case "outline":
+                    Outline(args, target, shift);
+                    break;
                 case "import":
-                    var FileName = args[1];
-                    if (args.Length == 6)
-                    {
-                        target.X = Convert.ToInt32(args[3]);
-                        target.Y = Convert.ToInt32(args[4]);
-                        target.Z = Convert.ToInt32(args[5]);
-                    }
-                    if (args.Length >= 5)
-                    {
-                        if (args[2].StartsWith("~") || args[3].StartsWith("~") || args[4].StartsWith("~"))
-                        {
-                            //get current position
-                            //parse and add to current position.
-                            _minecraftCommandService.Status("relative positions are not supported.");
-                            return;
-                        }
-                        target.X = Convert.ToInt32(args[2]);
-                        target.Y = Convert.ToInt32(args[3]);
-                        target.Z = Convert.ToInt32(args[4]);
-                    }
-                    if (args.Length >= 6)
-                    {
-                        rotation = (Rotate) Convert.ToInt32(args?[5]);
-                    }
-                    if (args.Length >= 9)
-                    {
-                        shift.X = Convert.ToInt32(args[6]);
-                        shift.Y = Convert.ToInt32(args[7]);
-                        shift.Z = Convert.ToInt32(args[8]);
-                    }
-
-                    Console.WriteLine($"importing {FileName} to {target}");
-                    var points1 = LoadFile(FileName);
-                    SendCommandsToCodeConnection(target, points1, rotation, shift);
+                    Import(args, target, rotation, shift);
                     break;
                 case "test":
                     //analyze then import all schematics in the folder.
@@ -122,6 +94,86 @@ namespace WorldEdit.Schematic
                                                     "schematic import name x y z (rotation) (Shift X) (Shift Y) (Shift Z)");
                     break;
             }
+        }
+
+        private void Outline(string[] args, Position target, Position shift)
+        {
+            Rotate rotation;
+            var FileName = args[1];
+            if (args.Length == 6)
+            {
+                target.X = Convert.ToInt32(args[3]);
+                target.Y = Convert.ToInt32(args[4]);
+                target.Z = Convert.ToInt32(args[5]);
+            }
+            if (args.Length >= 5)
+            {
+                if (args[2].StartsWith("~") || args[3].StartsWith("~") || args[4].StartsWith("~"))
+                {
+                    //get current position
+                    //parse and add to current position.
+                    _minecraftCommandService.Status("relative positions are not supported.");
+                    return;
+                }
+                target.X = Convert.ToInt32(args[2]);
+                target.Y = Convert.ToInt32(args[3]);
+                target.Z = Convert.ToInt32(args[4]);
+            }
+            if (args.Length >= 6)
+            {
+                rotation = (Rotate) Convert.ToInt32(args?[5]);
+            }
+            if (args.Length >= 9)
+            {
+                shift.X = Convert.ToInt32(args[6]);
+                shift.Y = Convert.ToInt32(args[7]);
+                shift.Z = Convert.ToInt32(args[8]);
+            }
+
+            Console.WriteLine($"outlineing {FileName} to {target}");
+            var points = LoadFile(FileName);
+            var results = ModelAnalyzer.Analyze(points);
+            var x= (target.X + results.Width /2).ToString();
+            var z = (target.Z + results.Length/2).ToString();
+            CreateHandler.CreateGeometry(_minecraftCommandService,"create","box",results.Width.ToString(),results.Length.ToString(),results.Height.ToString(),"wool",x,target.Y.ToString(),z);
+        }
+
+        private void Import(string[] args, Position target, Rotate rotation, Position shift)
+        {
+            var FileName = args[1];
+            if (args.Length == 6)
+            {
+                target.X = Convert.ToInt32(args[3]);
+                target.Y = Convert.ToInt32(args[4]);
+                target.Z = Convert.ToInt32(args[5]);
+            }
+            if (args.Length >= 5)
+            {
+                if (args[2].StartsWith("~") || args[3].StartsWith("~") || args[4].StartsWith("~"))
+                {
+                    //get current position
+                    //parse and add to current position.
+                    _minecraftCommandService.Status("relative positions are not supported.");
+                    return;
+                }
+                target.X = Convert.ToInt32(args[2]);
+                target.Y = Convert.ToInt32(args[3]);
+                target.Z = Convert.ToInt32(args[4]);
+            }
+            if (args.Length >= 6)
+            {
+                rotation = (Rotate) Convert.ToInt32(args?[5]);
+            }
+            if (args.Length >= 9)
+            {
+                shift.X = Convert.ToInt32(args[6]);
+                shift.Y = Convert.ToInt32(args[7]);
+                shift.Z = Convert.ToInt32(args[8]);
+            }
+
+            Console.WriteLine($"importing {FileName} to {target}");
+            var points1 = LoadFile(FileName);
+            SendCommandsToCodeConnection(target, points1, rotation, shift);
         }
 
         private static List<Point> LoadFile(string FileName)

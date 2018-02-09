@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Geometry\StringExtensions.cs" />
-    <Compile Include="Plugins\Geometry\CommandControl.cs" />
     <Compile Include="Plugins\GetDataHandler.cs" />
     <Compile Include="Plugins\LandSculptHandler.cs" />
     <Compile Include="Plugins\Geometry\CreateCommand.cs" />
@@ -108,7 +107,7 @@
     <Compile Include="Plugins\Schematic\LineFactory.cs" />
     <Compile Include="Plugins\Schematic\Schematic.cs" />
     <Compile Include="Plugins\ThawHandler.cs" />
-    <Compile Include="Plugins\WorldEditHandler.cs" />
+    <Compile Include="Plugins\SavedPositionHandler.cs" />
     <Compile Include="Plugins\RadiusHandler.cs" />
   </ItemGroup>
   <ItemGroup>

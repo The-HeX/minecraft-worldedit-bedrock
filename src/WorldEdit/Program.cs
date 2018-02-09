@@ -10,7 +10,7 @@ namespace WorldEdit
 
 
             //game event handlers
-            pluginServer.Plugin(new WorldEditHandler());
+            pluginServer.Plugin(new SavedPositionHandler());
             pluginServer.Plugin(new DrainHandler());
             pluginServer.Plugin(new ThawHandler());
             pluginServer.Plugin(new CreateHandler());
