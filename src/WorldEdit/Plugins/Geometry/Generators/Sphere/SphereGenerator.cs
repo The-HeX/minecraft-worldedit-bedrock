@@ -85,19 +85,29 @@ namespace ShapeGenerator.Generators
 
         private static string GetBlockName(Options options)
         {
+
             if (options.Block.Equals("castle", StringComparison.InvariantCultureIgnoreCase))
             {
-                var numb = random.Next(0, 101);
-                if (numb < 90)
-                    return "stonebrick 0";
-                else if (numb < 100)
-                    return "stonebrick 2";
-                else
-                {
-                    return "stonebrick 1";
+                var blocks = new List<Tuple<string, int>>();
+                blocks.Add(new Tuple<string, int>("stonebrick 0", 78));
+                blocks.Add(new Tuple<string, int>("stone", 5));
+                blocks.Add(new Tuple<string, int>("stonebrick 2", 15));
+                blocks.Add(new Tuple<string, int>("stonebrick 1", 2));
+
+                var total = blocks.Sum(a => a.Item2);
+                var normalized = blocks.Select(a => new { Item = a.Item1, Percentage = a.Item2 / total, Frequency = a.Item2 }).OrderByDescending(a => a.Frequency).ToList();
+
+                    var number = random.Next(0, total);
+                    foreach (var item in normalized)
+                    {
+                        number -= item.Frequency;
+                        if (number <= 0)
+                        {
+                            return item.Item;
+                        }
+                    }
                 }
-            }
-                return options.Block;
+            return options.Block;
         }
 
         public static List<Line> SplitLinesIntoMaxSizes(List<Line> lines)
@@ -106,13 +116,13 @@ namespace ShapeGenerator.Generators
 
             foreach (var line in lines)
             {
-                if (line.IsSmallerThen(50))
+                if (line.IsSmallerThen(20))
                 {
                     output.Add(line);
                 }
                 else //need to split the line into  smaller segments.
                 {
-                    output.AddRange(line.SplitToAMaxSize(32));
+                    output.AddRange(line.SplitToAMaxSize(20));
                 }
             }
             return output;

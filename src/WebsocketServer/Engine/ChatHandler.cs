@@ -36,7 +36,7 @@ namespace WorldEdit
             CommandService.Command(commannd);
         }
 
-        protected virtual void HandleMessage(string[] args)
+        public virtual void HandleMessage(string[] args)
         {
         }
     }

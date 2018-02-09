@@ -10,7 +10,7 @@ namespace WorldEdit
             ChatCommand = "schematic";
         }
 
-        protected override void HandleMessage(string[] args)
+        public override void HandleMessage(string[] args)
         {
             new SchematicProcessor(CommandService).SchematicCommandProcessor(args.ToList().Skip(1).ToArray());
         }

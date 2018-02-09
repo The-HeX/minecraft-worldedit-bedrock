@@ -23,6 +23,7 @@ namespace ShapeGenerator.Generators
             var centerX = options.CenterX;
             var centerZ = options.CenterZ;
             var fill = options.Fill;
+            var thickness = options.Thickness;
             //var y = options.Y;
 
             var lowerX = centerX - radius - 1;
@@ -44,7 +45,7 @@ namespace ShapeGenerator.Generators
                     {
                         var distance = Distance(centerX, centerZ, x, z);
 
-                        if (distance == radius)
+                        if (distance == radius || (distance > radius && distance < radius+thickness))
                             points.Add(new Point {X = x, Z = z, Y = y});
 
                         if (fill)

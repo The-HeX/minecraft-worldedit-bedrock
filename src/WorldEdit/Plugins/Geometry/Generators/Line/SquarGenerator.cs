@@ -23,14 +23,14 @@ namespace ShapeGenerator.Generators
             var opt = (ISquareOptions) options;
             var points = new List<Point>();
 
-            var lowerX = opt.CenterX - opt.Width-opt.Thickness/2;
+            var lowerX = opt.CenterX - opt.Width/2;
             var lowerY = opt.CenterY;
             ;
-            var lowerZ = opt.CenterZ - opt.Length - opt.Thickness / 2;
-            var upperX = opt.CenterX + opt.Width+opt.Thickness/2;
+            var lowerZ = opt.CenterZ - opt.Length /2;
+            var upperX = opt.CenterX + opt.Width/2;
             var upperY = lowerY + opt.Height - 1;
             ;
-            var upperZ = opt.CenterZ + opt.Length + opt.Thickness / 2;
+            var upperZ = opt.CenterZ + opt.Length /2;
 
             Swap(ref lowerY, ref upperY);
             Swap(ref lowerX, ref upperX);
