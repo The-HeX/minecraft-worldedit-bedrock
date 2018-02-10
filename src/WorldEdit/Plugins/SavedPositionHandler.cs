@@ -15,7 +15,7 @@ namespace WorldEdit
             ChatCommand = "pos";
         }
 
-        protected override void HandleMessage(string[] args)
+        public override void HandleMessage(string[] args)
         {
             HandlePositionCommand(RemoveFirstArg(args));
         }
