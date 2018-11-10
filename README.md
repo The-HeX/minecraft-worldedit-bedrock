@@ -51,6 +51,7 @@ Import Schematics
 3. From within a minecraft chat window type /wsserver 127.0.0.1:12112 
 4. Start using the commands.
 
-Optionally: there is an integration which uses the EDU Code Connection to talk with bedrock, but current the plugin does not require this. 
-1. Download Minecraft Code Connection from microsoft. ( https://aka.ms/meeccwin10 )
 
+## FAQ
+1. Does this work with Education Edition?
+  No, it seems like they have made some changed to EDU and it does not work with the standard websocket api.
