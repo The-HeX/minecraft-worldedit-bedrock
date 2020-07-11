@@ -30,15 +30,15 @@ namespace MinecraftPluginServer
             MinecraftPluginBase.ErrorReceived = OnError;
         }
 
-        public SocketServer(string url, IGameEventHander[] handlers) : this(url)
+        public SocketServer(int port, IGameEventHander[] handlers) : this(port)
         {
             Handlers.AddRange(handlers);
         }
 
 
-        public SocketServer(string url) : this()
+        public SocketServer(int  port) : this()
         {
-            wssv = new WebSocketServer(url);
+            wssv = new WebSocketServer(port);
             wssv.AddWebSocketService<MinecraftPluginBase>("/");
             wssv.Log.Level = LogLevel.Debug;
             wssv.Log.Output = (d, a) => Console.WriteLine(a);

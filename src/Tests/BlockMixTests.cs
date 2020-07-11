@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class Class1
+    public class BlockMixTests
     {
         [Fact]
         public void test_block_mix()

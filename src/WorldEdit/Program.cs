@@ -18,9 +18,9 @@ namespace WorldEdit
             pluginServer.Plugin(new ThawHandler());
             var createHandler = new CreateHandler();
             pluginServer.Plugin(createHandler);
+            pluginServer.Plugin(new ScriptHandler(createHandler));
             pluginServer.Plugin(new SchematicHandler());
             pluginServer.Plugin(new ChatLogHandler());
-            pluginServer.Plugin(new RunCreatesHandler(createHandler));
             //local hotkey handlers.
             pluginServer.Plugin(new RadiusHandler());
             pluginServer.Plugin(new LandSculptHandler());
@@ -32,7 +32,7 @@ namespace WorldEdit
                 pluginServer.Stop();
             };
 
-            pluginServer.Start("WorldEdit", "12112");
+            pluginServer.Start("WorldEdit", 12112);
         }
     }
 
@@ -52,11 +52,11 @@ namespace WorldEdit
         }
     }
 
-    public class RunCreatesHandler : ChatHandler
+    public class ScriptHandler : ChatHandler
     {
         private readonly CreateHandler _handler;
 
-        public RunCreatesHandler(CreateHandler handler)
+        public ScriptHandler(CreateHandler handler)
         {
             _handler = handler;
             ChatCommand = "script";
